@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <meta property="og:locale" content="en_GB">
+    <title>InfluxDB v1 Migration Checklist: Which Clients Need Only a URL</title>
+    <meta name="description" content="A client-by-client InfluxDB v1 migration checklist: Telegraf, Grafana, custom apps, Python scripts, and Java services, and which only need a URL change.">
+    <link rel="canonical" href="https://hyperbyte.cloud/influxdb-v1-migration-checklist-clients-url-change/">
+    <meta name="robots" content="index, follow">
+    <meta property="og:site_name" content="Hyperbyte Cloud">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="InfluxDB v1 Migration Checklist: Which Clients Need Only a URL">
+    <meta property="og:description" content="A client-by-client InfluxDB v1 migration checklist: Telegraf, Grafana, custom apps, Python scripts, and Java services, and which only need a URL change.">
+    <meta property="og:url" content="https://hyperbyte.cloud/influxdb-v1-migration-checklist-clients-url-change/">
+    <meta property="og:image" content="https://hyperbyte.cloud/assets/logo.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="InfluxDB v1 Migration Checklist: Which Clients Need Only a URL">
+    <meta name="twitter:description" content="A client-by-client InfluxDB v1 migration checklist: Telegraf, Grafana, custom apps, Python scripts, and Java services, and which only need a URL change.">
+    <meta name="twitter:image" content="https://hyperbyte.cloud/assets/logo.png">
+    <meta property="article:published_time" content="2026-04-13">
+    <meta property="article:modified_time" content="2026-09-22">
+    <link rel="icon" href="/assets/logo.png" type="image/png">
+    <link rel="alternate" type="application/rss+xml" title="Hyperbyte Cloud" href="https://hyperbyte.cloud/rss.xml">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/site.css">
+    <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://hyperbyte.cloud/#org", "name": "Hyperbyte Cloud", "url": "https://hyperbyte.cloud/", "email": "hello@hyperbyte.cloud", "logo": {"@type": "ImageObject", "url": "https://hyperbyte.cloud/assets/logo.png"}, "sameAs": ["https://github.com/hyperbyte-cloud/hyperbytedb"]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://hyperbyte.cloud/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://hyperbyte.cloud/tag/blog/"}, {"@type": "ListItem", "position": 3, "name": "The InfluxDB v1 Migration Checklist: Which Clients Just Need a URL Change", "item": "https://hyperbyte.cloud/influxdb-v1-migration-checklist-clients-url-change/"}]}, {"@type": "BlogPosting", "headline": "The InfluxDB v1 Migration Checklist: Which Clients Just Need a URL Change", "description": "Most InfluxDB v1 migration guides focus on Telegraf. Here's the complete client-by-client checklist covering Grafana, custom apps, Python scripts, and Java services—and which ones just need a URL change.", "datePublished": "2026-04-13", "dateModified": "2026-09-22", "author": {"@type": "Person", "name": "Austin", "url": "https://hyperbyte.cloud/author/austin/"}, "publisher": {"@id": "https://hyperbyte.cloud/#org"}, "mainEntityOfPage": "https://hyperbyte.cloud/influxdb-v1-migration-checklist-clients-url-change/", "image": "https://hyperbyte.cloud/assets/logo.png", "keywords": "influxdb, migration, grafana, telegraf, telemetry, ops, integration", "wordCount": 1367, "inLanguage": "en-GB"}]}</script>
+    <link rel="prev" href="https://hyperbyte.cloud/every-sensor-every-tick-influxql-analytics-iot-data-scale/">
+<link rel="next" href="https://hyperbyte.cloud/influxdb-v1-compatibility-drop-in/">
+</head><body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="/">
+          <img src="/assets/logo.png" width="28" height="28" alt="">
+          Hyperbyte
+        </a>
+        <button class="menu-btn" type="button" data-menu aria-expanded="false" aria-controls="site-nav">Menu</button>
+        <nav class="nav" id="site-nav" data-nav aria-label="Primary"><a href="/">Product</a><a href="/cloud/">Cloud</a><a href="/solutions/">Solutions</a><a href="/oss/">OSS</a><a href="/pricing/">Pricing</a><a href="/tag/blog/" aria-current="page">Blog</a><a href="https://docs.hyperbyte.cloud" rel="noopener">Docs</a><a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">Request early access</a></nav>
+      </div>
+    </header>
+    <main id="main">
+      <article class="wrap page-head">
+        <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a><span aria-hidden="true">/</span></li><li><a href="/tag/blog/">Blog</a><span aria-hidden="true">/</span></li><li><span aria-current="page">The InfluxDB v1 Migration Checklist: Which Clients Just Need a URL Change</span></li></ol></nav>
+        <h1>The InfluxDB v1 Migration Checklist: Which Clients Just Need a URL Change</h1>
+        <p class="post-meta"><time datetime="2026-04-13">2026-04-13</time><span>6 min read</span><a href="/author/austin/">Austin</a><span><a href="/tag/influxdb/">influxdb</a> · <a href="/tag/migration/">migration</a> · <a href="/tag/grafana/">grafana</a> · <a href="/tag/telegraf/">telegraf</a> · <a href="/tag/telemetry/">telemetry</a> · <a href="/tag/ops/">ops</a> · integration</span></p>
+        
+        <nav class="toc" aria-label="On this page"><p>On this page</p><ol><li><a href="#the-endpoint-surface">The Endpoint Surface</a></li><li><a href="#telegraf-agents">Telegraf Agents</a></li><li><a href="#grafana-datasources">Grafana Datasources</a></li><li><a href="#custom-applications-pushing-line-protocol">Custom Applications Pushing Line Protocol</a></li><li><a href="#python-scripts-influxdb-python-pandas">Python Scripts (influxdb-python / pandas)</a></li><li><a href="#java-applications">Java Applications</a></li><li><a href="#prometheus-scraping-metrics-collection">Prometheus Scraping / Metrics Collection</a></li><li><a href="#the-full-checklist">The Full Checklist</a></li><li><a href="#whats-not-a-url-swap">What&#x27;s Not a URL Swap</a></li><li><a href="#validation-before-cutover">Validation Before Cutover</a></li><li><a href="#the-bottom-line">The Bottom Line</a></li><li><a href="#related-reading">Related reading</a></li></ol></nav>
+        <div class="prose"><p>You've been evaluating HyperbyteDB (the InfluxDB v1-compatible database) and the "one URL change" pitch keeps coming up. It's a strong signal—but if you're managing a real production stack, you know it's never just Telegraf. There are Grafana datasources, custom applications pushing line protocol, Python scripts for ad-hoc analysis, and possibly Java services that predate your tenure.</p><p>This post maps the full client compatibility surface against HyperbyteDB's documented endpoints. For each integration point, I'll tell you what works with a URL swap, what needs adjustment, and what to validate before you flip the switch in production.</p><h2 id="the-endpoint-surface">The Endpoint Surface</h2><p>HyperbyteDB exposes these InfluxDB v1-compatible endpoints:</p><ul><li><code>POST /write</code> — Line protocol ingestion with <code>precision</code>, gzip, database, and retention policy parameters</li><li><code>GET/POST /query</code> — InfluxQL execution with <code>epoch</code>, multiple statements, and bind parameters</li><li><code>GET /ping</code> — Liveness check (returns <code>204 No Content</code>)</li><li><code>GET /health</code> — Extended health status</li><li><code>GET /metrics</code> — Prometheus-format metrics</li></ul><p>Every client in your stack connects through some combination of these endpoints. The breakdown, client by client:</p><h2 id="telegraf-agents">Telegraf Agents</h2><h3 id="what-works-as-is">What works as-is</h3><p>Telegraf uses <code>POST /write</code> for metric ingestion. If your Telegraf configs have:</p><pre><code>[[outputs.influxdb]]
+  urls = ["http://your-influxdb:8086"]
+  database = "mydb"</code></pre><p>...changing it to:</p><pre><code>urls = ["http://hyperbytedb:8086"]</code></pre><p>is the full migration. Telegraf handles line protocol natively, and HyperbyteDB's <code>/write</code> endpoint accepts the same format with the same query parameters (<code>db</code>, <code>rp</code>, <code>precision</code>).</p><h3 id="what-to-validate">What to validate</h3><ul><li>If you use InfluxDB outputs with <code>content_encoding = "gzip"</code>, that works—HyperbyteDB supports <code>Content-Encoding: gzip</code>.</li><li>Telegraf connection tests use <code>/ping</code>, which is fully compatible.</li><li>If Telegraf writes to multiple databases via separate output instances, each <code>database</code> parameter maps directly to a HyperbyteDB database.</li></ul><h3 id="effort-minimal">Effort: Minimal</h3><h2 id="grafana-datasources">Grafana Datasources</h2><h3 id="what-works-as-is-1">What works as-is</h3><p>Grafana's InfluxDB datasource talks to <code>/query</code>. Configure it as:</p><ul><li><strong>URL:</strong> <code>http://hyperbytedb:8086</code></li><li><strong>Database:</strong> your database name</li><li><strong>HTTP Mode:</strong> <code>GET</code> or <code>POST</code> (both work)</li></ul><p>Grafana sends InfluxQL queries via the <code>q</code> parameter (GET) or form body (POST). HyperbyteDB supports both and returns the same <code>{"results":[...]}</code> JSON shape with RFC3339 timestamps by default.</p><h3 id="what-to-validate-1">What to validate</h3><ul><li><strong>Timestamp format:</strong> If your dashboards use <code>epoch=ms</code> or <code>epoch=s</code>, those parameters are supported. Verify dashboard time ranges after migration.</li><li><strong>Fill modes:</strong> HyperbyteDB supports <code>fill(null)</code>, <code>fill(none)</code>, <code>fill(0)</code>, <code>fill(previous)</code>, and <code>fill(linear)</code>. The <code>fill(previous)</code> and <code>fill(linear)</code> implementations use ClickHouse <code>INTERPOLATE</code>—validate results at series boundaries for critical dashboards.</li><li><strong>Regex measurements:</strong> If your queries use <code>FROM /^cpu.*/</code> syntax, that works.</li><li><strong>Multiple statements:</strong> Grafana typically sends one query at a time, but HyperbyteDB supports semicolon-separated statements if needed.</li></ul><h3 id="effort-low">Effort: Low</h3><h2 id="custom-applications-pushing-line-protocol">Custom Applications Pushing Line Protocol</h2><h3 id="what-works-as-is-2">What works as-is</h3><p>Any application pushing raw line protocol to <code>/write</code> is a direct swap. The protocol format is:</p><pre><code>measurement,tag1=value1 field1=1.0,field2="string"</code></pre><p>HyperbyteDB accepts this format identically to InfluxDB v1. Timestamp precision (<code>ns</code>, <code>us</code>, <code>ms</code>, <code>s</code>) is handled via the <code>precision</code> query parameter.</p><h3 id="what-to-validate-2">What to validate</h3><ul><li><strong>Field type conflicts:</strong> InfluxDB v1 allows overwriting field types (a field that was a float becomes a string on next write). HyperbyteDB follows ClickHouse semantics—field types are determined by the first write to a column. If your app does type-switching, validate that field types are consistent.</li><li><strong>HTTP response codes:</strong> HyperbyteDB returns <code>204</code> for success, <code>400</code> for parse errors, <code>401</code> for auth failures, <code>404</code> for missing databases, and <code>422</code> for cardinality limit violations. Ensure your code handles these correctly.</li><li><strong>Gzip compression:</strong> If your app sends <code>Content-Encoding: gzip</code>, HyperbyteDB handles it. Otherwise, it's optional.</li></ul><h3 id="effort-low-to-moderate-depends-on-error-handling-validation">Effort: Low to moderate (depends on error handling validation)</h3><h2 id="python-scripts-influxdb-python-pandas">Python Scripts (influxdb-python / pandas)</h2><h3 id="what-works-as-is-3">What works as-is</h3><p>The <code>influxdb</code> Python client library uses <code>/write</code> and <code>/query</code>. The standard <code>DataFrameClient</code> or <code>InfluxDBClient</code> patterns work with a URL change:</p><pre><code>from influxdb import InfluxDBClient
+
+client = InfluxDBClient(
+    host='hyperbytedb',
+    port=8086,
+    database='mydb'
+)
+client.create_database('mydb')</code></pre><p>Queries via <code>client.query()</code> map to <code>/query</code> and return InfluxQL results in the same format.</p><h3 id="what-to-validate-3">What to validate</h3><ul><li><strong>Bind parameters:</strong> HyperbyteDB supports <code>params</code> for <code>$param</code> substitution. If your scripts use this, confirm parameter types match (strings need quotes in the query, numeric types don't).</li><li><strong>Epoch timestamps:</strong> If your code parses epoch integers from the response, set <code>epoch</code> parameter to match your expectations (<code>ns</code>, <code>us</code>, <code>ms</code>, <code>s</code>).</li><li><strong>CSV responses:</strong> HyperbyteDB supports <code>Accept: text/csv</code> if your script parses CSV output. Default is JSON.</li></ul><h3 id="effort-low-1">Effort: Low</h3><h2 id="java-applications">Java Applications</h2><h3 id="what-works-as-is-4">What works as-is</h3><p>Java clients like the official InfluxDB 1.x client or Retrofit-based implementations that use <code>/write</code> and <code>/query</code> are compatible. The HTTP API is the contract—Java HTTP clients make raw requests to those endpoints.</p><h3 id="what-to-validate-4">What to validate</h3><ul><li><strong>Authentication:</strong> HyperbyteDB supports query parameter auth (<code>?u=user&amp;p=pass</code>), HTTP Basic auth, and Token auth (<code>Authorization: Token user:pass</code>). Ensure your client's auth mechanism maps to one of these.</li><li><strong>Response parsing:</strong> If your code parses InfluxDB's JSON response shape directly, it should work. The <code>{"results":[{"statement_id":0,"series":[...]}]}</code> structure is identical.</li><li><strong>Chunked responses:</strong> If enabled via <code>chunked=true</code>, HyperbyteDB streams results with <code>Transfer-Encoding: chunked</code>. Validate your parser handles this.</li></ul><h3 id="effort-low-to-moderate-depends-on-how-tightly-coupled-the-client-is-to-influxdb-specific-libraries">Effort: Low to moderate (depends on how tightly coupled the client is to InfluxDB-specific libraries)</h3><h2 id="prometheus-scraping-metrics-collection">Prometheus Scraping / Metrics Collection</h2><h3 id="what-works-as-is-5">What works as-is</h3><p>If Prometheus scrapes HyperbyteDB's <code>/metrics</code> endpoint, the Prometheus scrape config is identical:</p><pre><code>scrape_configs:
+  - job_name: 'hyperbytedb'
+    static_configs:
+      - targets: ['hyperbytedb:8086']
+    metrics_path: /metrics
+    scrape_interval: 15s</code></pre><p>HyperbyteDB exposes Prometheus-format metrics including <code>hyperbytedb_write_requests_total</code>, <code>hyperbytedb_query_requests_total</code>, <code>hyperbytedb_query_duration_seconds</code>, and <code>hyperbytedb_ingestion_points_total</code>.</p><h3 id="effort-none%E2%80%94just-update-the-target-host">Effort: None—just update the target host</h3><h2 id="the-full-checklist">The Full Checklist</h2>
+<!--kg-card-begin: html-->
+<table>
+<thead>
+<tr>
+<th>Integration</th>
+<th>URL Swap</th>
+<th>Validation Needed</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Telegraf agents</td>
+<td>Yes</td>
+<td>Gzip, retention policies, connection tests</td>
+<td>Minimal</td>
+</tr>
+<tr>
+<td>Grafana datasource</td>
+<td>Yes</td>
+<td>Timestamp format, fill modes, regex queries</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Custom line protocol apps</td>
+<td>Yes</td>
+<td>Field type consistency, HTTP error codes</td>
+<td>Low–Moderate</td>
+</tr>
+<tr>
+<td>Python scripts</td>
+<td>Yes</td>
+<td>Bind parameters, epoch parsing, CSV support</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Java applications</td>
+<td>Yes</td>
+<td>Auth mechanism, response parsing, chunked mode</td>
+<td>Low–Moderate</td>
+</tr>
+<tr>
+<td>Prometheus scraping</td>
+<td>Yes</td>
+<td>None</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<!--kg-card-end: html-->
+<h2 id="whats-not-a-url-swap">What's Not a URL Swap</h2><p>Two things require more than a configuration change:</p><ol><li><strong>Per-database permissions:</strong> HyperbyteDB supports admin vs non-admin roles only. If your InfluxDB setup uses per-database <code>GRANT</code>/<code>REVOKE</code>, those statements are parsed but don't enforce fine-grained access. Plan your auth model accordingly.</li><li><strong>Subscriptions:</strong> HyperbyteDB does not support InfluxDB subscriptions (push-based data forwarding). If you rely on subscription endpoints, those will need architectural changes.</li></ol><h2 id="validation-before-cutover">Validation Before Cutover</h2><p>Before you point everything at HyperbyteDB:</p><ol><li>Run a parallel write to both databases and compare query results for your most critical dashboards.</li><li>Test <code>fill(previous)</code> and <code>fill(linear)</code> results if you use those modes.</li><li>Validate that field types are consistent if your apps write heterogeneous types to the same field key.</li><li>Check cardinality limits—HyperbyteDB defaults to 100,000 tag values per tag key per measurement.</li></ol><h2 id="the-bottom-line">The Bottom Line</h2><p>If your stack is Telegraf + Grafana + Prometheus, the migration is overwhelmingly a URL change. Custom applications and scripts need validation of error handling and response parsing. The only cases that require architectural work are fine-grained permissions and subscriptions.</p><p>For the full endpoint and InfluxQL reference, see the <a href="https://docs.hyperbyte.cloud/?ref=hyperbyte.cloud" rel="noopener">HyperbyteDB documentation</a>.</p><h2 id="related-reading">Related reading</h2><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="/exporting-historical-time-series-influxdb-v1-to-hyperbytedb/"><div class="kg-bookmark-content"><div class="kg-bookmark-title">Your Old Data Isn't a Migration Blocker: Exporting Historical Time-Series from InfluxDB v1 to HyperbyteDB</div><div class="kg-bookmark-description">Most migration guides cover updating Telegraf, Grafana, and your scripts. But historical data—months or years of it—gets left behind with no clear path forward. Here's how to export that data from InfluxDB v1 and load it into HyperbyteDB.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="/assets/media/4d1ceff33a23b4ed.png" alt="" width="256" height="256"><span class="kg-bookmark-author">Hyperbyte Cloud</span><span class="kg-bookmark-publisher">Austin</span></div></div><div class="kg-bookmark-thumbnail"><img src="/assets/logo.png" alt="" onerror="this.style.display = 'none'" width="500" height="500"></div></a></figure><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="/influxdb-v1-compatibility-drop-in/"><div class="kg-bookmark-content"><div class="kg-bookmark-title">InfluxDB v1 Compatibility in HyperbyteDB: What Works, What Doesn't, and How to Cut Over</div><div class="kg-bookmark-description">HyperbyteDB speaks InfluxDB v1 line protocol and InfluxQL on the same endpoints. The precise version: endpoint coverage, InfluxQL support, the known differences, benchmark numbers and what to watch when cutting over.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="/assets/media/4d1ceff33a23b4ed.png" alt="" width="256" height="256"><span class="kg-bookmark-author">Hyperbyte Cloud</span><span class="kg-bookmark-publisher">Austin</span></div></div><div class="kg-bookmark-thumbnail"><img src="/assets/logo.png" alt="" onerror="this.style.display = 'none'" width="500" height="500"></div></a></figure><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="/influxdb-v1-kubernetes-operator-swap-keep-urls/"><div class="kg-bookmark-content"><div class="kg-bookmark-title">Run InfluxDB v1 on Kubernetes? Swap the Operator, Keep the URLs.</div><div class="kg-bookmark-description">Your InfluxDB v1 Kubernetes stack is already half the battle—Helm charts, StatefulSets, monitoring, alerting. HyperbyteDB's operator drops in as a replacement. Same InfluxDB v1 API endpoints, same client configs, same Grafana dashboards.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="/assets/media/4d1ceff33a23b4ed.png" alt="" width="256" height="256"><span class="kg-bookmark-author">Hyperbyte Cloud</span><span class="kg-bookmark-publisher">Austin</span></div></div><div class="kg-bookmark-thumbnail"><img src="/assets/logo.png" alt="" onerror="this.style.display = 'none'" width="500" height="500"></div></a></figure><hr><p><strong>Running InfluxDB v1 and hitting its limits?</strong> HyperbyteDB takes the same line protocol and the same InfluxQL — you change a URL. It’s <a href="/#database">open source and free to self-host</a>, or <a href="/cloud/">HyperbyteDB Cloud</a> runs it for you. See <a href="/pricing/">pricing</a>, or <a href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">request early access</a>.</p>
+    </div>
+        
+        <nav class="pager" aria-label="More posts"><a rel="prev" href="/every-sensor-every-tick-influxql-analytics-iot-data-scale/"><small>Newer</small>IoT Analytics at Scale: InfluxQL Without Downsampling</a><a rel="next" href="/influxdb-v1-compatibility-drop-in/"><small>Older</small>InfluxDB v1 Compatibility in HyperbyteDB — What Works and What Doesn&#x27;t</a></nav>
+      </article>
+      <section class="wrap" aria-labelledby="related-heading"><h2 id="related-heading">Keep reading</h2><div class="related"><a href="/exporting-historical-time-series-influxdb-v1-to-hyperbytedb/"><strong>Exporting Historical Time-Series from InfluxDB v1 to HyperbyteDB</strong><br><span>Most migration guides cover updating Telegraf and Grafana configs. But historical data gets left behind. Here&#x27;s how to export time-series fr</span></a><a href="/telegraf-grafana-alerts-stack-database-that-doesnt-buckle/"><strong>Your Telegraf + Grafana + Alerts Stack, Now on a Database That Doesn&#x27;t Buckle</strong><br><span>Point Telegraf and Grafana at a different URL and keep the rest of your observability stack. What transfers unchanged, where InfluxQL behavi</span></a><a href="/why-influxdb-enterprise-pricing-hits-a-wall/"><strong>Why InfluxDB Enterprise Pricing Hits a Wall</strong><br><span>Retention policies, continuous queries and replication sit behind InfluxDB&#x27;s paid tier. What that costs, what HA means for telemetry, and wh</span></a></div></section>
+      
+    <div class="cta-band">
+      <div class="wrap">
+        <p class="kicker">Next step</p>
+        <h2>Run it yourself, or let us run it.</h2>
+        <p class="lede">HyperbyteDB is free to self-host. Cloud early access is a short form, and a person reads it.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">Request early access</a>
+          <a class="btn btn-ghost" href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">Self-host on GitHub</a>
+          <a class="btn btn-ghost" href="/connect-with-us/">Talk to an engineer</a>
+          <a class="btn btn-ghost" href="https://docs.hyperbyte.cloud" rel="noopener">Read the docs</a>
+        </div>
+        
+      </div>
+    </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <span class="footer-brand"><img src="/assets/hyperbyte-cloud-mark.jpg" width="1024" height="388" alt="Hyperbyte Cloud" loading="lazy"> © 2026</span>
+        <nav aria-label="Footer">
+          <a href="/about-us/">About</a>
+          · <a href="/connect-with-us/">Contact</a>
+          · <a href="/pricing/">Pricing</a>
+          · <a href="/oss/">Open source</a>
+          · <a href="/privacy/">Privacy</a>
+          · <a href="/terms/">Terms</a>
+          · <a href="/dpa/">DPA</a>
+          · <a href="https://docs.hyperbyte.cloud" rel="noopener">Docs</a>
+          · <a href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">GitHub</a>
+          · <a href="mailto:hello@hyperbyte.cloud">hello@hyperbyte.cloud</a>
+        </nav>
+      </div>
+    </footer>
+    <script src="/assets/site.js"></script></body></html>

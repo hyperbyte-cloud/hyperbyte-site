@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <meta property="og:locale" content="en_GB">
+    <title>Austin — Hyperbyte Cloud</title>
+    <meta name="description" content="Articles by Austin at Hyperbyte Cloud, on HyperbyteDB ingest, InfluxDB v1 compatibility, and time-series engineering.">
+    <link rel="canonical" href="https://hyperbyte.cloud/author/austin/">
+    <meta name="robots" content="index, follow">
+    <meta property="og:site_name" content="Hyperbyte Cloud">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Austin — Hyperbyte Cloud">
+    <meta property="og:description" content="Articles by Austin at Hyperbyte Cloud, on HyperbyteDB ingest, InfluxDB v1 compatibility, and time-series engineering.">
+    <meta property="og:url" content="https://hyperbyte.cloud/author/austin/">
+    <meta property="og:image" content="https://hyperbyte.cloud/assets/logo.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Austin — Hyperbyte Cloud">
+    <meta name="twitter:description" content="Articles by Austin at Hyperbyte Cloud, on HyperbyteDB ingest, InfluxDB v1 compatibility, and time-series engineering.">
+    <meta name="twitter:image" content="https://hyperbyte.cloud/assets/logo.png">
+    <link rel="icon" href="/assets/logo.png" type="image/png">
+    <link rel="alternate" type="application/rss+xml" title="Hyperbyte Cloud" href="https://hyperbyte.cloud/rss.xml">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/site.css">
+    <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://hyperbyte.cloud/#org", "name": "Hyperbyte Cloud", "url": "https://hyperbyte.cloud/", "email": "hello@hyperbyte.cloud", "logo": {"@type": "ImageObject", "url": "https://hyperbyte.cloud/assets/logo.png"}, "sameAs": ["https://github.com/hyperbyte-cloud/hyperbytedb"]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://hyperbyte.cloud/"}, {"@type": "ListItem", "position": 2, "name": "Austin", "item": "https://hyperbyte.cloud/author/austin/"}]}, {"@type": "ProfilePage", "name": "Austin", "description": "Articles by Austin at Hyperbyte Cloud, on HyperbyteDB ingest, InfluxDB v1 compatibility, and time-series engineering.", "url": "https://hyperbyte.cloud/author/austin/", "blogPost": [{"@type": "BlogPosting", "headline": "From 99M to 1.9M Rows/sec: What Benchmarks Don't Tell You", "url": "https://hyperbyte.cloud/from-99-million-to-1-9-million-what-an-ingest-benchmark-doesnt-tell-you/"}, {"@type": "BlogPosting", "headline": "Scaling chDB Inserts from 5M to 99M Rows/sec", "url": "https://hyperbyte.cloud/scaling-chdb-inserts-from-5-million-to-99-million-rows-second/"}, {"@type": "BlogPosting", "headline": "Why InfluxDB Enterprise Pricing Hits a Wall", "url": "https://hyperbyte.cloud/why-influxdb-enterprise-pricing-hits-a-wall/"}, {"@type": "BlogPosting", "headline": "Your Telegraf + Grafana + Alerts Stack, Now on a Database That Doesn't Buckle", "url": "https://hyperbyte.cloud/telegraf-grafana-alerts-stack-database-that-doesnt-buckle/"}, {"@type": "BlogPosting", "headline": "Run InfluxDB v1 on Kubernetes? Swap the Operator, Keep the URLs", "url": "https://hyperbyte.cloud/influxdb-v1-kubernetes-operator-swap-keep-urls/"}, {"@type": "BlogPosting", "headline": "High Cardinality Without the Rewrite", "url": "https://hyperbyte.cloud/stop-watching-metrics-explode-high-cardinality-without-rewrite/"}, {"@type": "BlogPosting", "headline": "IoT Analytics at Scale: InfluxQL Without Downsampling", "url": "https://hyperbyte.cloud/every-sensor-every-tick-influxql-analytics-iot-data-scale/"}, {"@type": "BlogPosting", "headline": "The InfluxDB v1 Migration Checklist: Which Clients Just Need a URL Change", "url": "https://hyperbyte.cloud/influxdb-v1-migration-checklist-clients-url-change/"}, {"@type": "BlogPosting", "headline": "InfluxDB v1 Compatibility in HyperbyteDB — What Works and What Doesn't", "url": "https://hyperbyte.cloud/influxdb-v1-compatibility-drop-in/"}, {"@type": "BlogPosting", "headline": "Exporting Historical Time-Series from InfluxDB v1 to HyperbyteDB", "url": "https://hyperbyte.cloud/exporting-historical-time-series-influxdb-v1-to-hyperbytedb/"}, {"@type": "BlogPosting", "headline": "Before You Trust Our Numbers, Run This — HyperbyteDB Benchmarks", "url": "https://hyperbyte.cloud/before-you-trust-our-numbers-run-this/"}]}]}</script>
+    
+</head><body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="/">
+          <img src="/assets/logo.png" width="28" height="28" alt="">
+          Hyperbyte
+        </a>
+        <button class="menu-btn" type="button" data-menu aria-expanded="false" aria-controls="site-nav">Menu</button>
+        <nav class="nav" id="site-nav" data-nav aria-label="Primary"><a href="/">Product</a><a href="/cloud/">Cloud</a><a href="/solutions/">Solutions</a><a href="/oss/">OSS</a><a href="/pricing/">Pricing</a><a href="/tag/blog/" aria-current="page">Blog</a><a href="https://docs.hyperbyte.cloud" rel="noopener">Docs</a><a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">Request early access</a></nav>
+      </div>
+    </header>
+    <main id="main">
+      <div class="wrap page-head">
+        <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a><span aria-hidden="true">/</span></li><li><span aria-current="page">Austin</span></li></ol></nav>
+        <p class="kicker">Hyperbyte Cloud</p>
+        <h1>Austin</h1>
+        <p>Engineering notes from Hyperbyte Cloud.</p>
+      </div>
+      <div class="wrap posts"><a class="post" href="/from-99-million-to-1-9-million-what-an-ingest-benchmark-doesnt-tell-you/">
+              <header><time datetime="2026-06-25">2026-06-25</time><span>9 min read</span></header>
+              <h2>From 99M to 1.9M Rows/sec: What Benchmarks Don&#x27;t Tell You</h2>
+              <p>A benchmark that drops from 99 million to 1.9 million rows/sec under realistic conditions, and why headline ingest numbers mislead you.</p>
+            </a><a class="post" href="/scaling-chdb-inserts-from-5-million-to-99-million-rows-second/">
+              <header><time datetime="2026-06-20">2026-06-20</time><span>10 min read</span></header>
+              <h2>Scaling chDB Inserts from 5M to 99M Rows/sec</h2>
+              <p>How we took chDB insert throughput from 5 million to 99 million rows per second: batching, the write path, and where the real bottlenecks were.</p>
+            </a><a class="post" href="/why-influxdb-enterprise-pricing-hits-a-wall/">
+              <header><time datetime="2026-06-02">2026-06-02</time><span>4 min read</span></header>
+              <h2>Why InfluxDB Enterprise Pricing Hits a Wall</h2>
+              <p>Retention policies, continuous queries and replication sit behind InfluxDB&#x27;s paid tier. What that costs, what HA means for telemetry, and what ships in HyperbyteDB&#x27;s open-source binary.</p>
+            </a><a class="post" href="/telegraf-grafana-alerts-stack-database-that-doesnt-buckle/">
+              <header><time datetime="2026-06-02">2026-06-02</time><span>5 min read</span></header>
+              <h2>Your Telegraf + Grafana + Alerts Stack, Now on a Database That Doesn&#x27;t Buckle</h2>
+              <p>Point Telegraf and Grafana at a different URL and keep the rest of your observability stack. What transfers unchanged, where InfluxQL behaviour differs, and what ships in the open-source binary.</p>
+            </a><a class="post" href="/influxdb-v1-kubernetes-operator-swap-keep-urls/">
+              <header><time datetime="2026-06-02">2026-06-02</time><span>8 min read</span></header>
+              <h2>Run InfluxDB v1 on Kubernetes? Swap the Operator, Keep the URLs</h2>
+              <p>Replace InfluxDB v1 on Kubernetes with HyperbyteDB&#x27;s operator. Same /write and /query endpoints, same Telegraf and Grafana configs, master-master replication included.</p>
+            </a><a class="post" href="/stop-watching-metrics-explode-high-cardinality-without-rewrite/">
+              <header><time datetime="2026-04-30">2026-04-30</time><span>3 min read</span></header>
+              <h2>High Cardinality Without the Rewrite</h2>
+              <p>InfluxDB v1 slows to a crawl with high-cardinality tags. HyperbyteDB handles it with columnar storage and ClickHouse—keep your InfluxQL, change one URL, tag everything.</p>
+            </a><a class="post" href="/every-sensor-every-tick-influxql-analytics-iot-data-scale/">
+              <header><time datetime="2026-04-30">2026-04-30</time><span>3 min read</span></header>
+              <h2>IoT Analytics at Scale: InfluxQL Without Downsampling</h2>
+              <p>Run real-time InfluxQL analytics on millions of IoT sensors without downsampling. GROUP BY device_id, rolling averages, and anomaly detection on full-resolution data.</p>
+            </a><a class="post" href="/influxdb-v1-migration-checklist-clients-url-change/">
+              <header><time datetime="2026-04-13">2026-04-13</time><span>6 min read</span></header>
+              <h2>The InfluxDB v1 Migration Checklist: Which Clients Just Need a URL Change</h2>
+              <p>Most InfluxDB v1 migration guides focus on Telegraf. Here&#x27;s the complete client-by-client checklist covering Grafana, custom apps, Python scripts, and Java services—and which ones just need a URL change.</p>
+            </a><a class="post" href="/influxdb-v1-compatibility-drop-in/">
+              <header><time datetime="2026-04-13">2026-04-13</time><span>5 min read</span></header>
+              <h2>InfluxDB v1 Compatibility in HyperbyteDB — What Works and What Doesn&#x27;t</h2>
+              <p>HyperbyteDB speaks InfluxDB v1 line protocol and InfluxQL on the same endpoints. Endpoint coverage, InfluxQL support, known differences, benchmarks and cutover notes.</p>
+            </a><a class="post" href="/exporting-historical-time-series-influxdb-v1-to-hyperbytedb/">
+              <header><time datetime="2026-04-13">2026-04-13</time><span>5 min read</span></header>
+              <h2>Exporting Historical Time-Series from InfluxDB v1 to HyperbyteDB</h2>
+              <p>Most migration guides cover updating Telegraf and Grafana configs. But historical data gets left behind. Here&#x27;s how to export time-series from InfluxDB v1 and load it into HyperbyteDB.</p>
+            </a><a class="post" href="/before-you-trust-our-numbers-run-this/">
+              <header><time datetime="2026-04-13">2026-04-13</time><span>4 min read</span></header>
+              <h2>Before You Trust Our Numbers, Run This — HyperbyteDB Benchmarks</h2>
+              <p>Run HyperbyteDB&#x27;s own Criterion ingestion benchmarks in minutes. Walk through line protocol and columnar numbers, understand what&#x27;s measured, and record your environment before comparing anything.</p>
+            </a></div>
+      
+    <div class="cta-band">
+      <div class="wrap">
+        <p class="kicker">Next step</p>
+        <h2>Run it yourself, or let us run it.</h2>
+        <p class="lede">HyperbyteDB is free to self-host. Cloud early access is a short form, and a person reads it.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">Request early access</a>
+          <a class="btn btn-ghost" href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">Self-host on GitHub</a>
+          <a class="btn btn-ghost" href="/connect-with-us/">Talk to an engineer</a>
+          <a class="btn btn-ghost" href="https://docs.hyperbyte.cloud" rel="noopener">Read the docs</a>
+        </div>
+        
+      </div>
+    </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <span class="footer-brand"><img src="/assets/hyperbyte-cloud-mark.jpg" width="1024" height="388" alt="Hyperbyte Cloud" loading="lazy"> © 2026</span>
+        <nav aria-label="Footer">
+          <a href="/about-us/">About</a>
+          · <a href="/connect-with-us/">Contact</a>
+          · <a href="/pricing/">Pricing</a>
+          · <a href="/oss/">Open source</a>
+          · <a href="/privacy/">Privacy</a>
+          · <a href="/terms/">Terms</a>
+          · <a href="/dpa/">DPA</a>
+          · <a href="https://docs.hyperbyte.cloud" rel="noopener">Docs</a>
+          · <a href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">GitHub</a>
+          · <a href="mailto:hello@hyperbyte.cloud">hello@hyperbyte.cloud</a>
+        </nav>
+      </div>
+    </footer>
+    <script src="/assets/site.js"></script></body></html>

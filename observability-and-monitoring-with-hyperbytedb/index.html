@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <meta property="og:locale" content="en_GB">
+    <title>Observability &amp; Monitoring on HyperbyteDB</title>
+    <meta name="description" content="Keep your Telegraf and Grafana stack. Swap the database underneath for one that handles high-cardinality metrics without a rewrite.">
+    <link rel="canonical" href="https://hyperbyte.cloud/observability-and-monitoring-with-hyperbytedb/">
+    <meta name="robots" content="index, follow">
+    <meta property="og:site_name" content="Hyperbyte Cloud">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Observability &amp; Monitoring on HyperbyteDB">
+    <meta property="og:description" content="Keep your Telegraf and Grafana stack. Swap the database underneath for one that handles high-cardinality metrics without a rewrite.">
+    <meta property="og:url" content="https://hyperbyte.cloud/observability-and-monitoring-with-hyperbytedb/">
+    <meta property="og:image" content="https://hyperbyte.cloud/assets/logo.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Observability &amp; Monitoring on HyperbyteDB">
+    <meta name="twitter:description" content="Keep your Telegraf and Grafana stack. Swap the database underneath for one that handles high-cardinality metrics without a rewrite.">
+    <meta name="twitter:image" content="https://hyperbyte.cloud/assets/logo.png">
+    <meta property="article:published_time" content="2026-06-06">
+    <meta property="article:modified_time" content="2026-09-22">
+    <link rel="icon" href="/assets/logo.png" type="image/png">
+    <link rel="alternate" type="application/rss+xml" title="Hyperbyte Cloud" href="https://hyperbyte.cloud/rss.xml">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/site.css">
+    <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://hyperbyte.cloud/#org", "name": "Hyperbyte Cloud", "url": "https://hyperbyte.cloud/", "email": "hello@hyperbyte.cloud", "logo": {"@type": "ImageObject", "url": "https://hyperbyte.cloud/assets/logo.png"}, "sameAs": ["https://github.com/hyperbyte-cloud/hyperbytedb"]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://hyperbyte.cloud/"}, {"@type": "ListItem", "position": 2, "name": "Solutions", "item": "https://hyperbyte.cloud/solutions/"}, {"@type": "ListItem", "position": 3, "name": "Observability & Monitoring on HyperbyteDB", "item": "https://hyperbyte.cloud/observability-and-monitoring-with-hyperbytedb/"}]}]}</script>
+    
+</head><body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="/">
+          <img src="/assets/logo.png" width="28" height="28" alt="">
+          Hyperbyte
+        </a>
+        <button class="menu-btn" type="button" data-menu aria-expanded="false" aria-controls="site-nav">Menu</button>
+        <nav class="nav" id="site-nav" data-nav aria-label="Primary"><a href="/">Product</a><a href="/cloud/">Cloud</a><a href="/solutions/">Solutions</a><a href="/oss/">OSS</a><a href="/pricing/">Pricing</a><a href="/tag/blog/">Blog</a><a href="https://docs.hyperbyte.cloud" rel="noopener">Docs</a><a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">Request early access</a></nav>
+      </div>
+    </header>
+    <main id="main">
+      <article class="wrap page-head">
+        <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a><span aria-hidden="true">/</span></li><li><a href="/solutions/">Solutions</a><span aria-hidden="true">/</span></li><li><span aria-current="page">Observability &amp; Monitoring on HyperbyteDB</span></li></ol></nav>
+        <h1>Observability &amp; Monitoring on HyperbyteDB</h1>
+        
+        
+        <nav class="toc" aria-label="On this page"><p>On this page</p><ol><li><a href="#the-observability-data-challenge">The Observability Data Challenge</a></li><li><a href="#why-hyperbytedb-excels-in-observability">Why HyperbyteDB Excels in Observability</a></li><li><a href="#key-benefits-for-observability-teams">Key Benefits for Observability Teams</a></li><li><a href="#read-next-for-platform-and-sre-teams">Read next, for platform and SRE teams</a></li></ol></nav>
+        <div class="prose"><p><strong>High-cardinality metrics at scale — without the pain of traditional time series databases</strong></p><p>Modern applications are distributed, dynamic, and complex. Engineering and SRE teams need deep visibility into system health, application performance, user experience, and infrastructure behavior — in real time. This generates enormous volumes of time series data: metrics, events, and traces with ever-increasing cardinality from containers, microservices, Kubernetes, cloud resources, and custom instrumentation.</p><p>HyperbyteDB is purpose-built for these demanding observability workloads as a <strong>high-performance, drop-in replacement for InfluxDB 1.x</strong>.</p><h2 id="the-observability-data-challenge">The Observability Data Challenge</h2><p>Observability platforms today face:</p><ul><li>Millions of unique time series from auto-discovered services, pods, nodes, and labels</li><li>High ingestion rates during traffic spikes or deployments</li><li>Complex queries for dashboards, alerting, and root-cause analysis</li><li>Need for long-term retention of raw data for compliance and historical analysis</li><li><strong>Cardinality explosion</strong> from tags like <code>service</code>, <code>pod_name</code>, <code>instance</code>, <code>region</code>, <code>version</code>, <code>endpoint</code>, etc.</li></ul><p>Many databases choke under this load, resulting in dropped metrics, slow queries, high costs, or operational nightmares.</p><h2 id="why-hyperbytedb-excels-in-observability">Why HyperbyteDB Excels in Observability</h2><p>HyperbyteDB combines the familiar InfluxDB ecosystem with a powerful modern backend:</p><ul><li><strong>Superior high-cardinality handling</strong>: Powered by columnar MergeTree storage and a ClickHouse query engine — no more out-of-memory errors</li><li><strong>Massive ingestion throughput</strong>: Easily exceeds 1 million points per second with full durability</li><li><strong>Lightning-fast queries</strong>: Sub-second responses even on years of data with complex aggregations, percentiles, and derivatives</li><li><strong>True horizontal scalability</strong>: Master-master clustering where every node accepts writes and reads</li><li><strong>Full compatibility</strong>: Influx Line Protocol, InfluxQL, Grafana, Telegraf, Kapacitor, Prometheus remote_write, and more</li><li><strong>Efficient long-term storage</strong>: Cost-effective retention with downsampling and continuous queries</li></ul><h3 id="real-world-observability-use-cases">Real-World Observability Use Cases</h3><ol><li><strong>Kubernetes &amp; Container Monitoring</strong><ul><li>Track metrics across thousands of pods and nodes with rich tagging</li><li>Real-time resource usage, error rates, and latency distributions</li><li>Auto-scale alerts based on custom InfluxQL queries</li></ul></li><li><strong>Application Performance Monitoring (APM)</strong><ul><li>Ingest custom business and application metrics at high frequency</li><li>Monitor golden signals (latency, traffic, errors, saturation)</li><li>Detect anomalies using statistical functions like moving averages and standard deviation</li></ul></li><li><strong>Infrastructure &amp; Network Monitoring</strong><ul><li>Collect host, cloud, and network device metrics</li><li>Analyze trends and capacity planning over long time ranges</li><li>Correlate metrics with logs and traces</li></ul></li><li><strong>SRE &amp; Incident Response</strong><ul><li>Build powerful Grafana dashboards with blazing-fast query performance</li><li>Set up intelligent alerting on complex conditions</li><li>Perform rapid historical analysis during post-mortems</li></ul></li></ol><p><strong>Example: Detecting Service Degradation</strong></p><pre><code class="language-sql">-- Spike in error rate
+SELECT mean(error_rate) 
+FROM app_metrics 
+WHERE service = 'payment' 
+AND time &gt; now() - 1h 
+GROUP BY time(30s)
+
+-- Latency percentile comparison
+SELECT percentile(latency, 95) AS p95 
+FROM http_requests 
+WHERE endpoint = '/api/checkout' 
+GROUP BY time(1m)</code></pre><pre><code class="language-sql"># Example: Writing metrics via Line Protocol
+service=payment,region=us-east,version=v2.3 latency=142.5,error_rate=0.02,requests=1240 1625097600000000000
+
+# Familiar InfluxQL for alerting
+SELECT mean(latency) AS avg_latency 
+FROM http_requests 
+WHERE service = 'checkout' 
+AND time &gt; now() - 5m 
+GROUP BY time(30s) 
+HAVING avg_latency &gt; 200</code></pre><p>Point your existing Telegraf, Prometheus, or OpenTelemetry collectors at HyperbyteDB and instantly benefit from better scalability.</p><h2 id="key-benefits-for-observability-teams">Key Benefits for Observability Teams</h2><ul><li><strong>Eliminate cardinality headaches</strong> and metric explosions</li><li><strong>Faster dashboards</strong> and more reliable alerting</li><li><strong>Lower infrastructure costs</strong> with efficient storage and scaling</li><li><strong>Unified view</strong> across metrics without multiple specialized tools</li><li><strong>Future-proof</strong> your observability stack as your systems grow</li></ul><p>With HyperbyteDB, SRE and engineering teams spend less time managing their database and more time building reliable, high-performing systems.</p><h2 id="read-next-for-platform-and-sre-teams">Read next, for platform and SRE teams</h2><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="/telegraf-grafana-alerts-stack-database-that-doesnt-buckle/"><div class="kg-bookmark-content"><div class="kg-bookmark-title">Your Telegraf + Grafana + Alerts Stack, Now on a Database That Doesn't Buckle</div><div class="kg-bookmark-description">Point Telegraf and Grafana at a different URL and keep the rest of your observability stack. What transfers unchanged, where InfluxQL behaviour differs, and what ships in the open-source binary.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="/assets/media/4d1ceff33a23b4ed.png" alt="" width="256" height="256"><span class="kg-bookmark-author">Hyperbyte Cloud</span><span class="kg-bookmark-publisher">Austin</span></div></div><div class="kg-bookmark-thumbnail"><img src="/assets/logo.png" alt="" onerror="this.style.display = 'none'" width="500" height="500"></div></a></figure><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="/stop-watching-metrics-explode-high-cardinality-without-rewrite/"><div class="kg-bookmark-content"><div class="kg-bookmark-title">Stop Watching Your Metrics Explode: High Cardinality Without the Rewrite</div><div class="kg-bookmark-description">InfluxDB v1 crawls when cardinality hits the roof. HyperbyteDB handles it with columnar storage and ClickHouse—same InfluxQL, no rewrite, no OOM. Here's how.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="/assets/media/4d1ceff33a23b4ed.png" alt="" width="256" height="256"><span class="kg-bookmark-author">Hyperbyte Cloud</span><span class="kg-bookmark-publisher">Austin</span></div></div><div class="kg-bookmark-thumbnail"><img src="/assets/logo.png" alt="" onerror="this.style.display = 'none'" width="500" height="500"></div></a></figure><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="/influxdb-v1-kubernetes-operator-swap-keep-urls/"><div class="kg-bookmark-content"><div class="kg-bookmark-title">Run InfluxDB v1 on Kubernetes? Swap the Operator, Keep the URLs.</div><div class="kg-bookmark-description">Your InfluxDB v1 Kubernetes stack is already half the battle—Helm charts, StatefulSets, monitoring, alerting. HyperbyteDB's operator drops in as a replacement. Same InfluxDB v1 API endpoints, same client configs, same Grafana dashboards.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="/assets/media/4d1ceff33a23b4ed.png" alt="" width="256" height="256"><span class="kg-bookmark-author">Hyperbyte Cloud</span><span class="kg-bookmark-publisher">Austin</span></div></div><div class="kg-bookmark-thumbnail"><img src="/assets/logo.png" alt="" onerror="this.style.display = 'none'" width="500" height="500"></div></a></figure><hr><p><strong>Running InfluxDB v1? </strong>HyperbyteDB is <a href="/#database">open source and free to self-host</a>, with no feature gates. <a href="/cloud/">HyperbyteDB Cloud</a> runs it for you — early access is open. See <a href="/pricing/">pricing</a>, or <a href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">request early access</a>.</p>
+    </div>
+        <p class="post-meta">Other workloads: <a href="/unlocking-scalable-iot-insights-with-hyperbytedb/">IoT fleets</a><a href="/powering-real-time-financial-analytics-with-hyperbytedb/">Market data</a><a href="/optimizing-energy-systems-with-hyperbytedb/">Energy systems</a> · <a href="/solutions/">All solutions</a></p>
+        
+      </article>
+      <section class="wrap" aria-labelledby="related-heading"><h2 id="related-heading">Keep reading</h2><div class="related"><a href="/from-99-million-to-1-9-million-what-an-ingest-benchmark-doesnt-tell-you/"><strong>From 99M to 1.9M Rows/sec: What Benchmarks Don&#x27;t Tell You</strong><br><span>A benchmark that drops from 99 million to 1.9 million rows/sec under realistic conditions, and why headline ingest numbers mislead you.</span></a><a href="/scaling-chdb-inserts-from-5-million-to-99-million-rows-second/"><strong>Scaling chDB Inserts from 5M to 99M Rows/sec</strong><br><span>How we took chDB insert throughput from 5 million to 99 million rows per second: batching, the write path, and where the real bottlenecks we</span></a><a href="/why-influxdb-enterprise-pricing-hits-a-wall/"><strong>Why InfluxDB Enterprise Pricing Hits a Wall</strong><br><span>Retention policies, continuous queries and replication sit behind InfluxDB&#x27;s paid tier. What that costs, what HA means for telemetry, and wh</span></a></div></section>
+      
+    <div class="cta-band">
+      <div class="wrap">
+        <p class="kicker">Next step</p>
+        <h2>Run it yourself, or let us run it.</h2>
+        <p class="lede">HyperbyteDB is free to self-host. Cloud early access is a short form, and a person reads it.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">Request early access</a>
+          <a class="btn btn-ghost" href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">Self-host on GitHub</a>
+          <a class="btn btn-ghost" href="/connect-with-us/">Talk to an engineer</a>
+          <a class="btn btn-ghost" href="https://docs.hyperbyte.cloud" rel="noopener">Read the docs</a>
+        </div>
+        
+      </div>
+    </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <span class="footer-brand"><img src="/assets/hyperbyte-cloud-mark.jpg" width="1024" height="388" alt="Hyperbyte Cloud" loading="lazy"> © 2026</span>
+        <nav aria-label="Footer">
+          <a href="/about-us/">About</a>
+          · <a href="/connect-with-us/">Contact</a>
+          · <a href="/pricing/">Pricing</a>
+          · <a href="/oss/">Open source</a>
+          · <a href="/privacy/">Privacy</a>
+          · <a href="/terms/">Terms</a>
+          · <a href="/dpa/">DPA</a>
+          · <a href="https://docs.hyperbyte.cloud" rel="noopener">Docs</a>
+          · <a href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">GitHub</a>
+          · <a href="mailto:hello@hyperbyte.cloud">hello@hyperbyte.cloud</a>
+        </nav>
+      </div>
+    </footer>
+    <script src="/assets/site.js"></script></body></html>

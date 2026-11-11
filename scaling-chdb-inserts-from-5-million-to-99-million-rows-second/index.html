@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <meta property="og:locale" content="en_GB">
+    <title>Scaling chDB Inserts from 5M to 99M Rows/sec — Hyperbyte Cloud</title>
+    <meta name="description" content="How we took chDB insert throughput from 5 million to 99 million rows per second: batching, the write path, and where the real bottlenecks were.">
+    <link rel="canonical" href="https://hyperbyte.cloud/scaling-chdb-inserts-from-5-million-to-99-million-rows-second/">
+    <meta name="robots" content="index, follow">
+    <meta property="og:site_name" content="Hyperbyte Cloud">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Scaling chDB Inserts from 5M to 99M Rows/sec — Hyperbyte Cloud">
+    <meta property="og:description" content="How we took chDB insert throughput from 5 million to 99 million rows per second: batching, the write path, and where the real bottlenecks were.">
+    <meta property="og:url" content="https://hyperbyte.cloud/scaling-chdb-inserts-from-5-million-to-99-million-rows-second/">
+    <meta property="og:image" content="https://hyperbyte.cloud/assets/media/e722ae59c8724aff.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Scaling chDB Inserts from 5M to 99M Rows/sec — Hyperbyte Cloud">
+    <meta name="twitter:description" content="How we took chDB insert throughput from 5 million to 99 million rows per second: batching, the write path, and where the real bottlenecks were.">
+    <meta name="twitter:image" content="https://hyperbyte.cloud/assets/media/e722ae59c8724aff.png">
+    <meta property="article:published_time" content="2026-06-20">
+    <meta property="article:modified_time" content="2026-09-22">
+    <link rel="icon" href="/assets/logo.png" type="image/png">
+    <link rel="alternate" type="application/rss+xml" title="Hyperbyte Cloud" href="https://hyperbyte.cloud/rss.xml">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/site.css">
+    <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://hyperbyte.cloud/#org", "name": "Hyperbyte Cloud", "url": "https://hyperbyte.cloud/", "email": "hello@hyperbyte.cloud", "logo": {"@type": "ImageObject", "url": "https://hyperbyte.cloud/assets/logo.png"}, "sameAs": ["https://github.com/hyperbyte-cloud/hyperbytedb"]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://hyperbyte.cloud/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://hyperbyte.cloud/tag/blog/"}, {"@type": "ListItem", "position": 3, "name": "Scaling chDB Inserts from 5M to 99M Rows/sec", "item": "https://hyperbyte.cloud/scaling-chdb-inserts-from-5-million-to-99-million-rows-second/"}]}, {"@type": "BlogPosting", "headline": "Scaling chDB Inserts from 5M to 99M Rows/sec", "description": "How we took chDB insert throughput from 5 million to 99 million rows per second: batching, the write path, and where the real bottlenecks were.", "datePublished": "2026-06-20", "dateModified": "2026-09-22", "author": {"@type": "Person", "name": "Austin", "url": "https://hyperbyte.cloud/author/austin/"}, "publisher": {"@id": "https://hyperbyte.cloud/#org"}, "mainEntityOfPage": "https://hyperbyte.cloud/scaling-chdb-inserts-from-5-million-to-99-million-rows-second/", "image": "https://hyperbyte.cloud/assets/media/e722ae59c8724aff.png", "keywords": "", "wordCount": 2409, "inLanguage": "en-GB"}]}</script>
+    <link rel="prev" href="https://hyperbyte.cloud/from-99-million-to-1-9-million-what-an-ingest-benchmark-doesnt-tell-you/">
+<link rel="next" href="https://hyperbyte.cloud/why-influxdb-enterprise-pricing-hits-a-wall/">
+</head><body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="/">
+          <img src="/assets/logo.png" width="28" height="28" alt="">
+          Hyperbyte
+        </a>
+        <button class="menu-btn" type="button" data-menu aria-expanded="false" aria-controls="site-nav">Menu</button>
+        <nav class="nav" id="site-nav" data-nav aria-label="Primary"><a href="/">Product</a><a href="/cloud/">Cloud</a><a href="/solutions/">Solutions</a><a href="/oss/">OSS</a><a href="/pricing/">Pricing</a><a href="/tag/blog/" aria-current="page">Blog</a><a href="https://docs.hyperbyte.cloud" rel="noopener">Docs</a><a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">Request early access</a></nav>
+      </div>
+    </header>
+    <main id="main">
+      <article class="wrap page-head">
+        <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a><span aria-hidden="true">/</span></li><li><a href="/tag/blog/">Blog</a><span aria-hidden="true">/</span></li><li><span aria-current="page">Scaling chDB Inserts from 5M to 99M Rows/sec</span></li></ol></nav>
+        <h1>Scaling chDB Inserts from 5M to 99M Rows/sec</h1>
+        <p class="post-meta"><time datetime="2026-06-20">2026-06-20</time><span>10 min read</span><a href="/author/austin/">Austin</a><span></span></p>
+        <figure class="hero-img"><img src="/assets/media/e722ae59c8724aff.png" alt="Scaling chDB Inserts from 5M to 99M Rows/sec" width="2000" height="1091"></figure>
+        <nav class="toc" aria-label="On this page"><p>On this page</p><ol><li><a href="#lever-1-schema-%E2%80%94-a-single-connection-25m-%E2%86%92-75m-sampless">Lever 1: schema — a single connection, 2.5M → 7.5M samples/s</a></li><li><a href="#lever-2-connections-%E2%80%94-does-the-embedded-engine-overlap-inserts">Lever 2: connections — does the embedded engine overlap inserts?</a></li><li><a href="#putting-both-levers-together-26m-rowss-into-one-table">Putting both levers together: 26M rows/s into one table</a></li><li><a href="#how-far-does-it-actually-go-50m-was-the-floor-not-the-ceiling">How far does it actually go? 50M was the floor, not the ceiling</a></li><li><a href="#two-more-things-that-matter-for-real-ingest">Two more things that matter for real ingest</a></li><li><a href="#the-recipe-for-fastest-inserts">The recipe for fastest inserts</a></li><li><a href="#related-reading">Related reading</a></li></ol></nav>
+        <div class="prose"><p><em>How an embedded ClickHouse — running in-process, not as a server — scales its<br>write path with a connection pool, and how far that actually goes when you give<br>it real cores.</em></p><hr><p><a href="https://github.com/chdb-io?ref=hyperbyte.cloud" rel="noopener">chDB</a> is ClickHouse compiled into a library. There's no server, no socket, no<br>network round-trip: you link <code>libchdb.so</code> into your process and run SQL against<br>an embedded engine. That's wonderful for an ingest pipeline — the data never<br>leaves your address space — but it raises an obvious question for anyone who has<br>run ClickHouse the normal way: a real ClickHouse server scales inserts<br>horizontally by accepting many client connections at once. Does the <em>embedded</em><br>engine do the same thing, or does running in-process quietly serialize you down<br>to one core?</p><p>We built a set of Rust microbenchmarks against the prebuilt <code>libchdb.so</code><br>(ClickHouse v26 vintage) to answer that, and to find the absolute ceiling for our<br>ingest shape. Most numbers below come from a <strong>6-core/12-thread laptop chip</strong>;<br>the final scaling sweep runs the <em>same binary</em> on a <strong>24-core/48-thread server</strong><br>to find where the connection lever actually tops out. The benchmarks use chDB's<br>zero-copy Arrow insert path — Arrow <code>RecordBatch</code> → FFI →<br><code>INSERT INTO t SELECT * FROM ArrowStream(...)</code> — which is roughly 10× faster than<br><code>INSERT … VALUES</code> and is what a columnar ingest pipeline would actually use.</p><p><strong>The headline: an 8-connection pool sustains ~26 million rows/second into a<br>single table on a 6-core laptop chip — and the same code, unchanged, hits ~99<br>million rows/second on a 24-core server.</strong> A single connection already clears 5–7<br>million rows/second with the right schema. All of it is comfortably past our<br>1M-rows/s design target. Here's how each lever contributes — and how far the<br>connection lever scales when you stop being core-bound.</p><hr><h2 id="lever-1-schema-%E2%80%94-a-single-connection-25m-%E2%86%92-75m-sampless">Lever 1: schema — a single connection, 2.5M → 7.5M samples/s</h2><p>Before touching concurrency, it's worth knowing where the time in a single<br>insert actually goes. We measured the Arrow→ClickHouse <em>conversion</em> cost in<br>isolation (same batch into an <code>ENGINE = Null</code> sink) and compared it to the full<br>insert into a real MergeTree. <strong>The insert is write-bound, not<br>conversion-bound</strong> — conversion is only ~28% of the time; the other ~72% is<br>sort + compress + part-write.</p><p>That single fact decides the schema. If the engine spends most of its time<br>writing columns to disk, then <em>the layout that writes the fewest and narrowest<br>columns wins.</em> We compared four ways of storing the same 1,000,000 samples<br>(1,000 series × 1,000 timestamps, 6 tags, 5 integer fields), inserted in<br>50k-row batches on one connection:</p>
+<!--kg-card-begin: html-->
+<strong><table>
+<thead>
+<tr>
+<th>Layout</th>
+<th style="text-align:right;">samples/s</th>
+<th style="text-align:right">rows/s</th>
+<th style="text-align:right">convert share</th>
+<th style="text-align:right">on-disk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cols</code> (one column/tag)</td>
+<td style="text-align:right">2,489,553</td>
+<td style="text-align:right">2,489,553</td>
+<td style="text-align:right">36%</td>
+<td style="text-align:right">15.3 MiB</td>
+</tr>
+<tr>
+<td><code>map(tags)</code></td>
+<td style="text-align:right">3,608,356</td>
+<td style="text-align:right">3,608,356</td>
+<td style="text-align:right">43%</td>
+<td style="text-align:right">16.7 MiB</td>
+</tr>
+<tr>
+<td><strong><code>series_id</code> (wide fact)</strong></td>
+<td style="text-align:right">7,493,418</td>
+<td style="text-align:right">7,493,418</td>
+<td style="text-align:right">28%</td>
+<td style="text-align:right">15.3 MiB</td>
+</tr>
+<tr>
+<td><code>series_id + long</code></td>
+<td style="text-align:right">2,361,445</td>
+<td style="text-align:right">11,807,228</td>
+<td style="text-align:right">26%</td>
+<td style="text-align:right">19.2 MiB</td>
+</tr>
+<tr>
+<td><code>series_id</code> (Buffer)</td>
+<td style="text-align:right">5,341,809</td>
+<td style="text-align:right">5,341,809</td>
+<td style="text-align:right">33%</td>
+<td style="text-align:right">15.3 MiB</td>
+</tr>
+</tbody>
+</table>
+</strong>
+<!--kg-card-end: html-->
+<p>The winner is the <strong><code>series_id</code> layout</strong>: tags are hashed to a single <code>UInt64</code><br>series id and normalized out into a small dimension table, so the hot "fact"<br>table is fixed-width — <code>(time, series_id, field…)</code> with <code>ORDER BY (series_id, time)</code>. Storing tags as one column each (<code>cols</code>) forces the MergeTree sort key to<br>sort six string columns per block; folding them into one <code>UInt64</code> is <strong>3× faster<br>to insert</strong> and writes the same bytes to disk. That's the entire gap, and it's<br>free — same data, smaller sort key.</p><p>(The <code>series_id + long</code> row is a curiosity: it explodes each sample into one row<br>per field, so it does 5× the rows and "only" 2.36M <em>samples</em>/s — but that's<br>11.8M <em>rows</em>/s, which tells you the raw row engine is fast; the cost is always in<br>how wide and how sorted the rows are.)</p><p><strong>Takeaway:</strong> the cheapest 3× you'll ever get is picking the schema that matches<br>the write path. Conversion-thread and insert-thread knobs (<code>max_threads</code>,<br><code>max_insert_threads</code>) don't move a single insert at all — one Arrow stream<br>becomes one block becomes one part becomes one writer, so there's nothing to<br>split. Schema is the lever, not parallelism settings.</p><hr><h2 id="lever-2-connections-%E2%80%94-does-the-embedded-engine-overlap-inserts">Lever 2: connections — does the embedded engine overlap inserts?</h2><p>Now the real question. In a single process, can two inserts run at the same<br>time? The answer is buried in how chDB is wired:</p><ul><li>The <code>EmbeddedServer</code> is a <strong>process-global singleton</strong> — one engine, one data<br>path per process. Asking for a second connection to a <em>different</em> path is<br>rejected outright (we probe this in the benchmark and it fails, as expected).</li><li>But each <em>connection</em> is its own <code>ChdbClient</code> with its own lock<br>(<code>client_mutex</code>), and every query holds that lock for its full duration. So<br><strong>two queries on the same connection serialize</strong> — one connection is strictly<br>one-insert-at-a-time. Multiple connections, though, are independent clients on<br>the one shared engine, and <em>those</em> can genuinely overlap.</li></ul><p>So the model is exactly like a real ClickHouse server: you scale by opening more<br>client connections, each issuing inserts concurrently. We tested both arms —<br>hammering one shared connection from N threads, versus giving each of N threads<br>its own connection — sweeping 1 → 8 workers:</p>
+<!--kg-card-begin: html-->
+<strong><table>
+<thead>
+<tr>
+<th style="text-align:right">W</th>
+<th style="text-align:right">shared 1 connection</th>
+<th style="text-align:right">connection per worker</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">1</td>
+<td style="text-align:right">6,047,261 rows/s</td>
+<td style="text-align:right">5,303,067 rows/s</td>
+</tr>
+<tr>
+<td style="text-align:right">2</td>
+<td style="text-align:right">7,486,733 (1.24×)</td>
+<td style="text-align:right">9,904,246 (1.87×)</td>
+</tr>
+<tr>
+<td style="text-align:right">4</td>
+<td style="text-align:right">8,052,054 (1.33×)</td>
+<td style="text-align:right">17,043,113 (3.21×)</td>
+</tr>
+<tr>
+<td style="text-align:right">8</td>
+<td style="text-align:right">8,345,705 (1.38×)</td>
+<td style="text-align:right"><strong>22,691,351 (4.28×)</strong></td>
+</tr>
+</tbody>
+</table>
+</strong>
+<!--kg-card-end: html-->
+<p><em>(48 inserts × 200,000 rows = 9.6M rows total, each worker writing its own table.)</em></p><p>The shared connection is <strong>flat</strong> — it tops out around 1.38× no matter how many<br>threads pile on, because they all queue behind that one client's mutex. Give each<br>worker its own connection and it <strong>scales 4.3×</strong>, to nearly 23 million rows/s.<br>That confirms the engine really does overlap inserts across clients; the only<br>thing serializing you is sharing a single connection.</p><p>The same shape holds with small batches — it's just lower in absolute terms<br>because per-insert overhead dominates (20k-row inserts): the shared connection<br>crawls from 3.4M to 4.8M rows/s and <em>regresses</em> at W=8, while<br>connection-per-worker climbs from 4.0M to 13.3M rows/s (3.34×). Concurrency is<br>the binding lever precisely in this small/frequent-flush regime, where a single<br>connection's throughput collapses.</p><hr><h2 id="putting-both-levers-together-26m-rowss-into-one-table">Putting both levers together: 26M rows/s into one table</h2><p>The table above lets each worker write its own table, which is the friendliest<br>case (no contention on a shared table's part-commit lock). The real ingest<br>target is harder: many connections all writing <strong>one</strong> <code>series_id</code> table. We ran<br>a connection pool toward that, 12.8M rows split across the pool in 200k-row<br>batches:</p>
+<!--kg-card-begin: html-->
+<strong><table>
+<thead>
+<tr>
+<th style="text-align:right">Workers</th>
+<th style="text-align:right">wall (s)</th>
+<th style="text-align:right">rows/s</th>
+<th style="text-align:right">speedup</th>
+<th style="text-align:center">≥ 1M/s</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">1</td>
+<td style="text-align:right">2.221</td>
+<td style="text-align:right">5,764,271</td>
+<td style="text-align:right">1.00×</td>
+<td style="text-align:center">yes</td>
+</tr>
+<tr>
+<td style="text-align:right">2</td>
+<td style="text-align:right">1.097</td>
+<td style="text-align:right">11,665,425</td>
+<td style="text-align:right">2.02×</td>
+<td style="text-align:center">yes</td>
+</tr>
+<tr>
+<td style="text-align:right">4</td>
+<td style="text-align:right">0.657</td>
+<td style="text-align:right">19,491,238</td>
+<td style="text-align:right">3.38×</td>
+<td style="text-align:center">yes</td>
+</tr>
+<tr>
+<td style="text-align:right"><strong>8</strong></td>
+<td style="text-align:right"><strong>0.484</strong></td>
+<td style="text-align:right"><strong>26,419,637</strong></td>
+<td style="text-align:right"><strong>4.58×</strong></td>
+<td style="text-align:center"><strong>yes</strong></td>
+</tr>
+</tbody>
+</table>
+</strong>
+<!--kg-card-end: html-->
+<p>Even with every connection contending on the <em>same</em> table, an 8-connection pool<br>sustains <strong>26.4 million rows/second</strong> — 4.58× a single connection, which itself<br>is already ~6× our 1M-rows/s goal. The shared-table case actually edged out the<br>separate-table case here (26.4M vs 22.7M); both land in the same ~22–26M band,<br>and the part-commit contention people worry about turns out to be small, because<br>the expensive convert/sort/compress all runs <em>before</em> the brief commit.</p><hr><h2 id="how-far-does-it-actually-go-50m-was-the-floor-not-the-ceiling">How far does it actually go? 50M was the floor, not the ceiling</h2><p>The obvious next question: keep adding connections — where does it top out, and<br>can we hit 50M? We built a ceiling-finder (<code>pushit</code>) that sweeps connection<br>counts <em>past</em> the core count, in the friendliest setup (connection-per-worker,<br>separate tables, 200k-row batches), using <strong>fixed work per worker</strong> so each added<br>connection adds exactly one core's worth of load.</p><p>On the 6-core laptop chip (AMD Ryzen 5 8500G, 6 physical cores / 12 threads), the<br>answer was a hard <strong>no</strong> — it plateaus at ~26M:</p>
+<!--kg-card-begin: html-->
+<strong><table>
+<thead>
+<tr>
+<th style="text-align:right">W</th>
+<th style="text-align:right">rows/s</th>
+<th style="text-align:right">speedup</th>
+<th style="text-align:right">rows/s per worker</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">6</td>
+<td style="text-align:right">20.3M</td>
+<td style="text-align:right">3.61×</td>
+<td style="text-align:right">3.4M</td>
+</tr>
+<tr>
+<td style="text-align:right">8</td>
+<td style="text-align:right">20.1M</td>
+<td style="text-align:right">3.58×</td>
+<td style="text-align:right">2.5M</td>
+</tr>
+<tr>
+<td style="text-align:right">12</td>
+<td style="text-align:right">25.2M</td>
+<td style="text-align:right">4.49×</td>
+<td style="text-align:right">2.1M</td>
+</tr>
+<tr>
+<td style="text-align:right">16</td>
+<td style="text-align:right"><strong>25.7M</strong></td>
+<td style="text-align:right">4.58×</td>
+<td style="text-align:right">1.6M</td>
+</tr>
+</tbody>
+</table>
+</strong>
+<!--kg-card-end: html-->
+<p>The per-worker column falling off a cliff is the tell: <strong>inserts are CPU-bound</strong><br>(convert + sort + compress), so six physical cores cap you at ~6× regardless of<br>how many connections you open. SMT buys a little through W=12; past that, extra<br>connections just oversubscribe. 50M is simply not reachable on six cores — it's a<br>hardware wall, not a software one.</p><p>So we ran <em>the same binary, unchanged</em> on a 24-core server (AMD EPYC 7413, 24<br>physical cores / 48 threads). It scales almost linearly up to the physical-core<br>count and sails past 50M:</p>
+<!--kg-card-begin: html-->
+<strong><table>
+<thead>
+<tr>
+<th style="text-align:right">W</th>
+<th style="text-align:right">rows/s</th>
+<th style="text-align:right">speedup</th>
+<th style="text-align:center">≥50M</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">4</td>
+<td style="text-align:right">16.8M</td>
+<td style="text-align:right">3.95×</td>
+<td style="text-align:center">no</td>
+</tr>
+<tr>
+<td style="text-align:right">8</td>
+<td style="text-align:right">38.1M</td>
+<td style="text-align:right">8.95×</td>
+<td style="text-align:center">no</td>
+</tr>
+<tr>
+<td style="text-align:right">16</td>
+<td style="text-align:right">69.1M</td>
+<td style="text-align:right">16.24×</td>
+<td style="text-align:center"><strong>yes</strong></td>
+</tr>
+<tr>
+<td style="text-align:right">24</td>
+<td style="text-align:right">90.7M</td>
+<td style="text-align:right">21.32×</td>
+<td style="text-align:center">yes</td>
+</tr>
+<tr>
+<td style="text-align:right">48</td>
+<td style="text-align:right"><strong>98.8M</strong></td>
+<td style="text-align:right">23.23×</td>
+<td style="text-align:center">yes</td>
+</tr>
+<tr>
+<td style="text-align:right">64</td>
+<td style="text-align:right">96.4M</td>
+<td style="text-align:right">22.67×</td>
+<td style="text-align:center">yes (oversubscribed)</td>
+</tr>
+</tbody>
+</table>
+</strong>
+<!--kg-card-end: html-->
+<p><strong>Peak ~98.8 million rows/second — nearly 2× the 50M target.</strong> The shape is<br>textbook CPU-bound scaling: near-linear to W=24 (one connection per physical<br>core, 21×), a smaller bump from SMT out to W=48 (the 48 threads, ~99M), then a<br><em>regression</em> at W=64 as oversubscription adds context-switching with no spare<br>cores to absorb it. 50M is first crossed around <strong>W=12</strong> — you don't even need to<br>saturate the box to double the target.</p><p>Two things worth calling out. First, the <em>single-connection</em> number is actually<br>lower on the EPYC (4.25M vs 5.6M rows/s) — its cores clock lower than the<br>laptop's — yet aggregate throughput is ~4× higher purely because there are 4× the<br>cores to overlap across. <strong>chDB insert throughput tracks physical core count, not<br>per-core clock.</strong> Second, this is the same story a real ClickHouse <em>server</em><br>tells: you scale writes by adding concurrent client connections, bounded by<br>cores. The only chDB-specific caveat is the process-global engine — one<br>engine/data-path per process — so to scale past a single machine's cores you run<br><strong>multiple processes</strong>, each its own embedded engine.</p><hr><h2 id="two-more-things-that-matter-for-real-ingest">Two more things that matter for real ingest</h2><p>A bulk backfill is the easy case. Production ingest is small, frequent flushes —<br>and one app-level flush usually fans out across many tables<br>(<code>&lt;db&gt;_&lt;rp&gt;_&lt;measurement&gt;</code>). Two findings there:</p><p><strong>Buffer tables earn their keep when flushes are small.</strong> Inserting one timestamp<br>at a time (1,000 flushes × 1,000 rows), the direct path sprays a part per insert;<br>routing through an <code>ENGINE = Buffer</code> that coalesces in memory gives <strong>1.64× the<br>throughput and 1 part instead of 7+</strong>. Across the realistic 8-table fan-out<br>(<code>mp</code>, 2 retention policies × 4 measurements), the Buffer wins <strong>~1.8× and<br>collapses to 1 part per table</strong> (8 vs 34). Fewer parts means less merge pressure<br>later, and insert calls that return fast. For big bulk loads the Buffer is pure<br>overhead (an extra in-memory copy) — its payoff scales with flush frequency.</p><p><strong><code>async_insert</code> does not replace a Buffer for the Arrow path.</strong> ClickHouse's<br>async-insert batching only applies to inline-data inserts (<code>VALUES</code>/<code>FORMAT</code>),<br>not to <code>INSERT … SELECT FROM ArrowStream(...)</code>. In this build it coalesced parts<br>modestly (5 vs 8) but moved throughput by zero. To coalesce the columnar path you<br>want a Buffer table, not <code>async_insert</code>.</p><hr><h2 id="the-recipe-for-fastest-inserts">The recipe for fastest inserts</h2><p>If you're inserting into embedded chDB and want the ceiling:</p><ol><li><strong>Insert via Arrow, not VALUES.</strong> ~10× faster; it's the columnar path.</li><li><strong>Pick a write-friendly schema.</strong> A narrow, fixed-width fact table with a<br>single-column sort key (<code>series_id</code>) beats tag-per-column by 3× on insert, at<br>the same on-disk size. The insert is write-bound — minimize columns written<br>and the width of the sort key.</li><li><strong>Use big batches.</strong> 200k-row batches amortize per-insert pipeline overhead;<br>single-connection throughput jumps from ~2.5M to 5–7M rows/s as batches grow.</li><li><strong>Scale with a connection pool, one connection per worker.</strong> Never share a<br>connection across threads — the per-client mutex serializes you. This scales<br>near-linearly with <em>physical</em> cores: ~26M rows/s on 6 cores, ~99M on 24. Open<br>roughly one connection per physical core; past that, SMT adds a little and<br>then oversubscription costs you. The hard ceiling is core count and a single<br>engine/data-path per process — to go beyond one machine's cores, run multiple<br><em>processes</em>.</li><li><strong>Add a Buffer table for small, frequent, fanned-out flushes.</strong> ~1.8–2×<br>throughput and far fewer parts — exactly the regime real ingest lives in.</li></ol><p>The short version: chDB's embedded engine scales inserts the same way the<br>ClickHouse server does — through concurrent connections, bounded by physical<br>cores — and with the right schema and a connection pool, an in-process database<br>sustains tens of millions of rows per second on a laptop and ~100 million on a<br>single server.</p><h2 id="related-reading">Related reading</h2><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="/from-99-million-to-1-9-million-what-an-ingest-benchmark-doesnt-tell-you/"><div class="kg-bookmark-content"><div class="kg-bookmark-title">From 99 million to 1.9 million: what an ingest benchmark doesn't tell you</div><div class="kg-bookmark-description">We measured an embedded ClickHouse inserting ~99 million rows/second. Then we put a real database in front of it — a network endpoint, line/msgpack parsing, a durable write-ahead log, series indexing — and ran a ramp test on the same machine. It ingests ~1.9</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="/assets/media/4d1ceff33a23b4ed.png" alt="" width="256" height="256"><span class="kg-bookmark-author">Hyperbyte Cloud</span><span class="kg-bookmark-publisher">Austin</span></div></div><div class="kg-bookmark-thumbnail"><img src="/assets/media/a02e269d88c9ffd1.png" alt="" onerror="this.style.display = 'none'" width="2000" height="1091"></div></a></figure><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="/before-you-trust-our-numbers-run-this/"><div class="kg-bookmark-content"><div class="kg-bookmark-title">Before you trust our numbers, run this.</div><div class="kg-bookmark-description">Benchmark numbers mean nothing without context. Here's how to run HyperbyteDB's own ingestion benchmarks, what each stage actually measures, and the environment metadata you need before comparing anything.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="/assets/media/4d1ceff33a23b4ed.png" alt="" width="256" height="256"><span class="kg-bookmark-author">Hyperbyte Cloud</span><span class="kg-bookmark-publisher">Austin</span></div></div><div class="kg-bookmark-thumbnail"><img src="/assets/logo.png" alt="" onerror="this.style.display = 'none'" width="500" height="500"></div></a></figure><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="/stop-watching-metrics-explode-high-cardinality-without-rewrite/"><div class="kg-bookmark-content"><div class="kg-bookmark-title">Stop Watching Your Metrics Explode: High Cardinality Without the Rewrite</div><div class="kg-bookmark-description">InfluxDB v1 crawls when cardinality hits the roof. HyperbyteDB handles it with columnar storage and ClickHouse—same InfluxQL, no rewrite, no OOM. Here's how.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="/assets/media/4d1ceff33a23b4ed.png" alt="" width="256" height="256"><span class="kg-bookmark-author">Hyperbyte Cloud</span><span class="kg-bookmark-publisher">Austin</span></div></div><div class="kg-bookmark-thumbnail"><img src="/assets/logo.png" alt="" onerror="this.style.display = 'none'" width="500" height="500"></div></a></figure><hr><p><strong>Running InfluxDB v1 and hitting its limits?</strong> HyperbyteDB takes the same line protocol and the same InfluxQL — you change a URL. It’s <a href="/#database">open source and free to self-host</a>, or <a href="/cloud/">HyperbyteDB Cloud</a> runs it for you. See <a href="/pricing/">pricing</a>, or <a href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">request early access</a>.</p>
+    </div>
+        
+        <nav class="pager" aria-label="More posts"><a rel="prev" href="/from-99-million-to-1-9-million-what-an-ingest-benchmark-doesnt-tell-you/"><small>Newer</small>From 99M to 1.9M Rows/sec: What Benchmarks Don&#x27;t Tell You</a><a rel="next" href="/why-influxdb-enterprise-pricing-hits-a-wall/"><small>Older</small>Why InfluxDB Enterprise Pricing Hits a Wall</a></nav>
+      </article>
+      <section class="wrap" aria-labelledby="related-heading"><h2 id="related-heading">Keep reading</h2><div class="related"><a href="/from-99-million-to-1-9-million-what-an-ingest-benchmark-doesnt-tell-you/"><strong>From 99M to 1.9M Rows/sec: What Benchmarks Don&#x27;t Tell You</strong><br><span>A benchmark that drops from 99 million to 1.9 million rows/sec under realistic conditions, and why headline ingest numbers mislead you.</span></a><a href="/why-influxdb-enterprise-pricing-hits-a-wall/"><strong>Why InfluxDB Enterprise Pricing Hits a Wall</strong><br><span>Retention policies, continuous queries and replication sit behind InfluxDB&#x27;s paid tier. What that costs, what HA means for telemetry, and wh</span></a><a href="/telegraf-grafana-alerts-stack-database-that-doesnt-buckle/"><strong>Your Telegraf + Grafana + Alerts Stack, Now on a Database That Doesn&#x27;t Buckle</strong><br><span>Point Telegraf and Grafana at a different URL and keep the rest of your observability stack. What transfers unchanged, where InfluxQL behavi</span></a></div></section>
+      
+    <div class="cta-band">
+      <div class="wrap">
+        <p class="kicker">Next step</p>
+        <h2>Run it yourself, or let us run it.</h2>
+        <p class="lede">HyperbyteDB is free to self-host. Cloud early access is a short form, and a person reads it.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">Request early access</a>
+          <a class="btn btn-ghost" href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">Self-host on GitHub</a>
+          <a class="btn btn-ghost" href="/connect-with-us/">Talk to an engineer</a>
+          <a class="btn btn-ghost" href="https://docs.hyperbyte.cloud" rel="noopener">Read the docs</a>
+        </div>
+        
+      </div>
+    </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <span class="footer-brand"><img src="/assets/hyperbyte-cloud-mark.jpg" width="1024" height="388" alt="Hyperbyte Cloud" loading="lazy"> © 2026</span>
+        <nav aria-label="Footer">
+          <a href="/about-us/">About</a>
+          · <a href="/connect-with-us/">Contact</a>
+          · <a href="/pricing/">Pricing</a>
+          · <a href="/oss/">Open source</a>
+          · <a href="/privacy/">Privacy</a>
+          · <a href="/terms/">Terms</a>
+          · <a href="/dpa/">DPA</a>
+          · <a href="https://docs.hyperbyte.cloud" rel="noopener">Docs</a>
+          · <a href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">GitHub</a>
+          · <a href="mailto:hello@hyperbyte.cloud">hello@hyperbyte.cloud</a>
+        </nav>
+      </div>
+    </footer>
+    <script src="/assets/site.js"></script></body></html>

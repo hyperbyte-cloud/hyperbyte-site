@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <meta property="og:locale" content="en_GB">
+    <title>Run InfluxDB v1 on Kubernetes? Swap the Operator, Keep the URLs</title>
+    <meta name="description" content="Replace InfluxDB v1 on Kubernetes with HyperbyteDB&#x27;s operator. Same /write and /query endpoints, same Telegraf and Grafana configs, replication included.">
+    <link rel="canonical" href="https://hyperbyte.cloud/influxdb-v1-kubernetes-operator-swap-keep-urls/">
+    <meta name="robots" content="index, follow">
+    <meta property="og:site_name" content="Hyperbyte Cloud">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Run InfluxDB v1 on Kubernetes? Swap the Operator, Keep the URLs">
+    <meta property="og:description" content="Replace InfluxDB v1 on Kubernetes with HyperbyteDB&#x27;s operator. Same /write and /query endpoints, same Telegraf and Grafana configs, replication included.">
+    <meta property="og:url" content="https://hyperbyte.cloud/influxdb-v1-kubernetes-operator-swap-keep-urls/">
+    <meta property="og:image" content="https://hyperbyte.cloud/assets/logo.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Run InfluxDB v1 on Kubernetes? Swap the Operator, Keep the URLs">
+    <meta name="twitter:description" content="Replace InfluxDB v1 on Kubernetes with HyperbyteDB&#x27;s operator. Same /write and /query endpoints, same Telegraf and Grafana configs, replication included.">
+    <meta name="twitter:image" content="https://hyperbyte.cloud/assets/logo.png">
+    <meta property="article:published_time" content="2026-06-02">
+    <meta property="article:modified_time" content="2026-09-22">
+    <link rel="icon" href="/assets/logo.png" type="image/png">
+    <link rel="alternate" type="application/rss+xml" title="Hyperbyte Cloud" href="https://hyperbyte.cloud/rss.xml">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/site.css">
+    <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://hyperbyte.cloud/#org", "name": "Hyperbyte Cloud", "url": "https://hyperbyte.cloud/", "email": "hello@hyperbyte.cloud", "logo": {"@type": "ImageObject", "url": "https://hyperbyte.cloud/assets/logo.png"}, "sameAs": ["https://github.com/hyperbyte-cloud/hyperbytedb"]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://hyperbyte.cloud/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://hyperbyte.cloud/tag/blog/"}, {"@type": "ListItem", "position": 3, "name": "Run InfluxDB v1 on Kubernetes? Swap the Operator, Keep the URLs", "item": "https://hyperbyte.cloud/influxdb-v1-kubernetes-operator-swap-keep-urls/"}]}, {"@type": "BlogPosting", "headline": "Run InfluxDB v1 on Kubernetes? Swap the Operator, Keep the URLs", "description": "Replace InfluxDB v1 on Kubernetes with HyperbyteDB's operator. Same /write and /query endpoints, same Telegraf and Grafana configs, master-master replication included.", "datePublished": "2026-06-02", "dateModified": "2026-09-22", "author": {"@type": "Person", "name": "Austin", "url": "https://hyperbyte.cloud/author/austin/"}, "publisher": {"@id": "https://hyperbyte.cloud/#org"}, "mainEntityOfPage": "https://hyperbyte.cloud/influxdb-v1-kubernetes-operator-swap-keep-urls/", "image": "https://hyperbyte.cloud/assets/logo.png", "keywords": "kubernetes, influxdb, migration, operator, helm, observability, platform engineering, high availability", "wordCount": 1912, "inLanguage": "en-GB"}]}</script>
+    <link rel="prev" href="https://hyperbyte.cloud/telegraf-grafana-alerts-stack-database-that-doesnt-buckle/">
+<link rel="next" href="https://hyperbyte.cloud/stop-watching-metrics-explode-high-cardinality-without-rewrite/">
+</head><body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="/">
+          <img src="/assets/logo.png" width="28" height="28" alt="">
+          Hyperbyte
+        </a>
+        <button class="menu-btn" type="button" data-menu aria-expanded="false" aria-controls="site-nav">Menu</button>
+        <nav class="nav" id="site-nav" data-nav aria-label="Primary"><a href="/">Product</a><a href="/cloud/">Cloud</a><a href="/solutions/">Solutions</a><a href="/oss/">OSS</a><a href="/pricing/">Pricing</a><a href="/tag/blog/" aria-current="page">Blog</a><a href="https://docs.hyperbyte.cloud" rel="noopener">Docs</a><a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">Request early access</a></nav>
+      </div>
+    </header>
+    <main id="main">
+      <article class="wrap page-head">
+        <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a><span aria-hidden="true">/</span></li><li><a href="/tag/blog/">Blog</a><span aria-hidden="true">/</span></li><li><span aria-current="page">Run InfluxDB v1 on Kubernetes? Swap the Operator, Keep the URLs</span></li></ol></nav>
+        <h1>Run InfluxDB v1 on Kubernetes? Swap the Operator, Keep the URLs</h1>
+        <p class="post-meta"><time datetime="2026-06-02">2026-06-02</time><span>8 min read</span><a href="/author/austin/">Austin</a><span>kubernetes · <a href="/tag/influxdb/">influxdb</a> · <a href="/tag/migration/">migration</a> · operator · helm · <a href="/tag/observability/">observability</a> · platform engineering · <a href="/tag/high-availability/">high availability</a></span></p>
+        
+        <nav class="toc" aria-label="On this page"><p>On this page</p><ol><li><a href="#the-operator-you-already-know-how-to-deploy">The operator you already know how to deploy</a></li><li><a href="#declarative-clusters-with-hyperbytedbcluster">Declarative clusters with HyperbytedbCluster</a></li><li><a href="#health-aware-routing-with-hyperbytedb-proxy">Health-aware routing with hyperbytedb-proxy</a></li><li><a href="#your-clients-dont-change">Your clients don&#x27;t change</a></li><li><a href="#high-availability-without-the-licensing-conversation">High availability without the licensing conversation</a></li><li><a href="#monitoring-that-plugs-into-your-existing-stack">Monitoring that plugs into your existing stack</a></li><li><a href="#backups-and-restores-as-first-class-crds">Backups and restores as first-class CRDs</a></li><li><a href="#the-migration-path">The migration path</a></li><li><a href="#what-this-means-for-platform-teams">What this means for platform teams</a></li><li><a href="#related-reading">Related reading</a></li></ol></nav>
+        <div class="prose"><p>Your InfluxDB v1 Kubernetes deployment probably looks like this: a Helm chart for the operator or StatefulSet, a few manifests for Telegraf sidecars, a Grafana datasource pointing at port 8086, and Prometheus scraping the <code>/metrics</code> endpoint. You've tuned the flush intervals, set up PodDisruptionBudgets, maybe wired up alerting for pod restarts. The hard parts are done.</p><p>The problem isn't the deployment—it's the database underneath. InfluxDB v1 OSS gives you a single node with no replication. InfluxDB Enterprise gives you replication, but only after a sales call and a licensing conversation. Either way, you're stuck with TSM storage that crawls at high cardinality and a single-writer model that doesn't survive a node failure without manual intervention.</p><p>HyperbyteDB solves this with a Kubernetes operator that drops into your existing cluster, exposes the same InfluxDB v1 HTTP endpoints, and lets your Telegraf, Grafana, and custom clients keep working without touching a single config.</p><h2 id="the-operator-you-already-know-how-to-deploy">The operator you already know how to deploy</h2><p>HyperbyteDB's operator installs via Helm from an OCI registry:</p><pre><code>helm install hyperbytedb-operator \
+  oci://ghcr.io/hyperbyte-cloud/charts/hyperbytedb-operator \
+  --namespace hyperbytedb-operator-system \
+  --create-namespace</code></pre><p>Prerequisites are Kubernetes v1.26+ and Helm v3.8+, the latter for OCI registry support. The operator registers three CRDs: <code>HyperbytedbCluster</code>, <code>HyperbytedbBackup</code>, and <code>HyperbytedbRestore</code>. No sidecar injection, no webhook gymnastics, no custom admission controllers beyond what the operator itself manages.</p><p>You can also install with a single YAML manifest if Helm isn't your thing:</p><pre><code>kubectl apply -f https://raw.githubusercontent.com/hyperbyte-cloud/hyperbytedb-operator/main/dist/install.yaml</code></pre><h2 id="declarative-clusters-with-hyperbytedbcluster">Declarative clusters with HyperbytedbCluster</h2><p>The <code>HyperbytedbCluster</code> custom resource is the entire cluster spec. The operator reconciles it into StatefulSets, headless and client Services, PVCs, ConfigMaps, and optional monitoring resources. Here's a production-ready three-node cluster:</p><pre><code>apiVersion: hyperbytedb.hyperbyte.cloud/v1alpha1
+kind: HyperbytedbCluster
+metadata:
+  name: hyperbytedb-cluster
+  namespace: default
+spec:
+  replicas: 3
+  image: hyperbytedb:latest
+  version: "1.0.0"
+  server:
+    port: 8086
+    requestTimeoutSecs: 30
+    queryTimeoutSecs: 30
+  storage:
+    backend: local
+    volumeClaimTemplate:
+      size: 10Gi
+  flush:
+    intervalSecs: 10
+    walSizeThresholdMb: 64
+  cluster:
+    heartbeatIntervalSecs: 2
+    heartbeatMissThreshold: 5
+    replicationMaxRetries: 5
+    raftHeartbeatIntervalMs: 300
+    raftElectionTimeoutMs: 1000
+  monitoring:
+    enabled: true
+    serviceMonitor: true
+  failover:
+    enabled: true
+    maxFailoverCount: 1
+    failoverTimeoutSecs: 300</code></pre><p>That's it. The operator creates the StatefulSet, the headless Service for peer discovery, a client Service for routing traffic, and wires up Raft consensus from the StatefulSet ordinals. No manual peer registration, no bootstrap scripts.</p><p>Scaling is a kubectl command away:</p><pre><code>kubectl scale hyperbytedbcluster hyperbytedb-cluster --replicas=5</code></pre><p>The operator adds nodes, triggers Raft membership changes, and waits for the new replica to sync before marking it ready. Rolling upgrades work the same way—change the <code>version</code> field and the operator upgrades one pod at a time, waiting for readiness before proceeding.</p><h2 id="health-aware-routing-with-hyperbytedb-proxy">Health-aware routing with hyperbytedb-proxy</h2><p>Here's where HyperbyteDB's Kubernetes story diverges from every other InfluxDB replacement. The operator can deploy <code>hyperbytedb-proxy</code>—a health-aware HTTP reverse proxy that sits between your clients and the database pods.</p><p>The proxy does three things your standard Kubernetes Service can't:</p><ol><li><strong>Health-aware routing.</strong> The proxy probes each backend on the <code>/health</code> endpoint and classifies backends as <code>Active</code>, <code>Draining</code>, <code>Down</code>, or <code>Unknown</code>. Only <code>Active</code> backends receive traffic. A backend returning <code>503</code> with a drain-style body is treated as retryable—your request moves to the next healthy pod automatically.</li><li><strong>Hold-and-wait during rolling restarts.</strong> When all backends are temporarily <code>Down</code> or <code>Draining</code> (say, during a rolling upgrade), the proxy doesn't immediately return 503. It waits up to <code>holdTimeoutSecs</code> (default 10 seconds) for an <code>Active</code> backend to appear. If a pod comes back healthy during the hold window, the request routes through without the client ever seeing an error.</li><li><strong>Retry across backends.</strong> On transport errors, upstream 502/504, or 503 responses that look like drain/sync events, the proxy retries on another backend up to <code>max_retries</code> (default 2). With the default config, a single request can be forwarded up to three times—initial try plus two retries.</li></ol><p>The proxy exposes Kubernetes-native probe endpoints:</p><ul><li><code>/healthz</code> — Liveness probe. Always 200 once the process is up.</li><li><code>/readyz</code> — Readiness probe. Returns 200 only when at least one backend is <code>Active</code>. Configure your Kubernetes readiness probe against this so the proxy Service doesn't route traffic until the database is actually healthy.</li><li><code>/admin/backends</code> — JSON snapshot of the backend pool with health state, inflight request counts, and probe stats.</li></ul><p>Enable the proxy in your cluster manifest by setting <code>spec.proxy.enabled: true</code>. The operator creates a separate Deployment and Service for the proxy, configured via environment variables that it injects from the cluster spec.</p><h2 id="your-clients-dont-change">Your clients don't change</h2><p>The proxy listens on port 8086 and forwards InfluxDB v1 endpoints unchanged. Your Telegraf configs still point at <code>http://hyperbytedb-proxy.default.svc:8086</code>. Your Grafana datasources still use the InfluxDB v1 plugin pointing at the same URL. Your custom scripts still POST line protocol to <code>/write?db=mydb</code> and query via <code>/query?db=mydb</code>.</p><p>The InfluxDB v1 HTTP API is the surface area. Underneath, HyperbyteDB runs ClickHouse (via embedded chDB) for queries and columnar MergeTree storage, and RocksDB for the write-ahead log and metadata. But that's invisible to your clients. The wire protocol is the contract.</p><p>For Telegraf specifically: the standard InfluxDB output plugin works without modification. Batch sizes, write intervals, and timestamps transfer directly. The same is true for any tool that POSTs line protocol to <code>/write?db=name</code>—Python requests, Go net/http, bash curl, it all works.</p><h2 id="high-availability-without-the-licensing-conversation">High availability without the licensing conversation</h2><p>InfluxDB Enterprise charges per-node for replication and high availability. HyperbyteDB includes master-master replication in the open-source operator. The cluster spec above gives you:</p><ul><li><strong>Async or sync_quorum replication.</strong> The default is async—writes fan out to all peers, and the client gets a 204 as soon as the local WAL append succeeds. Set <code>cluster.replication.mode: sync_quorum</code> if you need acknowledgment from a quorum of nodes before returning success.</li><li><strong>Raft consensus for cluster membership.</strong> Schema mutations and membership changes go through Raft. Data writes use master-master HTTP fan-out for throughput.</li><li><strong>Automatic failover.</strong> The operator detects unhealthy members (configurable via <code>failoverTimeoutSecs</code>, minimum 60 seconds) and deletes the pod. If you're using the proxy, the hold-and-wait semantics keep your clients alive during the failover window.</li><li><strong>Self-repair.</strong> Nodes that rejoin after a failure sync via a manifest comparison protocol—the WAL sequence, per-measurement write watermarks and schema metadata are compared, and only the gap is transferred. No full resync required.</li></ul><p>For production workloads, the high-availability manifest adds autoscaling and zone-aware scheduling on top of a larger volume:</p><pre><code>apiVersion: hyperbytedb.hyperbyte.cloud/v1alpha1
+kind: HyperbytedbCluster
+metadata:
+  name: hyperbytedb-ha
+  namespace: default
+spec:
+  replicas: 5
+  storage:
+    backend: local
+    volumeClaimTemplate:
+      size: 100Gi
+  autoscaling:
+    enabled: true
+    minReplicas: 3
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 70
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: topology.kubernetes.io/zone
+      whenUnsatisfiable: DoNotSchedule</code></pre><p>Five replicas with master-master replication means losing a node costs you nothing — every surviving node holds a copy and keeps accepting writes. Autoscaling means you don't overprovision for peak load. Zone-aware scheduling means a single availability zone failure doesn't take out all your replicas.</p><p>A note on object storage, since it comes up: S3-compatible targets are supported for <em>backup and restore</em> through the <code>HyperbytedbBackup</code> CRD. S3 as a primary or tiered storage backend is not supported today. Durability in the cluster above comes from replication and from backups, not from object storage underneath the write path.</p><h2 id="monitoring-that-plugs-into-your-existing-stack">Monitoring that plugs into your existing stack</h2><p>The operator exposes Prometheus metrics on port 8086 and optionally creates a ServiceMonitor resource when <code>monitoring.serviceMonitor: true</code> is set. Your existing Prometheus Operator picks it up automatically—no manual scrape config edits.</p><p>For Grafana, set <code>monitoring.grafanaDashboard: true</code> and the operator creates a ConfigMap with the <code>grafana_dashboard</code> label. If your Grafana instance is configured to auto-discover dashboard ConfigMaps, the dashboards appear without manual import.</p><p>The proxy also exposes its own Prometheus metrics at <code>/metrics</code>: <code>hyperbytedb_proxy_requests_total</code> (with outcomes <code>ok</code>, <code>fatal</code>, <code>exhausted</code>), <code>hyperbytedb_proxy_request_duration_seconds</code>, and <code>hyperbytedb_proxy_no_backend_total</code> for tracking hold-window expirations.</p><h2 id="backups-and-restores-as-first-class-crds">Backups and restores as first-class CRDs</h2><p>The operator includes <code>HyperbytedbBackup</code> and <code>HyperbytedbRestore</code> custom resources. Backups can be one-shot or scheduled via cron expression, targeting S3 with configurable retention. Restores handle the full lifecycle: scale down the cluster, copy data from the backup, scale back up. Point-in-time restore is supported via <code>restoreTimestamp</code>.</p><h2 id="the-migration-path">The migration path</h2><p>If you're running InfluxDB v1 on Kubernetes today, the migration is a three-step process:</p><ol><li><strong>Install the operator.</strong> One Helm command. Your existing cluster keeps running.</li><li><strong>Deploy a HyperbytedbCluster.</strong> Point it at the same namespace, same storage class, same monitoring stack. The operator creates the StatefulSet and Services.</li><li><strong>Switch the URL.</strong> Update your Telegraf output plugin, Grafana datasource, and custom client configs to point at the HyperbyteDB Service. If you're using the proxy, point at the proxy Service instead.</li></ol><p>Existing data in InfluxDB v1 requires export and import—there's no direct TSM file migration. Use <code>influx_inspect export</code> to dump your data to line protocol, then POST it to HyperbyteDB's <code>/write</code> endpoint. The same line protocol format works on both sides.</p><p>Your retention policies, downsampling rules, and Telegraf collection intervals all transfer. The storage layer underneath is different — ClickHouse MergeTree tables instead of TSM files — but the InfluxQL query surface is the same: <code>DERIVATIVE()</code>, <code>FLOOR()</code>, <code>GROUP BY time()</code> and subqueries all run on the <code>/query</code> endpoint. There are a handful of documented divergences, which we list in <a href="/influxdb-v1-compatibility-drop-in/">what works and what doesn't</a> — worth reading before you cut over alerting queries.</p><h2 id="what-this-means-for-platform-teams">What this means for platform teams</h2><p>The strongest signal for product-market fit isn't a benchmark or a feature list—it's that teams can point their existing Influx-shaped clients at HyperbyteDB and only change the URL. On Kubernetes, this extends to the deployment surface: same InfluxDB v1 API endpoints, same Telegraf configs, same Grafana dashboards, same Prometheus metrics. The only change is the database URL.</p><p>HyperbyteDB's Kubernetes operator gives you the deployment lifecycle (rolling upgrades, scaling, failover, backups) and the runtime properties (master-master replication, health-aware routing, high cardinality handling) that InfluxDB Enterprise charges enterprise pricing for—in the open-source binary.</p><p>Install the operator. Deploy the cluster. Change the URL. Your stack keeps working.</p><h2 id="related-reading">Related reading</h2><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="/influxdb-v1-migration-checklist-clients-url-change/"><div class="kg-bookmark-content"><div class="kg-bookmark-title">The InfluxDB v1 Migration Checklist: Which Clients Just Need a URL Change</div><div class="kg-bookmark-description">Most migration posts focus on one client. The reality is InfluxDB v1 stacks have Telegraf, Grafana, custom apps, and scripts. Here's the client-by-client migration checklist that tells you which integrations just need a URL change and which need adjustment.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="/assets/media/4d1ceff33a23b4ed.png" alt="" width="256" height="256"><span class="kg-bookmark-author">Hyperbyte Cloud</span><span class="kg-bookmark-publisher">Austin</span></div></div><div class="kg-bookmark-thumbnail"><img src="/assets/logo.png" alt="" onerror="this.style.display = 'none'" width="500" height="500"></div></a></figure><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="/influxdb-v1-compatibility-drop-in/"><div class="kg-bookmark-content"><div class="kg-bookmark-title">InfluxDB v1 Compatibility in HyperbyteDB: What Works, What Doesn't, and How to Cut Over</div><div class="kg-bookmark-description">HyperbyteDB speaks InfluxDB v1 line protocol and InfluxQL on the same endpoints. The precise version: endpoint coverage, InfluxQL support, the known differences, benchmark numbers and what to watch when cutting over.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="/assets/media/4d1ceff33a23b4ed.png" alt="" width="256" height="256"><span class="kg-bookmark-author">Hyperbyte Cloud</span><span class="kg-bookmark-publisher">Austin</span></div></div><div class="kg-bookmark-thumbnail"><img src="/assets/logo.png" alt="" onerror="this.style.display = 'none'" width="500" height="500"></div></a></figure><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="/why-influxdb-enterprise-pricing-hits-a-wall/"><div class="kg-bookmark-content"><div class="kg-bookmark-title">Why InfluxDB Enterprise Pricing Hits a Wall</div><div class="kg-bookmark-description">Retention policies, continuous queries and replication all sit behind InfluxDB's paid tier. What that actually costs you, what high availability means for telemetry, and what ships in HyperbyteDB's open-source binary.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="/assets/media/4d1ceff33a23b4ed.png" alt="" width="256" height="256"><span class="kg-bookmark-author">Hyperbyte Cloud</span><span class="kg-bookmark-publisher">Austin</span></div></div><div class="kg-bookmark-thumbnail"><img src="/assets/logo.png" alt="" onerror="this.style.display = 'none'" width="500" height="500"></div></a></figure><hr><p><strong>Running InfluxDB v1 and hitting its limits?</strong> HyperbyteDB takes the same line protocol and the same InfluxQL — you change a URL. It’s <a href="/#database">open source and free to self-host</a>, or <a href="/cloud/">HyperbyteDB Cloud</a> runs it for you. See <a href="/pricing/">pricing</a>, or <a href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">request early access</a>.</p>
+    </div>
+        
+        <nav class="pager" aria-label="More posts"><a rel="prev" href="/telegraf-grafana-alerts-stack-database-that-doesnt-buckle/"><small>Newer</small>Your Telegraf + Grafana + Alerts Stack, Now on a Database That Doesn&#x27;t Buckle</a><a rel="next" href="/stop-watching-metrics-explode-high-cardinality-without-rewrite/"><small>Older</small>High Cardinality Without the Rewrite</a></nav>
+      </article>
+      <section class="wrap" aria-labelledby="related-heading"><h2 id="related-heading">Keep reading</h2><div class="related"><a href="/telegraf-grafana-alerts-stack-database-that-doesnt-buckle/"><strong>Your Telegraf + Grafana + Alerts Stack, Now on a Database That Doesn&#x27;t Buckle</strong><br><span>Point Telegraf and Grafana at a different URL and keep the rest of your observability stack. What transfers unchanged, where InfluxQL behavi</span></a><a href="/why-influxdb-enterprise-pricing-hits-a-wall/"><strong>Why InfluxDB Enterprise Pricing Hits a Wall</strong><br><span>Retention policies, continuous queries and replication sit behind InfluxDB&#x27;s paid tier. What that costs, what HA means for telemetry, and wh</span></a><a href="/influxdb-v1-migration-checklist-clients-url-change/"><strong>The InfluxDB v1 Migration Checklist: Which Clients Just Need a URL Change</strong><br><span>Most InfluxDB v1 migration guides focus on Telegraf. Here&#x27;s the complete client-by-client checklist covering Grafana, custom apps, Python sc</span></a></div></section>
+      
+    <div class="cta-band">
+      <div class="wrap">
+        <p class="kicker">Next step</p>
+        <h2>Run it yourself, or let us run it.</h2>
+        <p class="lede">HyperbyteDB is free to self-host. Cloud early access is a short form, and a person reads it.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">Request early access</a>
+          <a class="btn btn-ghost" href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">Self-host on GitHub</a>
+          <a class="btn btn-ghost" href="/connect-with-us/">Talk to an engineer</a>
+          <a class="btn btn-ghost" href="https://docs.hyperbyte.cloud" rel="noopener">Read the docs</a>
+        </div>
+        
+      </div>
+    </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <span class="footer-brand"><img src="/assets/hyperbyte-cloud-mark.jpg" width="1024" height="388" alt="Hyperbyte Cloud" loading="lazy"> © 2026</span>
+        <nav aria-label="Footer">
+          <a href="/about-us/">About</a>
+          · <a href="/connect-with-us/">Contact</a>
+          · <a href="/pricing/">Pricing</a>
+          · <a href="/oss/">Open source</a>
+          · <a href="/privacy/">Privacy</a>
+          · <a href="/terms/">Terms</a>
+          · <a href="/dpa/">DPA</a>
+          · <a href="https://docs.hyperbyte.cloud" rel="noopener">Docs</a>
+          · <a href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">GitHub</a>
+          · <a href="mailto:hello@hyperbyte.cloud">hello@hyperbyte.cloud</a>
+        </nav>
+      </div>
+    </footer>
+    <script src="/assets/site.js"></script></body></html>

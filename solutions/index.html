@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <meta property="og:locale" content="en_GB">
+    <title>Solutions — Distributed, High-Cardinality Time-Series</title>
+    <meta name="description" content="HyperbyteDB for telemetry that is spread out and latency-sensitive: device fleets, distributed systems, and high tag cardinality, on InfluxDB v1 endpoints.">
+    <link rel="canonical" href="https://hyperbyte.cloud/solutions/">
+    <meta name="robots" content="index, follow">
+    <meta property="og:site_name" content="Hyperbyte Cloud">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Solutions — Distributed, High-Cardinality Time-Series">
+    <meta property="og:description" content="HyperbyteDB for telemetry that is spread out and latency-sensitive: device fleets, distributed systems, and high tag cardinality, on InfluxDB v1 endpoints.">
+    <meta property="og:url" content="https://hyperbyte.cloud/solutions/">
+    <meta property="og:image" content="https://hyperbyte.cloud/assets/logo.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Solutions — Distributed, High-Cardinality Time-Series">
+    <meta name="twitter:description" content="HyperbyteDB for telemetry that is spread out and latency-sensitive: device fleets, distributed systems, and high tag cardinality, on InfluxDB v1 endpoints.">
+    <meta name="twitter:image" content="https://hyperbyte.cloud/assets/logo.png">
+    <meta property="article:published_time" content="2026-06-06">
+    <meta property="article:modified_time" content="2026-10-07">
+    <link rel="icon" href="/assets/logo.png" type="image/png">
+    <link rel="alternate" type="application/rss+xml" title="Hyperbyte Cloud" href="https://hyperbyte.cloud/rss.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/site.css">
+    <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://hyperbyte.cloud/#org", "name": "Hyperbyte Cloud", "url": "https://hyperbyte.cloud/", "email": "hello@hyperbyte.cloud", "logo": {"@type": "ImageObject", "url": "https://hyperbyte.cloud/assets/logo.png"}, "sameAs": ["https://github.com/hyperbyte-cloud/hyperbytedb"]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://hyperbyte.cloud/"}, {"@type": "ListItem", "position": 2, "name": "Solutions", "item": "https://hyperbyte.cloud/solutions/"}]}]}</script>
+</head>
+<body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="/">
+          <img src="/assets/logo.png" width="28" height="28" alt="">
+          Hyperbyte
+        </a>
+        <button class="menu-btn" type="button" data-menu aria-expanded="false" aria-controls="site-nav">Menu</button>
+        <nav class="nav" id="site-nav" data-nav aria-label="Primary"><a href="/">Product</a><a href="/cloud/">Cloud</a><a href="/solutions/" aria-current="page">Solutions</a><a href="/oss/">OSS</a><a href="/pricing/">Pricing</a><a href="/tag/blog/">Blog</a><a href="https://docs.hyperbyte.cloud" rel="noopener">Docs</a><a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">Request early access</a></nav>
+      </div>
+    </header>
+    <main id="main" class="product-main">
+      <section class="hero">
+        <div class="wrap">
+          <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a><span aria-hidden="true">/</span></li><li><span aria-current="page">Solutions</span></li></ol></nav>
+          <p class="kicker">Workloads</p>
+          <h1>Telemetry that is spread out.</h1>
+          <p class="lede">Device fleets, service labels, tick data, and grid assets. Same InfluxDB v1 endpoints, so the stack you already run keeps working. The pressure is tags, not a new query language.</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="/#database">See the database</a>
+            <a class="btn btn-ghost" href="/cloud/">See managed cloud</a>
+            <a class="btn btn-ghost" href="/connect-with-us/">Talk to an engineer</a>
+          </div>
+          <nav class="jump" aria-label="On this page">
+            <a href="#workloads">Workloads</a>
+            <a href="#shared">What they share</a>
+            <a href="#run">How to run it</a>
+          </nav>
+        </div>
+      </section>
+      <section id="workloads">
+        <div class="wrap">
+          <p class="kicker">Four places the series index gives up</p>
+          <h2>Keep the tags. Keep the clients.</h2>
+          <div class="products quad">
+            <article class="product" id="iot">
+              <p class="tag">
+                <svg class="glyph" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="1"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/></svg>
+                IoT fleets
+              </p>
+              <h3>Every sensor, every tick</h3>
+              <p>Thousands to millions of devices, each with its own sensors. Temperature, humidity, vibration, and GPS arrive at high frequency. The tags that make the data useful — device ID, location, firmware, session — are the tags that used to force a cut.</p>
+              <ul>
+                <li>Full resolution, queried with the InfluxQL you already use</li>
+                <li>Dashboards and anomaly checks stay on the same endpoints</li>
+                <li>No rewrite of the collectors already in the field</li>
+              </ul>
+              <a class="more" href="/unlocking-scalable-iot-insights-with-hyperbytedb/">Read the IoT write-up</a>
+            </article>
+            <article class="product" id="observability">
+              <p class="tag">
+                <svg class="glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg>
+                Observability
+              </p>
+              <h3>Labels that used to be too many</h3>
+              <p>Pods, nodes, and services show up and disappear. Each one adds series: container, namespace, version, customer. Ingest spikes on deploy. The usual exit is fewer labels, or a database that only stays fast if you stop asking precise questions.</p>
+              <ul>
+                <li>High-cardinality metrics, with the labels left on</li>
+                <li>Telegraf and Grafana stay as they are</li>
+                <li>Same <span class="mono">/write</span> your agents already speak</li>
+              </ul>
+              <a class="more" href="/observability-and-monitoring-with-hyperbytedb/">Read the observability write-up</a>
+            </article>
+            <article class="product" id="markets">
+              <p class="tag">
+                <svg class="glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5M4 19h16"/><path d="M7 15l4-4 3 2 5-6"/></svg>
+                Market data
+              </p>
+              <h3>Tick ingest, millisecond queries</h3>
+              <p>Price, volume, and order-book updates, across thousands of instruments and accounts. Risk wants another dimension — counterparty, desk, asset class — and the query still has to come back while the market is the market.</p>
+              <ul>
+                <li>Tick-level writes, InfluxQL for the read</li>
+                <li><span class="mono">GROUP BY time()</span> for the windows you already chart</li>
+                <li>Historical ticks stay queryable, not only the last bucket</li>
+              </ul>
+              <a class="more" href="/powering-real-time-financial-analytics-with-hyperbytedb/">Read the market-data write-up</a>
+            </article>
+            <article class="product" id="energy">
+              <p class="tag">
+                <svg class="glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg>
+                Energy systems
+              </p>
+              <h3>Grid telemetry at full resolution</h3>
+              <p>Smart meters, inverters, turbines, and substations. Voltage, current, power quality, weather, and consumption, tagged by device, region, and asset type. Downsampling is a report. It should not be the only copy you keep.</p>
+              <ul>
+                <li>Meter and asset identity stay on the series</li>
+                <li>High-frequency power and weather, written as measured</li>
+                <li>The same line protocol the existing collectors emit</li>
+              </ul>
+              <a class="more" href="/optimizing-energy-systems-with-hyperbytedb/">Read the energy write-up</a>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section id="shared">
+        <div class="wrap split">
+          <div>
+            <p class="kicker">What they share</p>
+            <h2>One wire. Four workloads.</h2>
+            <div class="prose">
+              <p>None of these need a new agent or a new query language. They need the series you already wanted to store, on endpoints the stack already speaks. Sustained ingest on the measured box is 1.5 million points a second, p95 under 250ms.</p>
+            </div>
+            <ul class="checklist">
+              <li><span class="mark" aria-hidden="true">+</span><span>InfluxDB v1 line protocol on <span class="mono">/write</span> and InfluxQL on <span class="mono">/query</span>.</span></li>
+              <li><span class="mark" aria-hidden="true">+</span><span>Telegraf, Grafana, and the clients in the <a href="/influxdb-v1-migration-checklist-clients-url-change/">migration checklist</a>.</span></li>
+              <li><span class="mark" aria-hidden="true">+</span><span>Continuous queries and master-master replication in the open-source binary.</span></li>
+            </ul>
+          </div>
+          <aside class="panel">
+            <h3>Linear scale-out</h3>
+            <p>Capacity tracks the number of shards, linearly. A Cloud shard is 4 CPU and 16GB. Add a shard, add the throughput again. <a href="/pricing/">Compute is $299 per shard. Disk is $0.20 per GB</a>.</p>
+            <p class="more"><a href="/#database">The database</a></p>
+          </aside>
+        </div>
+      </section>
+      <section id="run">
+        <div class="wrap">
+          <p class="kicker">How to run it</p>
+          <h2>The database, or the platform that runs it.</h2>
+          <div class="products">
+            <article class="product">
+              <p class="tag">
+                <svg class="glyph" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>
+                Database
+              </p>
+              <h3>Self-host HyperbyteDB</h3>
+              <p>Free. Same compatibility. You run replication, backups, and upgrades. Pull the image and listen on 8086.</p>
+              <a class="more" href="/#database">See the product</a>
+            </article>
+            <article class="product">
+              <p class="tag">
+                <svg class="glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18h10a4 4 0 0 0 .5-8 6 6 0 0 0-11.5-1.6A3.5 3.5 0 0 0 7 18z"/></svg>
+                Cloud
+              </p>
+              <h3>Point Telegraf at a URL</h3>
+              <p>The same core, operated: tuning, replication, upgrades, backups, and capacity. Early access is a short form.</p>
+              <a class="more" href="/cloud/">Cloud product page</a>
+            </article>
+          </div>
+        </div>
+      </section>
+      <div class="cta-band">
+        <div class="wrap">
+          <p class="kicker">Next step</p>
+          <h2>Bring the workload, not a rewrite.</h2>
+          <p class="lede">If the series you need are the ones you have been dropping, start with the database or ask for a design-partner slot on Cloud.</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="/#database">See the database</a>
+            <a class="btn btn-ghost" href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">Request early access</a>
+            <a class="btn btn-ghost" href="/connect-with-us/">Talk to an engineer</a>
+            <a class="btn btn-ghost" href="https://docs.hyperbyte.cloud" rel="noopener">Read the docs</a>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <span class="footer-brand"><img src="/assets/hyperbyte-cloud-mark.jpg" width="1024" height="388" alt="Hyperbyte Cloud" loading="lazy"> © 2026</span>
+        <nav aria-label="Footer">
+          <a href="/about-us/">About</a>
+          · <a href="/connect-with-us/">Contact</a>
+          · <a href="/pricing/">Pricing</a>
+          · <a href="/oss/">Open source</a>
+          · <a href="/privacy/">Privacy</a>
+          · <a href="/terms/">Terms</a>
+          · <a href="/dpa/">DPA</a>
+          · <a href="https://docs.hyperbyte.cloud" rel="noopener">Docs</a>
+          · <a href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">GitHub</a>
+          · <a href="mailto:hello@hyperbyte.cloud">hello@hyperbyte.cloud</a>
+        </nav>
+      </div>
+    </footer>
+    <script src="/assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <meta property="og:locale" content="en_GB">
+    <title>Why InfluxDB Enterprise Pricing Hits a Wall — Hyperbyte Cloud</title>
+    <meta name="description" content="Retention policies, continuous queries, and replication sit behind InfluxDB&#x27;s paid tier. What that costs, what HA means, and what HyperbyteDB&#x27;s binary includes.">
+    <link rel="canonical" href="https://hyperbyte.cloud/why-influxdb-enterprise-pricing-hits-a-wall/">
+    <meta name="robots" content="index, follow">
+    <meta property="og:site_name" content="Hyperbyte Cloud">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Why InfluxDB Enterprise Pricing Hits a Wall — Hyperbyte Cloud">
+    <meta property="og:description" content="Retention policies, continuous queries, and replication sit behind InfluxDB&#x27;s paid tier. What that costs, what HA means, and what HyperbyteDB&#x27;s binary includes.">
+    <meta property="og:url" content="https://hyperbyte.cloud/why-influxdb-enterprise-pricing-hits-a-wall/">
+    <meta property="og:image" content="https://hyperbyte.cloud/assets/logo.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Why InfluxDB Enterprise Pricing Hits a Wall — Hyperbyte Cloud">
+    <meta name="twitter:description" content="Retention policies, continuous queries, and replication sit behind InfluxDB&#x27;s paid tier. What that costs, what HA means, and what HyperbyteDB&#x27;s binary includes.">
+    <meta name="twitter:image" content="https://hyperbyte.cloud/assets/logo.png">
+    <meta property="article:published_time" content="2026-06-02">
+    <meta property="article:modified_time" content="2026-09-22">
+    <link rel="icon" href="/assets/logo.png" type="image/png">
+    <link rel="alternate" type="application/rss+xml" title="Hyperbyte Cloud" href="https://hyperbyte.cloud/rss.xml">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/site.css">
+    <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://hyperbyte.cloud/#org", "name": "Hyperbyte Cloud", "url": "https://hyperbyte.cloud/", "email": "hello@hyperbyte.cloud", "logo": {"@type": "ImageObject", "url": "https://hyperbyte.cloud/assets/logo.png"}, "sameAs": ["https://github.com/hyperbyte-cloud/hyperbytedb"]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://hyperbyte.cloud/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://hyperbyte.cloud/tag/blog/"}, {"@type": "ListItem", "position": 3, "name": "Why InfluxDB Enterprise Pricing Hits a Wall", "item": "https://hyperbyte.cloud/why-influxdb-enterprise-pricing-hits-a-wall/"}]}, {"@type": "BlogPosting", "headline": "Why InfluxDB Enterprise Pricing Hits a Wall", "description": "Retention policies, continuous queries and replication sit behind InfluxDB's paid tier. What that costs, what HA means for telemetry, and what ships in HyperbyteDB's open-source binary.", "datePublished": "2026-06-02", "dateModified": "2026-09-22", "author": {"@type": "Person", "name": "Austin", "url": "https://hyperbyte.cloud/author/austin/"}, "publisher": {"@id": "https://hyperbyte.cloud/#org"}, "mainEntityOfPage": "https://hyperbyte.cloud/why-influxdb-enterprise-pricing-hits-a-wall/", "image": "https://hyperbyte.cloud/assets/logo.png", "keywords": "influxdb, enterprise, pricing, replication, high availability, migration, telemetry, ops", "wordCount": 941, "inLanguage": "en-GB"}]}</script>
+    <link rel="prev" href="https://hyperbyte.cloud/scaling-chdb-inserts-from-5-million-to-99-million-rows-second/">
+<link rel="next" href="https://hyperbyte.cloud/telegraf-grafana-alerts-stack-database-that-doesnt-buckle/">
+</head><body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="/">
+          <img src="/assets/logo.png" width="28" height="28" alt="">
+          Hyperbyte
+        </a>
+        <button class="menu-btn" type="button" data-menu aria-expanded="false" aria-controls="site-nav">Menu</button>
+        <nav class="nav" id="site-nav" data-nav aria-label="Primary"><a href="/">Product</a><a href="/cloud/">Cloud</a><a href="/solutions/">Solutions</a><a href="/oss/">OSS</a><a href="/pricing/">Pricing</a><a href="/tag/blog/" aria-current="page">Blog</a><a href="https://docs.hyperbyte.cloud" rel="noopener">Docs</a><a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">Request early access</a></nav>
+      </div>
+    </header>
+    <main id="main">
+      <article class="wrap page-head">
+        <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a><span aria-hidden="true">/</span></li><li><a href="/tag/blog/">Blog</a><span aria-hidden="true">/</span></li><li><span aria-current="page">Why InfluxDB Enterprise Pricing Hits a Wall</span></li></ol></nav>
+        <h1>Why InfluxDB Enterprise Pricing Hits a Wall</h1>
+        <p class="post-meta"><time datetime="2026-06-02">2026-06-02</time><span>4 min read</span><a href="/author/austin/">Austin</a><span><a href="/tag/influxdb/">influxdb</a> · enterprise · pricing · replication · <a href="/tag/high-availability/">high availability</a> · <a href="/tag/migration/">migration</a> · <a href="/tag/telemetry/">telemetry</a> · <a href="/tag/ops/">ops</a></span></p>
+        
+        <nav class="toc" aria-label="On this page"><p>On this page</p><ol><li><a href="#what-oss-does-not-include">What OSS does not include</a></li><li><a href="#what-high-availability-actually-means-for-telemetry">What high availability actually means for telemetry</a></li><li><a href="#the-three-way-fork">The three-way fork</a></li><li><a href="#what-hyperbytedb-includes-in-the-open-source-binary">What HyperbyteDB includes in the open-source binary</a></li><li><a href="#the-migration-is-a-url-change">The migration is a URL change</a></li><li><a href="#the-cost-that-is-not-on-the-invoice">The cost that is not on the invoice</a></li><li><a href="#try-it-against-your-own-workload">Try it against your own workload</a></li><li><a href="#related-reading">Related reading</a></li></ol></nav>
+        <div class="prose"><p>You got InfluxDB running in an afternoon. Telegraf pointed at it, dashboards spinning, everything working. Then your team grew, your retention window stretched, and someone asked the question that changes everything: <em>what happens when this node goes down?</em></p><p>That is the moment every InfluxDB v1 OSS user eventually reaches. The answer is not a config flag or a query rewrite. It is a conversation with a salesperson.</p><h2 id="what-oss-does-not-include">What OSS does not include</h2><p>InfluxDB v1's open-source release is genuinely useful. Line protocol, the <code>/write</code> endpoint, InfluxQL, Telegraf compatibility — all there, all working. But three capabilities sit firmly on the paid side of the line, and every production time-series workload eventually needs all three:</p><ul><li><strong>Retention policies.</strong> Multi-tier data lifecycle, downsample-then-keep, storage quotas. In OSS you get one retention period per database.</li><li><strong>Continuous queries.</strong> Pre-aggregate on ingest so dashboards stay fast. Useful for rollups and for keeping query cost down.</li><li><strong>High availability and replication.</strong> The one that comes up the first time a production instance has a hardware hiccup. In OSS: one node, one copy, one point of failure.</li></ul><h2 id="what-high-availability-actually-means-for-telemetry">What high availability actually means for telemetry</h2><p>Before comparing options it is worth being precise. The general-purpose database HA checklist — quorum writes, split-brain detection, leader election — applies, but time-series workloads add requirements that are easy to overlook:</p><ul><li><strong>Continuous ingestion during partitions.</strong> Your agents keep sending. Surviving nodes should accept writes without blocking.</li><li><strong>Regional tolerance.</strong> If you ingest from multiple sites, writes should succeed locally rather than round-trip to a primary.</li><li><strong>Read-after-write for dashboards.</strong> When an alert fires and you query the last 60 seconds, you expect to see what just landed.</li><li><strong>No client reconfiguration.</strong> Telegraf should keep writing to the same endpoint. The HA layer handles routing.</li></ul><p>InfluxDB Enterprise delivers on these. It delivers on them behind a licence.</p><h2 id="the-three-way-fork">The three-way fork</h2><p>Teams that started on InfluxDB v1 OSS tend to arrive at the same choice:</p><ul><li><strong>Stay on v1 OSS</strong> and accept single-node risk. No replication, no HA.</li><li><strong>Pay for Enterprise.</strong> Budget approval, procurement, contract negotiation — while your retention window keeps shrinking and your on-call pages keep arriving.</li><li><strong>Migrate to v2.</strong> A different API and different write paths, which breaks the Telegraf drop-in story you had already validated.</li></ul><p>Each carries a cost: financial, operational, or engineering. Often the decision itself is the most expensive part, because it stalls everything else.</p><h2 id="what-hyperbytedb-includes-in-the-open-source-binary">What HyperbyteDB includes in the open-source binary</h2><p>HyperbyteDB uses embedded ClickHouse for query processing and columnar MergeTree storage, and RocksDB for the write-ahead log. The architecture is different from InfluxDB. The interface is not:</p><ul><li>Same InfluxQL — existing queries run unchanged</li><li>Same line protocol — Telegraf and your collectors need no edits</li><li>Same HTTP API — <code>/write</code> and <code>/query</code> behave the same way</li></ul><p>And the features InfluxDB gates are in the binary:</p><ul><li><strong>Master-master replication.</strong> Every node accepts writes. Add nodes and write to any of them.</li><li><strong>Retention policies</strong>, configured with the syntax you already know.</li><li><strong>Continuous queries</strong>, with no tier attached.</li><li><strong>A Prometheus <code>/metrics</code> endpoint</strong>, so existing scrapes work without reconfiguration.</li></ul><h2 id="the-migration-is-a-url-change">The migration is a URL change</h2><p>Moving a Telegraf fleet means editing one line:</p><pre><code># Before (InfluxDB v1 OSS)
+url = "http://localhost:8086"
+
+# After (HyperbyteDB)
+url = "http://your-hyperbyte-host:8086"</code></pre><p>No config rewrites, no agent redeployment. Your Telegraf plugins, Grafana data sources and dashboard queries stay exactly as they are. Reads and writes can go to any node in a cluster, or to a load balancer in front of them, and the client layer never learns the difference.</p><h2 id="the-cost-that-is-not-on-the-invoice">The cost that is not on the invoice</h2><p>The financial comparison matters, but it is not the whole picture. What actually slows teams down is the workflow: identifying a limitation, finding it documented behind “contact sales”, entering a funnel of demos and proof-of-concept timelines, and waiting for a signed contract to enable a feature that already exists in a binary somewhere.</p><p>The alternative is not “cheaper database.” It is a different model, where the capability you need on a Tuesday afternoon is not gated behind a commercial relationship you did not plan to negotiate this quarter.</p><h2 id="try-it-against-your-own-workload">Try it against your own workload</h2><p>Do not take the above on trust. Point Telegraf at both, compare write latency and query times on your data, and decide from there. We have written up <a href="/before-you-trust-our-numbers-run-this/">how to reproduce our benchmarks</a> on your own hardware, including the numbers that came out worse than we hoped.</p><h2 id="related-reading">Related reading</h2><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="/influxdb-v1-migration-checklist-clients-url-change/"><div class="kg-bookmark-content"><div class="kg-bookmark-title">The InfluxDB v1 Migration Checklist: Which Clients Just Need a URL Change</div><div class="kg-bookmark-description">Most migration posts focus on one client. The reality is InfluxDB v1 stacks have Telegraf, Grafana, custom apps, and scripts. Here's the client-by-client migration checklist that tells you which integrations just need a URL change and which need adjustment.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="/assets/media/4d1ceff33a23b4ed.png" alt="" width="256" height="256"><span class="kg-bookmark-author">Hyperbyte Cloud</span><span class="kg-bookmark-publisher">Austin</span></div></div><div class="kg-bookmark-thumbnail"><img src="/assets/logo.png" alt="" onerror="this.style.display = 'none'" width="500" height="500"></div></a></figure><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="/telegraf-grafana-alerts-stack-database-that-doesnt-buckle/"><div class="kg-bookmark-content"><div class="kg-bookmark-title">Your Telegraf + Grafana + Alerts Stack, Now on a Database That Doesn't Buckle</div><div class="kg-bookmark-description">Point Telegraf and Grafana at a different URL and keep the rest of your observability stack. What transfers unchanged, where InfluxQL behaviour differs, and what ships in the open-source binary.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="/assets/media/4d1ceff33a23b4ed.png" alt="" width="256" height="256"><span class="kg-bookmark-author">Hyperbyte Cloud</span><span class="kg-bookmark-publisher">Austin</span></div></div><div class="kg-bookmark-thumbnail"><img src="/assets/logo.png" alt="" onerror="this.style.display = 'none'" width="500" height="500"></div></a></figure><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="/influxdb-v1-compatibility-drop-in/"><div class="kg-bookmark-content"><div class="kg-bookmark-title">InfluxDB v1 Compatibility in HyperbyteDB: What Works, What Doesn't, and How to Cut Over</div><div class="kg-bookmark-description">HyperbyteDB speaks InfluxDB v1 line protocol and InfluxQL on the same endpoints. The precise version: endpoint coverage, InfluxQL support, the known differences, benchmark numbers and what to watch when cutting over.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="/assets/media/4d1ceff33a23b4ed.png" alt="" width="256" height="256"><span class="kg-bookmark-author">Hyperbyte Cloud</span><span class="kg-bookmark-publisher">Austin</span></div></div><div class="kg-bookmark-thumbnail"><img src="/assets/logo.png" alt="" onerror="this.style.display = 'none'" width="500" height="500"></div></a></figure><hr><p><strong>Running InfluxDB v1 and hitting its limits?</strong> HyperbyteDB takes the same line protocol and the same InfluxQL — you change a URL. It’s <a href="/#database">open source and free to self-host</a>, or <a href="/cloud/">HyperbyteDB Cloud</a> runs it for you. See <a href="/pricing/">pricing</a>, or <a href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">request early access</a>.</p>
+    </div>
+        
+        <nav class="pager" aria-label="More posts"><a rel="prev" href="/scaling-chdb-inserts-from-5-million-to-99-million-rows-second/"><small>Newer</small>Scaling chDB Inserts from 5M to 99M Rows/sec</a><a rel="next" href="/telegraf-grafana-alerts-stack-database-that-doesnt-buckle/"><small>Older</small>Your Telegraf + Grafana + Alerts Stack, Now on a Database That Doesn&#x27;t Buckle</a></nav>
+      </article>
+      <section class="wrap" aria-labelledby="related-heading"><h2 id="related-heading">Keep reading</h2><div class="related"><a href="/telegraf-grafana-alerts-stack-database-that-doesnt-buckle/"><strong>Your Telegraf + Grafana + Alerts Stack, Now on a Database That Doesn&#x27;t Buckle</strong><br><span>Point Telegraf and Grafana at a different URL and keep the rest of your observability stack. What transfers unchanged, where InfluxQL behavi</span></a><a href="/influxdb-v1-migration-checklist-clients-url-change/"><strong>The InfluxDB v1 Migration Checklist: Which Clients Just Need a URL Change</strong><br><span>Most InfluxDB v1 migration guides focus on Telegraf. Here&#x27;s the complete client-by-client checklist covering Grafana, custom apps, Python sc</span></a><a href="/exporting-historical-time-series-influxdb-v1-to-hyperbytedb/"><strong>Exporting Historical Time-Series from InfluxDB v1 to HyperbyteDB</strong><br><span>Most migration guides cover updating Telegraf and Grafana configs. But historical data gets left behind. Here&#x27;s how to export time-series fr</span></a></div></section>
+      
+    <div class="cta-band">
+      <div class="wrap">
+        <p class="kicker">Next step</p>
+        <h2>Run it yourself, or let us run it.</h2>
+        <p class="lede">HyperbyteDB is free to self-host. Cloud early access is a short form, and a person reads it.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">Request early access</a>
+          <a class="btn btn-ghost" href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">Self-host on GitHub</a>
+          <a class="btn btn-ghost" href="/connect-with-us/">Talk to an engineer</a>
+          <a class="btn btn-ghost" href="https://docs.hyperbyte.cloud" rel="noopener">Read the docs</a>
+        </div>
+        
+      </div>
+    </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <span class="footer-brand"><img src="/assets/hyperbyte-cloud-mark.jpg" width="1024" height="388" alt="Hyperbyte Cloud" loading="lazy"> © 2026</span>
+        <nav aria-label="Footer">
+          <a href="/about-us/">About</a>
+          · <a href="/connect-with-us/">Contact</a>
+          · <a href="/pricing/">Pricing</a>
+          · <a href="/oss/">Open source</a>
+          · <a href="/privacy/">Privacy</a>
+          · <a href="/terms/">Terms</a>
+          · <a href="/dpa/">DPA</a>
+          · <a href="https://docs.hyperbyte.cloud" rel="noopener">Docs</a>
+          · <a href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">GitHub</a>
+          · <a href="mailto:hello@hyperbyte.cloud">hello@hyperbyte.cloud</a>
+        </nav>
+      </div>
+    </footer>
+    <script src="/assets/site.js"></script></body></html>

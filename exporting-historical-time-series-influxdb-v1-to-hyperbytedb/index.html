@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <meta property="og:locale" content="en_GB">
+    <title>Exporting Historical Time-Series from InfluxDB v1 to HyperbyteDB</title>
+    <meta name="description" content="Migration guides cover Telegraf and Grafana, then leave historical data behind. How to export time-series from InfluxDB v1 and load it into HyperbyteDB.">
+    <link rel="canonical" href="https://hyperbyte.cloud/exporting-historical-time-series-influxdb-v1-to-hyperbytedb/">
+    <meta name="robots" content="index, follow">
+    <meta property="og:site_name" content="Hyperbyte Cloud">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Exporting Historical Time-Series from InfluxDB v1 to HyperbyteDB">
+    <meta property="og:description" content="Migration guides cover Telegraf and Grafana, then leave historical data behind. How to export time-series from InfluxDB v1 and load it into HyperbyteDB.">
+    <meta property="og:url" content="https://hyperbyte.cloud/exporting-historical-time-series-influxdb-v1-to-hyperbytedb/">
+    <meta property="og:image" content="https://hyperbyte.cloud/assets/logo.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Exporting Historical Time-Series from InfluxDB v1 to HyperbyteDB">
+    <meta name="twitter:description" content="Migration guides cover Telegraf and Grafana, then leave historical data behind. How to export time-series from InfluxDB v1 and load it into HyperbyteDB.">
+    <meta name="twitter:image" content="https://hyperbyte.cloud/assets/logo.png">
+    <meta property="article:published_time" content="2026-04-13">
+    <meta property="article:modified_time" content="2026-09-22">
+    <link rel="icon" href="/assets/logo.png" type="image/png">
+    <link rel="alternate" type="application/rss+xml" title="Hyperbyte Cloud" href="https://hyperbyte.cloud/rss.xml">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/site.css">
+    <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://hyperbyte.cloud/#org", "name": "Hyperbyte Cloud", "url": "https://hyperbyte.cloud/", "email": "hello@hyperbyte.cloud", "logo": {"@type": "ImageObject", "url": "https://hyperbyte.cloud/assets/logo.png"}, "sameAs": ["https://github.com/hyperbyte-cloud/hyperbytedb"]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://hyperbyte.cloud/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://hyperbyte.cloud/tag/blog/"}, {"@type": "ListItem", "position": 3, "name": "Exporting Historical Time-Series from InfluxDB v1 to HyperbyteDB", "item": "https://hyperbyte.cloud/exporting-historical-time-series-influxdb-v1-to-hyperbytedb/"}]}, {"@type": "BlogPosting", "headline": "Exporting Historical Time-Series from InfluxDB v1 to HyperbyteDB", "description": "Most migration guides cover updating Telegraf and Grafana configs. But historical data gets left behind. Here's how to export time-series from InfluxDB v1 and load it into HyperbyteDB.", "datePublished": "2026-04-13", "dateModified": "2026-09-22", "author": {"@type": "Person", "name": "Austin", "url": "https://hyperbyte.cloud/author/austin/"}, "publisher": {"@id": "https://hyperbyte.cloud/#org"}, "mainEntityOfPage": "https://hyperbyte.cloud/exporting-historical-time-series-influxdb-v1-to-hyperbytedb/", "image": "https://hyperbyte.cloud/assets/logo.png", "keywords": "influxdb, migration, data migration, telemetry, telegraf, grafana, ops, self hosting", "wordCount": 1021, "inLanguage": "en-GB"}]}</script>
+    <link rel="prev" href="https://hyperbyte.cloud/influxdb-v1-compatibility-drop-in/">
+<link rel="next" href="https://hyperbyte.cloud/before-you-trust-our-numbers-run-this/">
+</head><body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="/">
+          <img src="/assets/logo.png" width="28" height="28" alt="">
+          Hyperbyte
+        </a>
+        <button class="menu-btn" type="button" data-menu aria-expanded="false" aria-controls="site-nav">Menu</button>
+        <nav class="nav" id="site-nav" data-nav aria-label="Primary"><a href="/">Product</a><a href="/cloud/">Cloud</a><a href="/solutions/">Solutions</a><a href="/oss/">OSS</a><a href="/pricing/">Pricing</a><a href="/tag/blog/" aria-current="page">Blog</a><a href="https://docs.hyperbyte.cloud" rel="noopener">Docs</a><a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">Request early access</a></nav>
+      </div>
+    </header>
+    <main id="main">
+      <article class="wrap page-head">
+        <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a><span aria-hidden="true">/</span></li><li><a href="/tag/blog/">Blog</a><span aria-hidden="true">/</span></li><li><span aria-current="page">Exporting Historical Time-Series from InfluxDB v1 to HyperbyteDB</span></li></ol></nav>
+        <h1>Exporting Historical Time-Series from InfluxDB v1 to HyperbyteDB</h1>
+        <p class="post-meta"><time datetime="2026-04-13">2026-04-13</time><span>5 min read</span><a href="/author/austin/">Austin</a><span><a href="/tag/influxdb/">influxdb</a> · <a href="/tag/migration/">migration</a> · data migration · <a href="/tag/telemetry/">telemetry</a> · <a href="/tag/telegraf/">telegraf</a> · <a href="/tag/grafana/">grafana</a> · <a href="/tag/ops/">ops</a> · self hosting</span></p>
+        
+        <nav class="toc" aria-label="On this page"><p>On this page</p><ol><li><a href="#why-historical-data-feels-like-a-migration-blocker">Why historical data feels like a migration blocker</a></li><li><a href="#step-1-export-from-influxdb-v1-with-influxinspect">Step 1: Export from InfluxDB v1 with influx_inspect</a></li><li><a href="#step-2-load-into-hyperbytedb-via-write">Step 2: Load into HyperbyteDB via /write</a></li><li><a href="#handling-large-exports">Handling large exports</a></li><li><a href="#verify-the-import">Verify the import</a></li><li><a href="#the-complete-migration-picture">The complete migration picture</a></li><li><a href="#related-reading">Related reading</a></li></ol></nav>
+        <div class="prose"><p>You've updated your Telegraf configs. Changed the URL in Grafana. Pointed your scripts at the new endpoint. The "change one URL" story works for live data—but your historical data is still sitting in InfluxDB OSS with no obvious exit path.</p><p>This post closes that gap. Here's how to export historical time-series from InfluxDB v1 and load it into HyperbyteDB using the same line protocol that powers live ingestion.</p><h2 id="why-historical-data-feels-like-a-migration-blocker">Why historical data feels like a migration blocker</h2><p>When teams evaluate switching from InfluxDB v1 to HyperbyteDB, the client-side migration is straightforward. The <code>/write</code> and <code>/query</code> endpoints accept the same line protocol and InfluxQL that existing tools generate. Telegraf, Grafana, and most scripts need nothing more than a URL update.</p><p>But historical data carries operational context—dashboards tuned to specific time ranges, anomaly detection baselines, capacity planning records. Leaving it behind isn't always acceptable, even if new data flows to the new system.</p><p>The good news: exporting from InfluxDB v1 produces line protocol, and HyperbyteDB's <code>/write</code> endpoint consumes line protocol. The two systems meet in the middle with no transformation step.</p><h2 id="step-1-export-from-influxdb-v1-with-influxinspect">Step 1: Export from InfluxDB v1 with influx_inspect</h2><p>InfluxDB ships with <code>influx_inspect</code>, a command-line tool for reading TSM shards. The <code>export</code> command dumps data as line protocol—exactly what HyperbyteDB needs.</p><pre><code># Export all data to a single line protocol file
+influx_inspect export -datadir /var/lib/influxdb/data \
+  -waldir /var/lib/influxdb/wal \
+  -out /tmp/influxdb-export.txt
+
+# For large datasets, compress the output
+influx_inspect export -datadir /var/lib/influxdb/data \
+  -waldir /var/lib/influxdb/wal \
+  -out /tmp/influxdb-export.txt &amp;&amp; \
+gzip /tmp/influxdb-export.txt</code></pre><p>Key flags:</p><ul><li><code>-datadir</code>: Path to your InfluxDB data directory (default: <code>/var/lib/influxdb/data</code>)</li><li><code>-waldir</code>: Path to your WAL directory (default: <code>/var/lib/influxdb/wal</code>)</li><li><code>-out</code>: Output file path</li><li><code>-compress</code>: Optional flag to gzip output directly</li></ul><p>The export reads all TSM shards across your databases and retention policies, writing one line per data point. Timestamps are preserved exactly, which matters for dashboards that reference specific time ranges.</p><h2 id="step-2-load-into-hyperbytedb-via-write">Step 2: Load into HyperbyteDB via /write</h2><p>HyperbyteDB's <code>POST /write</code> endpoint accepts InfluxDB line protocol with no modifications. Point it at the file you exported:</p><pre><code># Single-node import
+curl -XPOST 'http://localhost:8086/write?db=mydb' \
+  --data-binary @/tmp/influxdb-export.txt</code></pre><p>For large exports, use gzip compression to reduce transfer time and memory usage:</p><pre><code># Compressed import
+gunzip -c /tmp/influxdb-export.txt.gz | \
+curl -XPOST 'http://localhost:8086/write?db=mydb' \
+  --data-binary @-</code></pre><p>Query parameters available on <code>/write</code>:</p><ul><li><code>db</code> (required): Target database name in HyperbyteDB</li><li><code>rp</code>: Retention policy (defaults to the default RP)</li><li><code>precision</code>: Timestamp precision—<code>ns</code>, <code>us</code>, <code>ms</code>, <code>s</code>—defaults to nanoseconds</li><li><code>u</code> / <code>p</code>: Credentials if authentication is enabled</li></ul><p>If the export uses second-precision timestamps (common with <code>influx_inspect export</code>), specify that to avoid unnecessary conversion overhead:</p><pre><code>curl -XPOST 'http://localhost:8086/write?db=mydb&amp;precision=s' \
+  --data-binary @/tmp/influxdb-export.txt</code></pre><h2 id="handling-large-exports">Handling large exports</h2><p>HyperbyteDB's default maximum request body size is 25 MB. For exports exceeding this, split the file and send in batches:</p><pre><code># Split into 100,000-line chunks
+split -l 100000 /tmp/influxdb-export.txt chunk_
+
+# Import each chunk
+for file in chunk_*; do
+  curl -XPOST 'http://localhost:8086/write?db=mydb' \
+    --data-binary @$file
+done</code></pre><p>Alternatively, stream directly from gzip to avoid disk space for intermediate files:</p><pre><code>ssh user@influxdb-host "influx_inspect export -datadir /var/lib/influxdb/data \
+  -waldir /var/lib/influxdb/wal -out -" | \
+gzip -c | ssh user@hyperbyte-host "gunzip -c | \
+curl -XPOST 'http://localhost:8086/write?db=mydb' --data-binary @-"</code></pre><h2 id="verify-the-import">Verify the import</h2><p>After loading, confirm the data arrived correctly by querying from HyperbyteDB using the same InfluxQL you use in Grafana:</p><pre><code># Check point counts match
+curl -G 'http://localhost:8086/query' \
+  --data-urlencode 'db=mydb' \
+  --data-urlencode 'q=SELECT count(*) FROM cpu GROUP BY host'
+
+# Spot-check a specific time range
+curl -G 'http://localhost:8086/query' \
+  --data-urlencode 'db=mydb' \
+  --data-urlencode 'q=SELECT * FROM cpu WHERE time &gt; 2024-01-01T00:00:00Z AND time &lt; 2024-01-02T00:00:00Z'</code></pre><p>If your Grafana dashboards reference specific databases or retention policies, ensure those exist in HyperbyteDB before importing:</p><pre><code>curl -XPOST 'http://localhost:8086/query' \
+  --data-urlencode 'q=CREATE DATABASE mydb'</code></pre><h2 id="the-complete-migration-picture">The complete migration picture</h2><p>With this step, the migration story is complete:</p><ol><li>Export historical data from InfluxDB v1 with <code>influx_inspect export</code></li><li>Load it into HyperbyteDB via <code>POST /write</code></li><li>Update Telegraf, Grafana, and scripts to point to the new URL</li><li>New data flows live to HyperbyteDB; historical context stays intact</li></ol><p>HyperbyteDB's InfluxDB v1 compatibility isn't just a marketing claim—it's the same line protocol, the same InfluxQL, and the same <code>/write</code> endpoint that existing tooling already speaks. The export step from InfluxDB v1 produces exactly what HyperbyteDB consumes.</p><p>If you're evaluating the switch, run the export against your existing InfluxDB instance and load a sample into HyperbyteDB to validate your dashboards and queries before cutting over live traffic.</p><h2 id="related-reading">Related reading</h2><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="/influxdb-v1-migration-checklist-clients-url-change/"><div class="kg-bookmark-content"><div class="kg-bookmark-title">The InfluxDB v1 Migration Checklist: Which Clients Just Need a URL Change</div><div class="kg-bookmark-description">Most migration posts focus on one client. The reality is InfluxDB v1 stacks have Telegraf, Grafana, custom apps, and scripts. Here's the client-by-client migration checklist that tells you which integrations just need a URL change and which need adjustment.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="/assets/media/4d1ceff33a23b4ed.png" alt="" width="256" height="256"><span class="kg-bookmark-author">Hyperbyte Cloud</span><span class="kg-bookmark-publisher">Austin</span></div></div><div class="kg-bookmark-thumbnail"><img src="/assets/logo.png" alt="" onerror="this.style.display = 'none'" width="500" height="500"></div></a></figure><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="/influxdb-v1-compatibility-drop-in/"><div class="kg-bookmark-content"><div class="kg-bookmark-title">InfluxDB v1 Compatibility in HyperbyteDB: What Works, What Doesn't, and How to Cut Over</div><div class="kg-bookmark-description">HyperbyteDB speaks InfluxDB v1 line protocol and InfluxQL on the same endpoints. The precise version: endpoint coverage, InfluxQL support, the known differences, benchmark numbers and what to watch when cutting over.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="/assets/media/4d1ceff33a23b4ed.png" alt="" width="256" height="256"><span class="kg-bookmark-author">Hyperbyte Cloud</span><span class="kg-bookmark-publisher">Austin</span></div></div><div class="kg-bookmark-thumbnail"><img src="/assets/logo.png" alt="" onerror="this.style.display = 'none'" width="500" height="500"></div></a></figure><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="/influxdb-v1-kubernetes-operator-swap-keep-urls/"><div class="kg-bookmark-content"><div class="kg-bookmark-title">Run InfluxDB v1 on Kubernetes? Swap the Operator, Keep the URLs.</div><div class="kg-bookmark-description">Your InfluxDB v1 Kubernetes stack is already half the battle—Helm charts, StatefulSets, monitoring, alerting. HyperbyteDB's operator drops in as a replacement. Same InfluxDB v1 API endpoints, same client configs, same Grafana dashboards.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="/assets/media/4d1ceff33a23b4ed.png" alt="" width="256" height="256"><span class="kg-bookmark-author">Hyperbyte Cloud</span><span class="kg-bookmark-publisher">Austin</span></div></div><div class="kg-bookmark-thumbnail"><img src="/assets/logo.png" alt="" onerror="this.style.display = 'none'" width="500" height="500"></div></a></figure><hr><p><strong>Running InfluxDB v1 and hitting its limits?</strong> HyperbyteDB takes the same line protocol and the same InfluxQL — you change a URL. It’s <a href="/#database">open source and free to self-host</a>, or <a href="/cloud/">HyperbyteDB Cloud</a> runs it for you. See <a href="/pricing/">pricing</a>, or <a href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">request early access</a>.</p>
+    </div>
+        
+        <nav class="pager" aria-label="More posts"><a rel="prev" href="/influxdb-v1-compatibility-drop-in/"><small>Newer</small>InfluxDB v1 Compatibility in HyperbyteDB — What Works and What Doesn&#x27;t</a><a rel="next" href="/before-you-trust-our-numbers-run-this/"><small>Older</small>Before You Trust Our Numbers, Run This — HyperbyteDB Benchmarks</a></nav>
+      </article>
+      <section class="wrap" aria-labelledby="related-heading"><h2 id="related-heading">Keep reading</h2><div class="related"><a href="/influxdb-v1-migration-checklist-clients-url-change/"><strong>The InfluxDB v1 Migration Checklist: Which Clients Just Need a URL Change</strong><br><span>Most InfluxDB v1 migration guides focus on Telegraf. Here&#x27;s the complete client-by-client checklist covering Grafana, custom apps, Python sc</span></a><a href="/telegraf-grafana-alerts-stack-database-that-doesnt-buckle/"><strong>Your Telegraf + Grafana + Alerts Stack, Now on a Database That Doesn&#x27;t Buckle</strong><br><span>Point Telegraf and Grafana at a different URL and keep the rest of your observability stack. What transfers unchanged, where InfluxQL behavi</span></a><a href="/why-influxdb-enterprise-pricing-hits-a-wall/"><strong>Why InfluxDB Enterprise Pricing Hits a Wall</strong><br><span>Retention policies, continuous queries and replication sit behind InfluxDB&#x27;s paid tier. What that costs, what HA means for telemetry, and wh</span></a></div></section>
+      
+    <div class="cta-band">
+      <div class="wrap">
+        <p class="kicker">Next step</p>
+        <h2>Run it yourself, or let us run it.</h2>
+        <p class="lede">HyperbyteDB is free to self-host. Cloud early access is a short form, and a person reads it.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">Request early access</a>
+          <a class="btn btn-ghost" href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">Self-host on GitHub</a>
+          <a class="btn btn-ghost" href="/connect-with-us/">Talk to an engineer</a>
+          <a class="btn btn-ghost" href="https://docs.hyperbyte.cloud" rel="noopener">Read the docs</a>
+        </div>
+        
+      </div>
+    </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <span class="footer-brand"><img src="/assets/hyperbyte-cloud-mark.jpg" width="1024" height="388" alt="Hyperbyte Cloud" loading="lazy"> © 2026</span>
+        <nav aria-label="Footer">
+          <a href="/about-us/">About</a>
+          · <a href="/connect-with-us/">Contact</a>
+          · <a href="/pricing/">Pricing</a>
+          · <a href="/oss/">Open source</a>
+          · <a href="/privacy/">Privacy</a>
+          · <a href="/terms/">Terms</a>
+          · <a href="/dpa/">DPA</a>
+          · <a href="https://docs.hyperbyte.cloud" rel="noopener">Docs</a>
+          · <a href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">GitHub</a>
+          · <a href="mailto:hello@hyperbyte.cloud">hello@hyperbyte.cloud</a>
+        </nav>
+      </div>
+    </footer>
+    <script src="/assets/site.js"></script></body></html>

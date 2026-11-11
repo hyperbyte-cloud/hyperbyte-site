@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <meta property="og:locale" content="en_GB">
+    <title>HyperbyteDB Cloud — Managed InfluxDB v1-Compatible Database</title>
+    <meta name="description" content="Managed HyperbyteDB: the same InfluxDB v1 endpoints and InfluxQL, run for you. $299 per shard, plus disk. Early access now open.">
+    <link rel="canonical" href="https://hyperbyte.cloud/cloud/">
+    <meta name="robots" content="index, follow">
+    <meta property="og:site_name" content="Hyperbyte Cloud">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="HyperbyteDB Cloud — Managed InfluxDB v1-Compatible Database">
+    <meta property="og:description" content="Managed HyperbyteDB: the same InfluxDB v1 endpoints and InfluxQL, run for you. $299 per shard, plus disk. Early access now open.">
+    <meta property="og:url" content="https://hyperbyte.cloud/cloud/">
+    <meta property="og:image" content="https://hyperbyte.cloud/assets/logo.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="HyperbyteDB Cloud — Managed InfluxDB v1-Compatible Database">
+    <meta name="twitter:description" content="Managed HyperbyteDB: the same InfluxDB v1 endpoints and InfluxQL, run for you. $299 per shard, plus disk. Early access now open.">
+    <meta name="twitter:image" content="https://hyperbyte.cloud/assets/logo.png">
+    <meta property="article:published_time" content="2026-09-20">
+    <meta property="article:modified_time" content="2026-10-14">
+    <link rel="icon" href="/assets/logo.png" type="image/png">
+    <link rel="alternate" type="application/rss+xml" title="Hyperbyte Cloud" href="https://hyperbyte.cloud/rss.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/site.css">
+    <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://hyperbyte.cloud/#org", "name": "Hyperbyte Cloud", "url": "https://hyperbyte.cloud/", "email": "hello@hyperbyte.cloud", "logo": {"@type": "ImageObject", "url": "https://hyperbyte.cloud/assets/logo.png"}, "sameAs": ["https://github.com/hyperbyte-cloud/hyperbytedb"]}, {"@type": "Service", "name": "Hyperbyte Cloud", "serviceType": "Managed time-series database", "url": "https://hyperbyte.cloud/cloud/", "provider": {"@id": "https://hyperbyte.cloud/#org"}, "description": "Managed HyperbyteDB with InfluxDB v1 endpoints, replication, upgrades, and backups."}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://hyperbyte.cloud/"}, {"@type": "ListItem", "position": 2, "name": "Hyperbyte Cloud", "item": "https://hyperbyte.cloud/cloud/"}]}]}</script>
+</head>
+<body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="/">
+          <img src="/assets/logo.png" width="28" height="28" alt="">
+          Hyperbyte
+        </a>
+        <button class="menu-btn" type="button" data-menu aria-expanded="false" aria-controls="site-nav">Menu</button>
+        <nav class="nav" id="site-nav" data-nav aria-label="Primary"><a href="/">Product</a><a href="/cloud/" aria-current="page">Cloud</a><a href="/solutions/">Solutions</a><a href="/oss/">OSS</a><a href="/pricing/">Pricing</a><a href="/tag/blog/">Blog</a><a href="https://docs.hyperbyte.cloud" rel="noopener">Docs</a><a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">Request early access</a></nav>
+      </div>
+    </header>
+    <main id="main" class="product-main">
+      <section class="hero">
+        <div class="wrap">
+          <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a><span aria-hidden="true">/</span></li><li><span aria-current="page">Cloud</span></li></ol></nav>
+          <p class="kicker">Managed · Early access</p>
+          <h1>Point Telegraf at a URL.</h1>
+          <p class="lede">Cloud runs HyperbyteDB: tuning, replication, upgrades, backups, and capacity. The wire protocol stays InfluxDB v1. Early access is a small number of design partners, and a person reads every request.</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">Request early access</a>
+            <a class="btn btn-ghost" href="/connect-with-us/">Talk to an engineer</a>
+            <a class="btn btn-ghost" href="/#database">See the database</a>
+          </div>
+          <nav class="jump" aria-label="On this page">
+            <a href="#operate">What we run</a>
+            <a href="#stays">What stays</a>
+            <a href="#compare">Self-hosted or Cloud</a>
+            <a href="#ahead">Still ahead</a>
+          </nav>
+        </div>
+      </section>
+      <div class="wrap">
+        <dl class="metrics">
+          <div class="metric"><dt>Sustained ingest</dt><dd>1.5M<span> pts/s</span></dd><p>p95 under 250ms. The figure for a capacity plan. Scale-out is linear in the number of shards.</p></div>
+          <div class="metric"><dt>Compatibility</dt><dd>v1</dd><p>Same <span class="mono">/write</span> and <span class="mono">/query</span>. Same InfluxQL, Telegraf, and Grafana.</p></div>
+          <div class="metric"><dt>Access</dt><dd>Early</dd><p>Open to a small number of design partners. <a href="/pricing/">$299 per shard, plus disk</a>.</p></div>
+        </dl>
+      </div>
+      <section id="operate">
+        <div class="wrap split">
+          <div>
+            <p class="kicker">What we run</p>
+            <h2>The database, operated.</h2>
+            <p class="prose">Self-hosting HyperbyteDB is free. Cloud is the same core when you want the node, the replicas, and the upgrades off your rota. Hostnames live on <span class="mono">db.hyperbyte.cloud</span>.</p>
+            <ul class="checklist">
+              <li><span class="mark" aria-hidden="true">+</span><span>Tuning and capacity, against the measured ingest, not a brochure number.</span></li>
+              <li><span class="mark" aria-hidden="true">+</span><span>Replication. Master-master is in the binary; Cloud keeps it running.</span></li>
+              <li><span class="mark" aria-hidden="true">+</span><span>Upgrades, backups, and restore tests.</span></li>
+              <li><span class="mark" aria-hidden="true">+</span><span>Direct support. <a href="/connect-with-us/">Write to an engineer</a>, not a queue.</span></li>
+            </ul>
+          </div>
+          <aside class="panel">
+            <h3>Early access</h3>
+            <p>A short form. A person reads it. Design partners get a say in what lands next: regions, a published uptime SLA, compliance certification, or bring-your-own-cloud.</p>
+            <p class="more"><a href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">Request early access</a></p>
+          </aside>
+        </div>
+      </section>
+      <section id="stays">
+        <div class="wrap split">
+          <div>
+            <p class="kicker">What stays</p>
+            <h2>Clients do not move.</h2>
+            <div class="prose">
+              <p>Cloud is not a new query language. It is HyperbyteDB on a URL you point Telegraf at. Dashboards, alerts, and continuous queries stay.</p>
+            </div>
+            <ul class="checklist">
+              <li><span class="mark" aria-hidden="true">+</span><span>Same <span class="mono">/write</span> and <span class="mono">/query</span> endpoints.</span></li>
+              <li><span class="mark" aria-hidden="true">+</span><span>Same InfluxQL, Telegraf, and Grafana.</span></li>
+              <li><span class="mark" aria-hidden="true">+</span><span>Continuous queries and replication included.</span></li>
+            </ul>
+          </div>
+          <div>
+            <pre><span class="dim"># the cutover</span>
+<span class="dim">#   http://influxdb:8086</span>
+    https://&lt;host&gt;.db.hyperbyte.cloud
+
+<span class="dim"># Telegraf</span>
+[[outputs.influxdb]]
+  urls = ["https://&lt;host&gt;.db.hyperbyte.cloud"]
+  <span class="dim"># database, username, password: unchanged</span></pre>
+          </div>
+        </div>
+      </section>
+      <section id="compare">
+        <div class="wrap">
+          <p class="kicker">Self-hosted or Cloud</p>
+          <h2>Same database. Different operator.</h2>
+          <div class="split compare">
+            <article>
+              <p class="kicker">Self-hosted</p>
+              <h3>You run the node</h3>
+              <ul>
+                <li>Open source, free, no feature gates</li>
+                <li>Full InfluxDB v1 compatibility</li>
+                <li>Replication, backups, and upgrades are yours</li>
+                <li>Community support</li>
+              </ul>
+            </article>
+            <article class="after">
+              <p class="kicker">Cloud</p>
+              <h3>We run the node</h3>
+              <ul>
+                <li>Early access, for design partners</li>
+                <li>Full InfluxDB v1 compatibility</li>
+                <li>Replication, backups, and upgrades are managed</li>
+                <li>Direct support</li>
+                <li>$299 per shard, plus $0.20 per GB of disk</li>
+              </ul>
+            </article>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <caption>What changes, and what does not. <a href="/pricing/">Pricing notes</a>.</caption>
+              <thead><tr><th scope="col"> </th><th scope="col">Self-hosted</th><th scope="col">Cloud</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Licence</th><td><a href="/oss/">Open source, on GitHub</a></td><td>Early access</td></tr>
+                <tr><th scope="row">InfluxDB v1</th><td>Full</td><td>Full</td></tr>
+                <tr><th scope="row">Replication and backups</th><td>Yours to run</td><td>Managed</td></tr>
+                <tr><th scope="row">Support</th><td>Community</td><td><a href="/connect-with-us/">Direct</a></td></tr>
+                <tr><th scope="row">Price</th><td>Free</td><td><a href="/pricing/">$299 per shard, plus disk</a></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <section id="ahead">
+        <div class="wrap split">
+          <div>
+            <p class="kicker">Still ahead</p>
+            <h2>What early access is for.</h2>
+            <div class="prose">
+              <p>Regions, a published uptime SLA, compliance certification, and bring-your-own-cloud are not in the product today. Early access is how design partners choose the order. Pricing is on the <a href="/pricing/">pricing page</a>, not quoted per deal.</p>
+            </div>
+            <ul class="checklist">
+              <li><span class="mark" aria-hidden="true">+</span><span>Regions.</span></li>
+              <li><span class="mark" aria-hidden="true">+</span><span>A published uptime SLA.</span></li>
+              <li><span class="mark" aria-hidden="true">+</span><span>Formal compliance certification.</span></li>
+              <li><span class="mark" aria-hidden="true">+</span><span>Bring-your-own-cloud.</span></li>
+            </ul>
+          </div>
+          <aside class="panel">
+            <h3>The database underneath</h3>
+            <p>Cloud does not fork the engine. The open-source binary is what you get, with the operations taken off the page. Read the measured ingest before you size a design-partner workload.</p>
+            <p class="more"><a href="/#database">HyperbyteDB, in detail</a></p>
+          </aside>
+        </div>
+      </section>
+      <section id="faq">
+        <div class="wrap">
+          <p class="kicker">Questions</p>
+          <h2>Before you send the form.</h2>
+          <div class="faq">
+            <details>
+              <summary>Is Cloud a different API?</summary>
+              <p>No. It speaks line protocol and InfluxQL on the same <span class="mono">/write</span> and <span class="mono">/query</span> endpoints as self-hosted HyperbyteDB.</p>
+            </details>
+            <details>
+              <summary>What do you actually operate?</summary>
+              <p>Tuning, replication, upgrades, backups, and capacity. You keep Telegraf, Grafana, and the queries.</p>
+            </details>
+            <details>
+              <summary>What is the price?</summary>
+              <p>$299 a month per shard, 4 CPU and 16GB. Disk is $0.20 per GB-month. Start at one shard and add any number after that. The <a href="/pricing/">pricing page</a> has the full table. It is not quoted per deal.</p>
+            </details>
+            <details>
+              <summary>What is still ahead?</summary>
+              <p>Regions, a published uptime SLA, formal compliance certification, and bring-your-own-cloud. <a href="/connect-with-us/">Write to an engineer</a> if one of those is the reason you are waiting.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+      <div class="cta-band">
+        <div class="wrap">
+          <p class="kicker">Next step</p>
+          <h2>A short form. A person reads it.</h2>
+          <p class="lede">Early access is open to a small number of design partners. Self-hosting stays free if you would rather run the binary.</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">Request early access</a>
+            <a class="btn btn-ghost" href="/connect-with-us/">Talk to an engineer</a>
+            <a class="btn btn-ghost" href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">Self-host on GitHub</a>
+            <a class="btn btn-ghost" href="/pricing/">Pricing</a>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <span class="footer-brand"><img src="/assets/hyperbyte-cloud-mark.jpg" width="1024" height="388" alt="Hyperbyte Cloud" loading="lazy"> © 2026</span>
+        <nav aria-label="Footer">
+          <a href="/about-us/">About</a>
+          · <a href="/connect-with-us/">Contact</a>
+          · <a href="/pricing/">Pricing</a>
+          · <a href="/oss/">Open source</a>
+          · <a href="/privacy/">Privacy</a>
+          · <a href="/terms/">Terms</a>
+          · <a href="/dpa/">DPA</a>
+          · <a href="https://docs.hyperbyte.cloud" rel="noopener">Docs</a>
+          · <a href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">GitHub</a>
+          · <a href="mailto:hello@hyperbyte.cloud">hello@hyperbyte.cloud</a>
+        </nav>
+      </div>
+    </footer>
+    <script src="/assets/site.js"></script>
+</body>
+</html>

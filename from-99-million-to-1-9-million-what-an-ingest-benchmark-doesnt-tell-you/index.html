@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <meta property="og:locale" content="en_GB">
+    <title>From 99M to 1.9M Rows/sec: What Benchmarks Don&#x27;t Tell You</title>
+    <meta name="description" content="A benchmark that drops from 99 million to 1.9 million rows/sec under realistic conditions, and why headline ingest numbers mislead you.">
+    <link rel="canonical" href="https://hyperbyte.cloud/from-99-million-to-1-9-million-what-an-ingest-benchmark-doesnt-tell-you/">
+    <meta name="robots" content="index, follow">
+    <meta property="og:site_name" content="Hyperbyte Cloud">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="From 99M to 1.9M Rows/sec: What Benchmarks Don&#x27;t Tell You">
+    <meta property="og:description" content="A benchmark that drops from 99 million to 1.9 million rows/sec under realistic conditions, and why headline ingest numbers mislead you.">
+    <meta property="og:url" content="https://hyperbyte.cloud/from-99-million-to-1-9-million-what-an-ingest-benchmark-doesnt-tell-you/">
+    <meta property="og:image" content="https://hyperbyte.cloud/assets/media/a02e269d88c9ffd1.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="From 99M to 1.9M Rows/sec: What Benchmarks Don&#x27;t Tell You">
+    <meta name="twitter:description" content="A benchmark that drops from 99 million to 1.9 million rows/sec under realistic conditions, and why headline ingest numbers mislead you.">
+    <meta name="twitter:image" content="https://hyperbyte.cloud/assets/media/a02e269d88c9ffd1.png">
+    <meta property="article:published_time" content="2026-06-25">
+    <meta property="article:modified_time" content="2026-09-22">
+    <link rel="icon" href="/assets/logo.png" type="image/png">
+    <link rel="alternate" type="application/rss+xml" title="Hyperbyte Cloud" href="https://hyperbyte.cloud/rss.xml">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/site.css">
+    <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://hyperbyte.cloud/#org", "name": "Hyperbyte Cloud", "url": "https://hyperbyte.cloud/", "email": "hello@hyperbyte.cloud", "logo": {"@type": "ImageObject", "url": "https://hyperbyte.cloud/assets/logo.png"}, "sameAs": ["https://github.com/hyperbyte-cloud/hyperbytedb"]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://hyperbyte.cloud/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://hyperbyte.cloud/tag/blog/"}, {"@type": "ListItem", "position": 3, "name": "From 99M to 1.9M Rows/sec: What Benchmarks Don't Tell You", "item": "https://hyperbyte.cloud/from-99-million-to-1-9-million-what-an-ingest-benchmark-doesnt-tell-you/"}]}, {"@type": "BlogPosting", "headline": "From 99M to 1.9M Rows/sec: What Benchmarks Don't Tell You", "description": "A benchmark that drops from 99 million to 1.9 million rows/sec under realistic conditions, and why headline ingest numbers mislead you.", "datePublished": "2026-06-25", "dateModified": "2026-09-22", "author": {"@type": "Person", "name": "Austin", "url": "https://hyperbyte.cloud/author/austin/"}, "publisher": {"@id": "https://hyperbyte.cloud/#org"}, "mainEntityOfPage": "https://hyperbyte.cloud/from-99-million-to-1-9-million-what-an-ingest-benchmark-doesnt-tell-you/", "image": "https://hyperbyte.cloud/assets/media/a02e269d88c9ffd1.png", "keywords": "analytics, clickhouse, influxdb", "wordCount": 2105, "inLanguage": "en-GB"}]}</script>
+    <link rel="next" href="https://hyperbyte.cloud/scaling-chdb-inserts-from-5-million-to-99-million-rows-second/">
+</head><body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="/">
+          <img src="/assets/logo.png" width="28" height="28" alt="">
+          Hyperbyte
+        </a>
+        <button class="menu-btn" type="button" data-menu aria-expanded="false" aria-controls="site-nav">Menu</button>
+        <nav class="nav" id="site-nav" data-nav aria-label="Primary"><a href="/">Product</a><a href="/cloud/">Cloud</a><a href="/solutions/">Solutions</a><a href="/oss/">OSS</a><a href="/pricing/">Pricing</a><a href="/tag/blog/" aria-current="page">Blog</a><a href="https://docs.hyperbyte.cloud" rel="noopener">Docs</a><a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">Request early access</a></nav>
+      </div>
+    </header>
+    <main id="main">
+      <article class="wrap page-head">
+        <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a><span aria-hidden="true">/</span></li><li><a href="/tag/blog/">Blog</a><span aria-hidden="true">/</span></li><li><span aria-current="page">From 99M to 1.9M Rows/sec: What Benchmarks Don&#x27;t Tell You</span></li></ol></nav>
+        <h1>From 99M to 1.9M Rows/sec: What Benchmarks Don&#x27;t Tell You</h1>
+        <p class="post-meta"><time datetime="2026-06-25">2026-06-25</time><span>9 min read</span><a href="/author/austin/">Austin</a><span><a href="/tag/analytics/">analytics</a> · clickhouse · <a href="/tag/influxdb/">influxdb</a></span></p>
+        <figure class="hero-img"><img src="/assets/media/a02e269d88c9ffd1.png" alt="From 99M to 1.9M Rows/sec: What Benchmarks Don&#x27;t Tell You" width="2000" height="1091"></figure>
+        <nav class="toc" aria-label="On this page"><p>On this page</p><ol><li><a href="#the-ramp">The ramp</a></li><li><a href="#why-the-closed-loop-benchmark-would-have-lied-to-us">Why the  closed-loop  benchmark would have lied to us</a></li><li><a href="#where-its-actually-constrained">Where it&#x27;s actually constrained</a></li><li><a href="#the-real-lesson-every-layer-is-an-order-of-magnitude">The real lesson: every layer is an order of magnitude</a></li><li><a href="#related-reading">Related reading</a></li></ol></nav>
+        <div class="prose"><p><em>We measured an embedded ClickHouse inserting ~99 million rows/second. Then we<br>put a real database in front of it — a network endpoint, line/msgpack parsing, a<br>durable write-ahead log, series indexing — and ran a ramp test on the same<br>machine. It ingests ~1.9 million points/second at the wall, ~1.5M with latency<br>you'd actually ship. This is the story of the missing 98%, and why the number on<br>the benchmark slide is almost never the number you get.</em></p><hr><p>In an <a href="/scaling-chdb-inserts-from-5-million-to-99-million-rows-second/">earlier post</a> we pushed<br>chDB — ClickHouse compiled into a library, running in-process — to <strong>~99 million<br>rows/second</strong> on a 24-core/48-thread AMD EPYC 7413. The recipe was: pre-built<br>Arrow <code>RecordBatches</code>, a connection pool with one connection per core, a narrow<br><code>series_id</code> fact table, and 200k-row batches inserted straight through the FFI.<br>No network. No parsing. No durability. Just the engine, fed exactly the shape it<br>likes, as fast as 48 cores can convert-sort-compress.</p><p>That number is real, and it's useful: it's the ceiling. But it's a <em>component</em><br>benchmark — it measures the insert engine in isolation. HyperbyteDB is a<br>time-series database built <em>on</em> that engine, and a database has to do all the<br>things the microbenchmark deliberately skipped:</p><ul><li>accept writes over <strong>HTTP</strong>, from many clients at once;</li><li><strong>parse</strong> them (InfluxDB line protocol or msgpack) into typed points;</li><li><strong>hash</strong> each point's tag-set into a stable <code>series_id</code> and check cardinality;</li><li>build the columnar Arrow batch;</li><li><strong>durably log</strong> every write to a WAL before acknowledging, so a crash doesn't<br>lose data;</li><li>and only <em>then</em> flush to chDB.</li></ul><p>So we asked the obvious question: on the <strong>same EPYC box</strong>, with the same chDB<br>underneath, how many points/second can the whole database actually ingest — and<br>where does it stop?</p><p>We ran it as a <strong>ramp</strong>, not a saturation test, because the difference between<br>those two is most of the point of this post.</p><hr><h2 id="the-ramp">The ramp</h2><p>We drove the server with <a href="https://grafana.com/docs/k6/?ref=hyperbyte.cloud" rel="noopener">k6</a> using an<br><strong>open-model</strong> load generator (<code>constant-arrival-rate</code>): we <em>offer</em> a fixed<br>number of write requests per second and watch what comes back. Each request is a<br>50,000-point msgpack batch, pre-encoded to a file so the client is never the<br>bottleneck. We stepped the offered rate up and recorded, at each step, the<br>achieved throughput, the 95th-percentile request latency, and how many requests<br>k6 had to <strong>drop</strong> because it couldn't even start them on time.</p>
+<!--kg-card-begin: html-->
+<table>
+<thead>
+<tr>
+<th style="text-align:right">Offered</th>
+<th style="text-align:right">Offered pts/s</th>
+<th style="text-align:right">Achieved pts/s</th>
+<th style="text-align:right">% of offered</th>
+<th style="text-align:right">p95 latency</th>
+<th style="text-align:right">dropped</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">8 req/s</td>
+<td style="text-align:right">400,000</td>
+<td style="text-align:right">397,664</td>
+<td style="text-align:right">99.4%</td>
+<td style="text-align:right">248 ms</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:right">16 req/s</td>
+<td style="text-align:right">800,000</td>
+<td style="text-align:right">794,445</td>
+<td style="text-align:right">99.3%</td>
+<td style="text-align:right">220 ms</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:right">24 req/s</td>
+<td style="text-align:right">1,200,000</td>
+<td style="text-align:right">1,190,597</td>
+<td style="text-align:right">99.2%</td>
+<td style="text-align:right">226 ms</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:right">30 req/s</td>
+<td style="text-align:right">1,500,000</td>
+<td style="text-align:right">1,486,613</td>
+<td style="text-align:right">99.1%</td>
+<td style="text-align:right">281 ms</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:right">34 req/s</td>
+<td style="text-align:right">1,700,000</td>
+<td style="text-align:right">1,624,099</td>
+<td style="text-align:right">95.5%</td>
+<td style="text-align:right"><strong>733 ms</strong></td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:right">40 req/s</td>
+<td style="text-align:right">2,000,000</td>
+<td style="text-align:right">1,777,944</td>
+<td style="text-align:right">88.9%</td>
+<td style="text-align:right"><strong>3.46 s</strong></td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:right">50 req/s</td>
+<td style="text-align:right">2,500,000</td>
+<td style="text-align:right">1,898,060</td>
+<td style="text-align:right">75.9%</td>
+<td style="text-align:right"><strong>5.89 s</strong></td>
+<td style="text-align:right"><strong>54</strong></td>
+</tr>
+</tbody>
+</table>
+<!--kg-card-end: html-->
+<p>There are three regimes here, and they matter more than any single number:</p><ol><li><strong>Linear (≤ 1.5M pts/s).</strong> Achieved tracks offered to within 1%, and p95<br>latency sits flat around a quarter-second. The database is comfortably<br>keeping up; you could run here all day.</li><li><strong>The knee (~1.7M).</strong> Achieved starts falling behind offered (95.5%), and p95<br>latency <strong>2.6×'s</strong> from 281 ms to 733 ms. The queue is starting to back up.</li><li><strong>Saturation (≥ 2.0M).</strong> Throughput flattens toward a ceiling — it crawls<br>from 1.78M to 1.9M while offered load jumps 25% — and latency goes to<br><strong>seconds</strong>. At 2.5M offered, k6 gives up on 54 requests entirely.</li></ol><p><strong>Peak achievable: ~1.9M points/second. Comfortably sustainable: ~1.5M.</strong> On the<br>same box where the engine alone does 99M.</p><hr><h2 id="why-the-closed-loop-benchmark-would-have-lied-to-us">Why the <em>closed-loop</em> benchmark would have lied to us</h2><p>Before the ramp, we ran the conventional thing: a <strong>closed-model</strong> saturation<br>test — N virtual users, each firing the next request as soon as the last<br>returns, sweeping N from 64 to 512. Here's what that reported:</p>
+<!--kg-card-begin: html-->
+<table>
+<thead>
+<tr>
+<th style="text-align:right">Virtual users</th>
+<th style="text-align:right">points/s</th>
+<th style="text-align:right">p95 latency</th>
+<th style="text-align:right">errors</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">64</td>
+<td style="text-align:right">1.63M</td>
+<td style="text-align:right">2.29 s</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:right">128</td>
+<td style="text-align:right">1.57M</td>
+<td style="text-align:right">4.50 s</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:right">256</td>
+<td style="text-align:right">1.68M</td>
+<td style="text-align:right">8.79 s</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td style="text-align:right">512</td>
+<td style="text-align:right">1.65M</td>
+<td style="text-align:right">19.57 s</td>
+<td style="text-align:right">0</td>
+</tr>
+</tbody>
+</table>
+<!--kg-card-end: html-->
+<p>Read that table the way a benchmark slide would: <strong>"1.6M points/sec, zero<br>errors, scales cleanly to 512 concurrent clients."</strong> Every run "passed." Nothing<br>failed. If you're reporting a headline throughput number, this is the table you<br>screenshot.</p><p>It's also profoundly misleading. Throughput is <em>flat</em> while latency climbs<br><strong>linearly</strong> with concurrency — from 2.3s to 19.6s — which is the unmistakable<br>signature of a system that saturated at 64 users and spent the next 448 just<br><em>queueing</em>. A closed loop can't drop a request; it just waits. So it never shows<br>you backpressure. It reports a peak (1.6M) as if it were an operating point,<br>when in reality nobody would accept 19-second write latency.</p><p>The open-model ramp tells the truth the closed loop hides: the <em>usable</em> number<br>is ~1.5M (before the latency knee), the <em>peak</em> is ~1.9M, and past that the<br>system sheds load. <strong>Same server, same minute — the benchmark methodology alone<br>moved the story from "1.6M, scales great" to "1.5M usable, 1.9M cliff."</strong></p><p>That's the first way benchmarks don't show real-world values: a saturation<br>number measured without a latency budget is a number no one can run at.</p><hr><h2 id="where-its-actually-constrained">Where it's actually constrained</h2><p>So why 1.9M and not 99M? We instrumented every stage of the write path<br>(Prometheus histograms on parse, series registration, Arrow build, and WAL<br>commit) and watched the box under load. Two findings.</p><p><strong>Finding 1: the durable WAL is single-threaded — and it's the binding<br>constraint.</strong> Every write is acknowledged only after it's in a RocksDB<br>write-ahead log. HyperbyteDB uses a group-commit design: a single writer thread<br>drains a queue, coalesces many requests into one RocksDB batch, and commits. At<br>saturation that one thread was processing ~35 requests (1.75M points) per batch<br>in ~1.0–1.3s — i.e. it tops out around <strong>1.3–1.7M points/s</strong>, which is <em>exactly</em><br>the ceiling we measured. Under load the box was only ~60% busy with the server<br>pinned to ~6–10 of its 48 cores: not compute-bound, <strong>serialization-bound</strong>.</p><p>We landed one optimization for this post. The writer was <code>bincode</code>-serializing<br>every point <em>inline</em>, on the single thread. Since those bytes don't depend on<br>the commit sequence number, we moved the serialization <strong>off</strong> the writer into<br>the parallel per-request tasks; the writer now just commits pre-encoded bytes.<br>That lifted the ceiling <strong>~1.3M → ~1.65M (+27%)</strong> with no change to durability<br>semantics. The remaining writer cost is the RocksDB commit itself (a ~175MB<br>batch) plus per-row sequence stamping — both still single-threaded, and the next<br>wall.</p><p><strong>Finding 2: even with a free WAL, the front door has a per-point CPU floor.</strong><br>Strip the WAL away entirely and you still pay, <em>per request</em>, for the work that<br>makes this a database instead of a memcpy:</p>
+<!--kg-card-begin: html-->
+<table>
+<thead>
+<tr>
+<th>Stage (per 50k-point request)</th>
+<th style="text-align:right">Time</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>msgpack parse</td>
+<td style="text-align:right">64 ms</td>
+<td>typed points</td>
+</tr>
+<tr>
+<td><strong>series-id hashing + cardinality</strong></td>
+<td style="text-align:right"><strong>478 ms</strong></td>
+<td>the expensive part</td>
+</tr>
+<tr>
+<td>Arrow batch build</td>
+<td style="text-align:right">264 ms</td>
+<td>columnar encode</td>
+</tr>
+<tr>
+<td><strong>total parallelizable work</strong></td>
+<td style="text-align:right"><strong>~806 ms</strong></td>
+<td>≈ <strong>16 µs / point</strong></td>
+</tr>
+</tbody>
+</table>
+<!--kg-card-end: html-->
+<p>16 µs/point, spread across 48 cores, is a <strong>~3M points/s</strong> ceiling — <em>before</em> a<br>single byte is made durable. To hit 100M points/s you'd need ~480 ns/point of<br>total budget; we spend ~16,000 ns. The front door is ~33× over budget on CPU<br>alone, and that's on a <em>friendly, low-cardinality</em> dataset where the schema is<br>cached. The headline engine number lives on the other side of all of this.</p><p><strong>Finding 3 (the reassuring one): chDB isn't the problem.</strong> When we measured<br>HyperbyteDB's <em>flush</em> path — the WAL-to-chDB side, using the same connection<br>pool from the original benchmark — it sustained <strong>~22M rows/s</strong>, and was<br><em>starved</em>: ingest could only feed it 1.5M/s, so it was never working hard. The<br>engine underneath is fine. The cost is everything you wrap around it to make it<br>usable.</p><hr><h2 id="the-real-lesson-every-layer-is-an-order-of-magnitude">The real lesson: every layer is an order of magnitude</h2><p>Line them up and the shape is unmistakable:</p>
+<!--kg-card-begin: html-->
+<table>
+<thead>
+<tr>
+<th>What you're measuring</th>
+<th style="text-align:right">Throughput</th>
+<th>What it includes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>chDB raw insert (component benchmark)</td>
+<td style="text-align:right"><strong>~99M rows/s</strong></td>
+<td>pre-built Arrow → 48 conns → 48 tables. No network, parse, or durability.</td>
+</tr>
+<tr>
+<td>HyperbyteDB flush → chDB</td>
+<td style="text-align:right"><strong>~22M rows/s</strong></td>
+<td>columnar Arrow + the connection pool + part-commit. Still no front door.</td>
+</tr>
+<tr>
+<td>HyperbyteDB end-to-end, <strong>peak</strong></td>
+<td style="text-align:right"><strong>~1.9M pts/s</strong></td>
+<td>HTTP + parse + series hashing + durable WAL. Latency in seconds.</td>
+</tr>
+<tr>
+<td>HyperbyteDB end-to-end, <strong>sustainable</strong></td>
+<td style="text-align:right"><strong>~1.5M pts/s</strong></td>
+<td>the same, at a latency you'd actually run (p95 ~250 ms).</td>
+</tr>
+</tbody>
+</table>
+<!--kg-card-end: html-->
+<p>Each step down is roughly <strong>an order of magnitude</strong>, and each step is something<br>the layer above it deliberately didn't measure. 99M is the engine doing nothing<br>but inserting. 22M is the engine doing durable, columnar, pooled inserts. 1.9M<br>is the engine plus a network, a parser, an index, and a write-ahead log. 1.5M is<br>all of that, measured honestly — at an acceptable latency rather than at the<br>cliff.</p><p>None of these numbers is "wrong." The 99M is a true ceiling and a useful one —<br>it tells you the engine will never be your bottleneck, which is exactly what<br>Finding 3 confirmed. But it is not, and was never, an ingest rate. The number<br>you can put in a capacity plan is the one at the bottom of that table: <strong>~1.5<br>million points per second, on a 48-thread server, end to end, durable, at<br>sub-second p95</strong> — about <strong>66× below</strong> the engine's component number.</p><p>So when you read "X million inserts per second," ask the three questions this<br>ramp answered: <em>Inserts of what, through what?</em> (a raw columnar batch, or a<br>parsed-and-indexed write over the wire). <em>At what latency?</em> (the knee, or the<br>cliff). <em>And measured how?</em> (an open model that can drop requests, or a closed<br>loop that just queues and calls it a pass). The gap between the slide and<br>production is usually hiding in those three answers.</p><hr><h3 id="reproducing-these-numbers">Reproducing these numbers</h3><p>Hardware: AMD EPYC 7413, 24 cores / 48 threads, 251 GB RAM, Debian 12, the same<br>box as the chDB component benchmark. Single HyperbyteDB node, <code>pool_size=32</code>,<br><code>max_points_per_batch=200000</code>, msgpack writes, a low-cardinality dataset (a<br>handful of series across <code>cpu</code>/<code>memory</code>/<code>disk</code>) chosen to stress the front door<br>rather than chDB. Numbers are single representative runs and vary ±10%<br>run-to-run; the <em>shape</em> — linear region, knee, cliff — is stable.</p><pre><code class="language-sh"># Pre-generate a fixed 50k-point msgpack payload (no client-side encoding cost):
+python3 gen_payload.py 50000 payload_50k.msgpack
+
+# Open-model ramp: step the offered request rate and watch achieved pts/s,
+# p95 latency, and dropped_iterations (the saturation signal a closed loop hides):
+for R in 8 16 24 30 34 40 50; do
+  RATE=$R POINTS_PER_REQUEST=50000 DURATION=20s \
+    PAYLOAD_FILE=payload_50k.msgpack k6 run --quiet ramp_ingest.js
+done
+
+# Closed-model contrast (the table that "passes" but lies):
+for V in 64 128 256 512; do
+  VUS=$V POINTS_PER_REQUEST=50000 DURATION=15s \
+    PAYLOAD_FILE=payload_50k.msgpack k6 run --quiet bench_ingest.js
+done
+</code></pre><h2 id="related-reading">Related reading</h2><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="/scaling-chdb-inserts-from-5-million-to-99-million-rows-second/"><div class="kg-bookmark-content"><div class="kg-bookmark-title">Scaling chDB inserts from 5 million to 99 million rows/second</div><div class="kg-bookmark-description">How an embedded ClickHouse — running in-process, not as a server — scales its write path with a connection pool, and how far that actually goes when you give it real cores. chDB is ClickHouse compiled into a library. There's no server, no socket, no network</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="/assets/media/4d1ceff33a23b4ed.png" alt="" width="256" height="256"><span class="kg-bookmark-author">Hyperbyte Cloud</span><span class="kg-bookmark-publisher">Austin</span></div></div><div class="kg-bookmark-thumbnail"><img src="/assets/media/e722ae59c8724aff.png" alt="" onerror="this.style.display = 'none'" width="2000" height="1091"></div></a></figure><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="/before-you-trust-our-numbers-run-this/"><div class="kg-bookmark-content"><div class="kg-bookmark-title">Before you trust our numbers, run this.</div><div class="kg-bookmark-description">Benchmark numbers mean nothing without context. Here's how to run HyperbyteDB's own ingestion benchmarks, what each stage actually measures, and the environment metadata you need before comparing anything.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="/assets/media/4d1ceff33a23b4ed.png" alt="" width="256" height="256"><span class="kg-bookmark-author">Hyperbyte Cloud</span><span class="kg-bookmark-publisher">Austin</span></div></div><div class="kg-bookmark-thumbnail"><img src="/assets/logo.png" alt="" onerror="this.style.display = 'none'" width="500" height="500"></div></a></figure><figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="/stop-watching-metrics-explode-high-cardinality-without-rewrite/"><div class="kg-bookmark-content"><div class="kg-bookmark-title">Stop Watching Your Metrics Explode: High Cardinality Without the Rewrite</div><div class="kg-bookmark-description">InfluxDB v1 crawls when cardinality hits the roof. HyperbyteDB handles it with columnar storage and ClickHouse—same InfluxQL, no rewrite, no OOM. Here's how.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="/assets/media/4d1ceff33a23b4ed.png" alt="" width="256" height="256"><span class="kg-bookmark-author">Hyperbyte Cloud</span><span class="kg-bookmark-publisher">Austin</span></div></div><div class="kg-bookmark-thumbnail"><img src="/assets/logo.png" alt="" onerror="this.style.display = 'none'" width="500" height="500"></div></a></figure><hr><p><strong>Running InfluxDB v1 and hitting its limits?</strong> HyperbyteDB takes the same line protocol and the same InfluxQL — you change a URL. It’s <a href="/#database">open source and free to self-host</a>, or <a href="/cloud/">HyperbyteDB Cloud</a> runs it for you. See <a href="/pricing/">pricing</a>, or <a href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">request early access</a>.</p>
+    </div>
+        
+        <nav class="pager" aria-label="More posts"><a rel="next" href="/scaling-chdb-inserts-from-5-million-to-99-million-rows-second/"><small>Older</small>Scaling chDB Inserts from 5M to 99M Rows/sec</a></nav>
+      </article>
+      <section class="wrap" aria-labelledby="related-heading"><h2 id="related-heading">Keep reading</h2><div class="related"><a href="/why-influxdb-enterprise-pricing-hits-a-wall/"><strong>Why InfluxDB Enterprise Pricing Hits a Wall</strong><br><span>Retention policies, continuous queries and replication sit behind InfluxDB&#x27;s paid tier. What that costs, what HA means for telemetry, and wh</span></a><a href="/telegraf-grafana-alerts-stack-database-that-doesnt-buckle/"><strong>Your Telegraf + Grafana + Alerts Stack, Now on a Database That Doesn&#x27;t Buckle</strong><br><span>Point Telegraf and Grafana at a different URL and keep the rest of your observability stack. What transfers unchanged, where InfluxQL behavi</span></a><a href="/influxdb-v1-kubernetes-operator-swap-keep-urls/"><strong>Run InfluxDB v1 on Kubernetes? Swap the Operator, Keep the URLs</strong><br><span>Replace InfluxDB v1 on Kubernetes with HyperbyteDB&#x27;s operator. Same /write and /query endpoints, same Telegraf and Grafana configs, master-m</span></a></div></section>
+      
+    <div class="cta-band">
+      <div class="wrap">
+        <p class="kicker">Next step</p>
+        <h2>Run it yourself, or let us run it.</h2>
+        <p class="lede">HyperbyteDB is free to self-host. Cloud early access is a short form, and a person reads it.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">Request early access</a>
+          <a class="btn btn-ghost" href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">Self-host on GitHub</a>
+          <a class="btn btn-ghost" href="/connect-with-us/">Talk to an engineer</a>
+          <a class="btn btn-ghost" href="https://docs.hyperbyte.cloud" rel="noopener">Read the docs</a>
+        </div>
+        
+      </div>
+    </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <span class="footer-brand"><img src="/assets/hyperbyte-cloud-mark.jpg" width="1024" height="388" alt="Hyperbyte Cloud" loading="lazy"> © 2026</span>
+        <nav aria-label="Footer">
+          <a href="/about-us/">About</a>
+          · <a href="/connect-with-us/">Contact</a>
+          · <a href="/pricing/">Pricing</a>
+          · <a href="/oss/">Open source</a>
+          · <a href="/privacy/">Privacy</a>
+          · <a href="/terms/">Terms</a>
+          · <a href="/dpa/">DPA</a>
+          · <a href="https://docs.hyperbyte.cloud" rel="noopener">Docs</a>
+          · <a href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">GitHub</a>
+          · <a href="mailto:hello@hyperbyte.cloud">hello@hyperbyte.cloud</a>
+        </nav>
+      </div>
+    </footer>
+    <script src="/assets/site.js"></script></body></html>
