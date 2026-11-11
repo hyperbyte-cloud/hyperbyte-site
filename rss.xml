@@ -1,75 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Hyperbyte Cloud</title>
     <link>https://hyperbyte.cloud/tag/blog/</link>
     <description>Notes on HyperbyteDB, InfluxDB v1 compatibility, and time-series engineering.</description>
+    <language>en-gb</language>
+    <lastBuildDate>Wed, 11 Nov 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://hyperbyte.cloud/rss.xml" rel="self" type="application/rss+xml"/>
     <item>
       <title>From 99M to 1.9M Rows/sec: What Benchmarks Don&#x27;t Tell You</title>
       <link>https://hyperbyte.cloud/from-99-million-to-1-9-million-what-an-ingest-benchmark-doesnt-tell-you/</link>
-      <guid>https://hyperbyte.cloud/from-99-million-to-1-9-million-what-an-ingest-benchmark-doesnt-tell-you/</guid>
-      <pubDate>2026-06-25</pubDate>
+      <guid isPermaLink="true">https://hyperbyte.cloud/from-99-million-to-1-9-million-what-an-ingest-benchmark-doesnt-tell-you/</guid>
+      <pubDate>Thu, 25 Jun 2026 00:00:00 +0000</pubDate>
       <description>A benchmark that drops from 99 million to 1.9 million rows/sec under realistic conditions, and why headline ingest numbers mislead you.</description>
-    </item><item>
+    </item>
+    <item>
       <title>Scaling chDB Inserts from 5M to 99M Rows/sec</title>
       <link>https://hyperbyte.cloud/scaling-chdb-inserts-from-5-million-to-99-million-rows-second/</link>
-      <guid>https://hyperbyte.cloud/scaling-chdb-inserts-from-5-million-to-99-million-rows-second/</guid>
-      <pubDate>2026-06-20</pubDate>
+      <guid isPermaLink="true">https://hyperbyte.cloud/scaling-chdb-inserts-from-5-million-to-99-million-rows-second/</guid>
+      <pubDate>Sat, 20 Jun 2026 00:00:00 +0000</pubDate>
       <description>How we took chDB insert throughput from 5 million to 99 million rows per second: batching, the write path, and where the real bottlenecks were.</description>
-    </item><item>
-      <title>Why InfluxDB Enterprise Pricing Hits a Wall</title>
-      <link>https://hyperbyte.cloud/why-influxdb-enterprise-pricing-hits-a-wall/</link>
-      <guid>https://hyperbyte.cloud/why-influxdb-enterprise-pricing-hits-a-wall/</guid>
-      <pubDate>2026-06-02</pubDate>
-      <description>Retention policies, continuous queries and replication sit behind InfluxDB&#x27;s paid tier. What that costs, what HA means for telemetry, and what ships in HyperbyteDB&#x27;s open-source binary.</description>
-    </item><item>
-      <title>Your Telegraf + Grafana + Alerts Stack, Now on a Database That Doesn&#x27;t Buckle</title>
-      <link>https://hyperbyte.cloud/telegraf-grafana-alerts-stack-database-that-doesnt-buckle/</link>
-      <guid>https://hyperbyte.cloud/telegraf-grafana-alerts-stack-database-that-doesnt-buckle/</guid>
-      <pubDate>2026-06-02</pubDate>
-      <description>Point Telegraf and Grafana at a different URL and keep the rest of your observability stack. What transfers unchanged, where InfluxQL behaviour differs, and what ships in the open-source binary.</description>
-    </item><item>
+    </item>
+    <item>
       <title>Run InfluxDB v1 on Kubernetes? Swap the Operator, Keep the URLs</title>
       <link>https://hyperbyte.cloud/influxdb-v1-kubernetes-operator-swap-keep-urls/</link>
-      <guid>https://hyperbyte.cloud/influxdb-v1-kubernetes-operator-swap-keep-urls/</guid>
-      <pubDate>2026-06-02</pubDate>
-      <description>Replace InfluxDB v1 on Kubernetes with HyperbyteDB&#x27;s operator. Same /write and /query endpoints, same Telegraf and Grafana configs, master-master replication included.</description>
-    </item><item>
-      <title>High Cardinality Without the Rewrite</title>
-      <link>https://hyperbyte.cloud/stop-watching-metrics-explode-high-cardinality-without-rewrite/</link>
-      <guid>https://hyperbyte.cloud/stop-watching-metrics-explode-high-cardinality-without-rewrite/</guid>
-      <pubDate>2026-04-30</pubDate>
-      <description>InfluxDB v1 slows to a crawl with high-cardinality tags. HyperbyteDB handles it with columnar storage and ClickHouse—keep your InfluxQL, change one URL, tag everything.</description>
-    </item><item>
+      <guid isPermaLink="true">https://hyperbyte.cloud/influxdb-v1-kubernetes-operator-swap-keep-urls/</guid>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <description>Replace InfluxDB v1 on Kubernetes with HyperbyteDB&#x27;s operator. Same /write and /query endpoints, same Telegraf and Grafana configs, replication included.</description>
+    </item>
+    <item>
+      <title>Telegraf, Grafana, and Alerts on a Database That Doesn&#x27;t Buckle</title>
+      <link>https://hyperbyte.cloud/telegraf-grafana-alerts-stack-database-that-doesnt-buckle/</link>
+      <guid isPermaLink="true">https://hyperbyte.cloud/telegraf-grafana-alerts-stack-database-that-doesnt-buckle/</guid>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <description>Point Telegraf and Grafana at a new URL and keep the rest of the stack. What transfers unchanged, where InfluxQL differs, and what ships in the binary.</description>
+    </item>
+    <item>
+      <title>Why InfluxDB Enterprise Pricing Hits a Wall</title>
+      <link>https://hyperbyte.cloud/why-influxdb-enterprise-pricing-hits-a-wall/</link>
+      <guid isPermaLink="true">https://hyperbyte.cloud/why-influxdb-enterprise-pricing-hits-a-wall/</guid>
+      <pubDate>Tue, 02 Jun 2026 00:00:00 +0000</pubDate>
+      <description>Retention policies, continuous queries, and replication sit behind InfluxDB&#x27;s paid tier. What that costs, what HA means, and what HyperbyteDB&#x27;s binary includes.</description>
+    </item>
+    <item>
       <title>IoT Analytics at Scale: InfluxQL Without Downsampling</title>
       <link>https://hyperbyte.cloud/every-sensor-every-tick-influxql-analytics-iot-data-scale/</link>
-      <guid>https://hyperbyte.cloud/every-sensor-every-tick-influxql-analytics-iot-data-scale/</guid>
-      <pubDate>2026-04-30</pubDate>
-      <description>Run real-time InfluxQL analytics on millions of IoT sensors without downsampling. GROUP BY device_id, rolling averages, and anomaly detection on full-resolution data.</description>
-    </item><item>
-      <title>The InfluxDB v1 Migration Checklist: Which Clients Just Need a URL Change</title>
-      <link>https://hyperbyte.cloud/influxdb-v1-migration-checklist-clients-url-change/</link>
-      <guid>https://hyperbyte.cloud/influxdb-v1-migration-checklist-clients-url-change/</guid>
-      <pubDate>2026-04-13</pubDate>
-      <description>Most InfluxDB v1 migration guides focus on Telegraf. Here&#x27;s the complete client-by-client checklist covering Grafana, custom apps, Python scripts, and Java services—and which ones just need a URL change.</description>
-    </item><item>
-      <title>InfluxDB v1 Compatibility in HyperbyteDB — What Works and What Doesn&#x27;t</title>
-      <link>https://hyperbyte.cloud/influxdb-v1-compatibility-drop-in/</link>
-      <guid>https://hyperbyte.cloud/influxdb-v1-compatibility-drop-in/</guid>
-      <pubDate>2026-04-13</pubDate>
-      <description>HyperbyteDB speaks InfluxDB v1 line protocol and InfluxQL on the same endpoints. Endpoint coverage, InfluxQL support, known differences, benchmarks and cutover notes.</description>
-    </item><item>
-      <title>Exporting Historical Time-Series from InfluxDB v1 to HyperbyteDB</title>
-      <link>https://hyperbyte.cloud/exporting-historical-time-series-influxdb-v1-to-hyperbytedb/</link>
-      <guid>https://hyperbyte.cloud/exporting-historical-time-series-influxdb-v1-to-hyperbytedb/</guid>
-      <pubDate>2026-04-13</pubDate>
-      <description>Most migration guides cover updating Telegraf and Grafana configs. But historical data gets left behind. Here&#x27;s how to export time-series from InfluxDB v1 and load it into HyperbyteDB.</description>
-    </item><item>
+      <guid isPermaLink="true">https://hyperbyte.cloud/every-sensor-every-tick-influxql-analytics-iot-data-scale/</guid>
+      <pubDate>Thu, 30 Apr 2026 00:00:00 +0000</pubDate>
+      <description>Real-time InfluxQL analytics on millions of IoT sensors without downsampling. GROUP BY device_id, rolling averages, and anomaly detection at full resolution.</description>
+    </item>
+    <item>
+      <title>High Cardinality Without the Rewrite</title>
+      <link>https://hyperbyte.cloud/stop-watching-metrics-explode-high-cardinality-without-rewrite/</link>
+      <guid isPermaLink="true">https://hyperbyte.cloud/stop-watching-metrics-explode-high-cardinality-without-rewrite/</guid>
+      <pubDate>Thu, 30 Apr 2026 00:00:00 +0000</pubDate>
+      <description>InfluxDB v1 slows to a crawl on high-cardinality tags. HyperbyteDB handles them with columnar ClickHouse storage. Keep your InfluxQL, change one URL.</description>
+    </item>
+    <item>
       <title>Before You Trust Our Numbers, Run This — HyperbyteDB Benchmarks</title>
       <link>https://hyperbyte.cloud/before-you-trust-our-numbers-run-this/</link>
-      <guid>https://hyperbyte.cloud/before-you-trust-our-numbers-run-this/</guid>
-      <pubDate>2026-04-13</pubDate>
-      <description>Run HyperbyteDB&#x27;s own Criterion ingestion benchmarks in minutes. Walk through line protocol and columnar numbers, understand what&#x27;s measured, and record your environment before comparing anything.</description>
+      <guid isPermaLink="true">https://hyperbyte.cloud/before-you-trust-our-numbers-run-this/</guid>
+      <pubDate>Mon, 13 Apr 2026 00:00:00 +0000</pubDate>
+      <description>Run HyperbyteDB&#x27;s own Criterion ingestion benchmarks in minutes. What is measured, what the line protocol and columnar numbers mean, and what to record.</description>
+    </item>
+    <item>
+      <title>Exporting Historical Time-Series from InfluxDB v1 to HyperbyteDB</title>
+      <link>https://hyperbyte.cloud/exporting-historical-time-series-influxdb-v1-to-hyperbytedb/</link>
+      <guid isPermaLink="true">https://hyperbyte.cloud/exporting-historical-time-series-influxdb-v1-to-hyperbytedb/</guid>
+      <pubDate>Mon, 13 Apr 2026 00:00:00 +0000</pubDate>
+      <description>Migration guides cover Telegraf and Grafana, then leave historical data behind. How to export time-series from InfluxDB v1 and load it into HyperbyteDB.</description>
+    </item>
+    <item>
+      <title>InfluxDB v1 Compatibility: What Works in HyperbyteDB</title>
+      <link>https://hyperbyte.cloud/influxdb-v1-compatibility-drop-in/</link>
+      <guid isPermaLink="true">https://hyperbyte.cloud/influxdb-v1-compatibility-drop-in/</guid>
+      <pubDate>Mon, 13 Apr 2026 00:00:00 +0000</pubDate>
+      <description>HyperbyteDB speaks InfluxDB v1 line protocol and InfluxQL on the same endpoints. Endpoint coverage, InfluxQL support, known differences, and cutover notes.</description>
+    </item>
+    <item>
+      <title>InfluxDB v1 Migration Checklist: Which Clients Need Only a URL</title>
+      <link>https://hyperbyte.cloud/influxdb-v1-migration-checklist-clients-url-change/</link>
+      <guid isPermaLink="true">https://hyperbyte.cloud/influxdb-v1-migration-checklist-clients-url-change/</guid>
+      <pubDate>Mon, 13 Apr 2026 00:00:00 +0000</pubDate>
+      <description>A client-by-client InfluxDB v1 migration checklist: Telegraf, Grafana, custom apps, Python scripts, and Java services, and which only need a URL change.</description>
     </item>
   </channel>
 </rss>
