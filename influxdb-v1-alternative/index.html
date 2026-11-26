@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <meta property="og:locale" content="en_GB">
+    <title>HyperbyteDB — an InfluxDB v1 alternative</title>
+    <meta name="description" content="HyperbyteDB is an open-source InfluxDB v1 alternative. Same /write and /query, same InfluxQL. Self-host free, or Cloud from $299 a shard. Early access is a short form.">
+    <link rel="canonical" href="https://hyperbyte.cloud/influxdb-v1-alternative/">
+    <meta name="robots" content="index, follow">
+    <meta property="og:site_name" content="Hyperbyte Cloud">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="HyperbyteDB — an InfluxDB v1 alternative">
+    <meta property="og:description" content="HyperbyteDB is an open-source InfluxDB v1 alternative. Same /write and /query, same InfluxQL. Self-host free, or Cloud from $299 a shard. Early access is a short form.">
+    <meta property="og:url" content="https://hyperbyte.cloud/influxdb-v1-alternative/">
+    <meta property="og:image" content="https://hyperbyte.cloud/assets/social-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="HyperbyteDB: time-series without a ceiling">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="HyperbyteDB — an InfluxDB v1 alternative">
+    <meta name="twitter:description" content="HyperbyteDB is an open-source InfluxDB v1 alternative. Same /write and /query, same InfluxQL. Self-host free, or Cloud from $299 a shard. Early access is a short form.">
+    <meta name="twitter:image" content="https://hyperbyte.cloud/assets/social-card.png">
+    <link rel="icon" href="/assets/logo.png" type="image/png">
+    <link rel="alternate" type="application/rss+xml" title="Hyperbyte Cloud" href="https://hyperbyte.cloud/rss.xml">
+    <link rel="alternate" type="text/plain" href="https://hyperbyte.cloud/llms.txt" title="HyperbyteDB product profile">
+    <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/assets/fonts.css">
+    <link rel="stylesheet" href="/assets/site.css?v=3">
+    <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://hyperbyte.cloud/#org", "name": "Hyperbyte Cloud", "url": "https://hyperbyte.cloud/", "email": "hello@hyperbyte.cloud", "description": "Hyperbyte Cloud builds HyperbyteDB, an open-source InfluxDB v1-compatible time-series database, in Winchester, UK.", "logo": {"@type": "ImageObject", "url": "https://hyperbyte.cloud/assets/logo.png"}, "address": {"@type": "PostalAddress", "addressLocality": "Winchester", "addressCountry": "GB"}, "sameAs": ["https://github.com/hyperbyte-cloud/hyperbytedb"]}, {"@type": "SoftwareApplication", "@id": "https://hyperbyte.cloud/#hyperbytedb", "name": "HyperbyteDB", "applicationCategory": "DeveloperApplication", "operatingSystem": "Linux", "url": "https://hyperbyte.cloud/", "downloadUrl": "https://github.com/hyperbyte-cloud/hyperbytedb", "softwareHelp": {"@type": "CreativeWork", "url": "https://docs.hyperbyte.cloud"}, "license": "https://www.apache.org/licenses/LICENSE-2.0", "isAccessibleForFree": true, "description": "Open-source InfluxDB v1 alternative. Same line protocol and InfluxQL, built for high cardinality.", "publisher": {"@id": "https://hyperbyte.cloud/#org"}, "offers": [{"@type": "Offer", "name": "Self-hosted HyperbyteDB", "price": "0", "priceCurrency": "USD", "url": "https://github.com/hyperbyte-cloud/hyperbytedb"}, {"@type": "Offer", "name": "Hyperbyte Cloud early access", "price": "299.00", "priceCurrency": "USD", "url": "https://form.typeform.com/to/BhFaBgc5?ref=influxdb-v1-alternative", "description": "4 CPU and 16GB per shard, per month, plus $0.20 per GB-month of disk."}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://hyperbyte.cloud/"}, {"@type": "ListItem", "position": 2, "name": "InfluxDB v1 alternative", "item": "https://hyperbyte.cloud/influxdb-v1-alternative/"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is HyperbyteDB a drop-in for InfluxDB v1?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. It speaks line protocol and InfluxQL on the same /write and /query endpoints. Telegraf, Grafana, and existing clients stay. You change the URL. Coverage, and the differences, are written up on the compatibility page."}}, {"@type": "Question", "name": "What does HyperbyteDB Cloud cost?", "acceptedAnswer": {"@type": "Answer", "text": "Self-hosting is free. Cloud compute is $299 a month per shard. A shard is 4 CPU and 16GB. Disk is $0.20 per GB-month. One shard and 100GB of disk is $319 a month."}}, {"@type": "Question", "name": "How do I start?", "acceptedAnswer": {"@type": "Answer", "text": "Request early access for Cloud. The form is short, and a person reads it. To self-host, pull ghcr.io/hyperbyte-cloud/hyperbytedb and listen on port 8086. No form."}}]}]}</script>
+</head>
+<body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="/">
+          <img src="/assets/logo.png" width="28" height="28" alt="">
+          Hyperbyte
+        </a>
+        <button class="menu-btn" type="button" data-menu aria-expanded="false" aria-controls="site-nav">Menu</button>
+        <nav class="nav" id="site-nav" data-nav aria-label="Primary"><a href="/">Product</a><a href="/cloud/">Cloud</a><a href="/solutions/">Solutions</a><a href="/oss/">OSS</a><a href="/pricing/">Pricing</a><a href="/tag/blog/">Blog</a><a href="https://docs.hyperbyte.cloud" rel="noopener">Docs</a><a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=influxdb-v1-alternative" rel="noopener">Request early access</a></nav>
+      </div>
+    </header>
+    <main id="main">
+      <section class="hero">
+        <div class="wrap">
+          <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a><span aria-hidden="true">/</span></li><li><span aria-current="page">InfluxDB v1 alternative</span></li></ol></nav>
+          <p class="kicker">InfluxDB v1 alternative</p>
+          <h1>Same wire. A higher ceiling.</h1>
+          <p class="lede">HyperbyteDB is an open-source alternative to InfluxDB v1. It speaks line protocol and InfluxQL on the same <span class="mono">/write</span> and <span class="mono">/query</span> endpoints, so Telegraf, Grafana, and your clients stay. You change the URL.</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=influxdb-v1-alternative" rel="noopener">Request early access</a>
+            <a class="btn btn-ghost" href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">Self-host on GitHub</a>
+            <a class="btn btn-ghost" href="/pricing/">See pricing</a>
+          </div>
+        </div>
+      </section>
+      <section id="keep">
+        <div class="wrap">
+          <p class="kicker">What you keep</p>
+          <h2>The stack you already run.</h2>
+          <div class="split compare">
+            <article>
+              <p class="kicker">Stays</p>
+              <h3>InfluxDB v1 on the wire</h3>
+              <ul>
+                <li>Line protocol in, InfluxQL out</li>
+                <li>The same <span class="mono">/write</span> and <span class="mono">/query</span> paths</li>
+                <li>Telegraf, Grafana, and the clients on the <a href="/influxdb-v1-migration-checklist-clients-url-change/">checklist</a></li>
+              </ul>
+            </article>
+            <article class="after">
+              <p class="kicker">Changes</p>
+              <h3>The ceiling, and the licence</h3>
+              <ul>
+                <li>Cardinality is capacity. Add a shard, add that capacity again</li>
+                <li>Replication, retention, and continuous queries are in the Apache 2.0 binary</li>
+                <li>Plan on 1.5M points/sec sustained, p95 under 250ms</li>
+              </ul>
+            </article>
+          </div>
+          <p class="more"><a href="/influxdb-v1-compatibility-drop-in/">What the compatibility covers, including the differences</a></p>
+        </div>
+      </section>
+      <section id="price">
+        <div class="wrap">
+          <p class="kicker">Price</p>
+          <h2>Free to run. Shards to grow.</h2>
+          <p class="prose">Self-hosting is free, with no feature gates. Cloud is $299 a month per shard: 4 CPU and 16GB. Disk is $0.20 per GB-month. One shard and 100GB of disk is $319 a month. The <a href="/pricing/">pricing page</a> has the rest of the table, and <a href="/cloud/">Cloud</a> is the same database, operated for you.</p>
+        </div>
+      </section>
+      <section id="faq">
+        <div class="wrap">
+          <p class="kicker">Questions</p>
+          <h2>Before you cut over.</h2>
+          <div class="faq">
+            <details>
+              <summary>Is HyperbyteDB a drop-in for InfluxDB v1?</summary>
+              <p>Yes. It speaks line protocol and InfluxQL on the same <span class="mono">/write</span> and <span class="mono">/query</span> endpoints. Telegraf, Grafana, and existing clients stay. You change the URL. Coverage, and the differences, are written up on the <a href="/influxdb-v1-compatibility-drop-in/">compatibility page</a>.</p>
+            </details>
+            <details>
+              <summary>What does HyperbyteDB Cloud cost?</summary>
+              <p>Self-hosting is free. Cloud compute is $299 a month per shard. A shard is 4 CPU and 16GB. Disk is $0.20 per GB-month. One shard and 100GB of disk is $319 a month.</p>
+            </details>
+            <details>
+              <summary>How do I start?</summary>
+              <p><a href="https://form.typeform.com/to/BhFaBgc5?ref=influxdb-v1-alternative" rel="noopener">Request early access</a> for Cloud. The form is short, and a person reads it. To self-host, pull <span class="mono">ghcr.io/hyperbyte-cloud/hyperbytedb</span> and listen on port 8086. No form.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+      <div class="cta-band">
+        <div class="wrap">
+          <p class="kicker">Next step</p>
+          <h2>Run it yourself, or let us run it.</h2>
+          <p class="lede">HyperbyteDB is free to self-host. Cloud early access is a short form, and a person reads it.</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=influxdb-v1-alternative" rel="noopener">Request early access</a>
+            <a class="btn btn-ghost" href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">Self-host on GitHub</a>
+            <a class="btn btn-ghost" href="/connect-with-us/">Talk to an engineer</a>
+            <a class="btn btn-ghost" href="https://docs.hyperbyte.cloud" rel="noopener">Read the docs</a>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <span class="footer-brand"><img src="/assets/hyperbyte-cloud-mark.jpg" width="1024" height="388" alt="Hyperbyte Cloud" loading="lazy"> © 2026</span>
+        <nav aria-label="Footer">
+          <a href="/about-us/">About</a>
+          · <a href="/connect-with-us/">Contact</a>
+          · <a href="/pricing/">Pricing</a>
+          · <a href="/oss/">Open source</a>
+          · <a href="/influxdb-v1-alternative/">InfluxDB v1 alternative</a>
+          · <a href="/privacy/">Privacy</a>
+          · <a href="/terms/">Terms</a>
+          · <a href="/dpa/">DPA</a>
+          · <a href="https://docs.hyperbyte.cloud" rel="noopener">Docs</a>
+          · <a href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">GitHub</a>
+          · <a href="mailto:hello@hyperbyte.cloud">hello@hyperbyte.cloud</a>
+        </nav>
+      </div>
+    </footer>
+    <script src="/assets/site.js"></script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url><loc>https://hyperbyte.cloud/about-us/</loc><lastmod>2026-10-07</lastmod></url>
-<url><loc>https://hyperbyte.cloud/author/austin/</loc><lastmod>2026-11-11</lastmod></url>
+<url><loc>https://hyperbyte.cloud/author/austin/</loc><lastmod>2026-11-26</lastmod></url>
 <url><loc>https://hyperbyte.cloud/before-you-trust-our-numbers-run-this/</loc><lastmod>2026-09-22</lastmod></url>
 <url><loc>https://hyperbyte.cloud/cloud/</loc><lastmod>2026-10-14</lastmod></url>
 <url><loc>https://hyperbyte.cloud/connect-with-us/</loc><lastmod>2026-10-14</lastmod></url>
@@ -9,7 +9,8 @@
 <url><loc>https://hyperbyte.cloud/every-sensor-every-tick-influxql-analytics-iot-data-scale/</loc><lastmod>2026-09-22</lastmod></url>
 <url><loc>https://hyperbyte.cloud/exporting-historical-time-series-influxdb-v1-to-hyperbytedb/</loc><lastmod>2026-09-22</lastmod></url>
 <url><loc>https://hyperbyte.cloud/from-99-million-to-1-9-million-what-an-ingest-benchmark-doesnt-tell-you/</loc><lastmod>2026-09-22</lastmod></url>
-<url><loc>https://hyperbyte.cloud/</loc><lastmod>2026-11-11</lastmod></url>
+<url><loc>https://hyperbyte.cloud/</loc><lastmod>2026-11-26</lastmod></url>
+<url><loc>https://hyperbyte.cloud/influxdb-v1-alternative/</loc><lastmod>2026-11-26</lastmod></url>
 <url><loc>https://hyperbyte.cloud/influxdb-v1-compatibility-drop-in/</loc><lastmod>2026-09-22</lastmod></url>
 <url><loc>https://hyperbyte.cloud/influxdb-v1-kubernetes-operator-swap-keep-urls/</loc><lastmod>2026-09-22</lastmod></url>
 <url><loc>https://hyperbyte.cloud/influxdb-v1-migration-checklist-clients-url-change/</loc><lastmod>2026-09-22</lastmod></url>
@@ -22,19 +23,19 @@
 <url><loc>https://hyperbyte.cloud/scaling-chdb-inserts-from-5-million-to-99-million-rows-second/</loc><lastmod>2026-09-22</lastmod></url>
 <url><loc>https://hyperbyte.cloud/solutions/</loc><lastmod>2026-10-07</lastmod></url>
 <url><loc>https://hyperbyte.cloud/stop-watching-metrics-explode-high-cardinality-without-rewrite/</loc><lastmod>2026-09-22</lastmod></url>
-<url><loc>https://hyperbyte.cloud/tag/analytics/</loc><lastmod>2026-11-11</lastmod></url>
-<url><loc>https://hyperbyte.cloud/tag/benchmarks/</loc><lastmod>2026-11-11</lastmod></url>
-<url><loc>https://hyperbyte.cloud/tag/blog/</loc><lastmod>2026-11-11</lastmod></url>
-<url><loc>https://hyperbyte.cloud/tag/grafana/</loc><lastmod>2026-11-11</lastmod></url>
-<url><loc>https://hyperbyte.cloud/tag/high-availability/</loc><lastmod>2026-11-11</lastmod></url>
-<url><loc>https://hyperbyte.cloud/tag/high-cardinality/</loc><lastmod>2026-11-11</lastmod></url>
-<url><loc>https://hyperbyte.cloud/tag/influxdb/</loc><lastmod>2026-11-11</lastmod></url>
-<url><loc>https://hyperbyte.cloud/tag/migration/</loc><lastmod>2026-11-11</lastmod></url>
-<url><loc>https://hyperbyte.cloud/tag/observability/</loc><lastmod>2026-11-11</lastmod></url>
-<url><loc>https://hyperbyte.cloud/tag/ops/</loc><lastmod>2026-11-11</lastmod></url>
-<url><loc>https://hyperbyte.cloud/tag/performance/</loc><lastmod>2026-11-11</lastmod></url>
-<url><loc>https://hyperbyte.cloud/tag/telegraf/</loc><lastmod>2026-11-11</lastmod></url>
-<url><loc>https://hyperbyte.cloud/tag/telemetry/</loc><lastmod>2026-11-11</lastmod></url>
+<url><loc>https://hyperbyte.cloud/tag/analytics/</loc><lastmod>2026-11-26</lastmod></url>
+<url><loc>https://hyperbyte.cloud/tag/benchmarks/</loc><lastmod>2026-11-26</lastmod></url>
+<url><loc>https://hyperbyte.cloud/tag/blog/</loc><lastmod>2026-11-26</lastmod></url>
+<url><loc>https://hyperbyte.cloud/tag/grafana/</loc><lastmod>2026-11-26</lastmod></url>
+<url><loc>https://hyperbyte.cloud/tag/high-availability/</loc><lastmod>2026-11-26</lastmod></url>
+<url><loc>https://hyperbyte.cloud/tag/high-cardinality/</loc><lastmod>2026-11-26</lastmod></url>
+<url><loc>https://hyperbyte.cloud/tag/influxdb/</loc><lastmod>2026-11-26</lastmod></url>
+<url><loc>https://hyperbyte.cloud/tag/migration/</loc><lastmod>2026-11-26</lastmod></url>
+<url><loc>https://hyperbyte.cloud/tag/observability/</loc><lastmod>2026-11-26</lastmod></url>
+<url><loc>https://hyperbyte.cloud/tag/ops/</loc><lastmod>2026-11-26</lastmod></url>
+<url><loc>https://hyperbyte.cloud/tag/performance/</loc><lastmod>2026-11-26</lastmod></url>
+<url><loc>https://hyperbyte.cloud/tag/telegraf/</loc><lastmod>2026-11-26</lastmod></url>
+<url><loc>https://hyperbyte.cloud/tag/telemetry/</loc><lastmod>2026-11-26</lastmod></url>
 <url><loc>https://hyperbyte.cloud/telegraf-grafana-alerts-stack-database-that-doesnt-buckle/</loc><lastmod>2026-11-11</lastmod></url>
 <url><loc>https://hyperbyte.cloud/terms/</loc><lastmod>2026-09-21</lastmod></url>
 <url><loc>https://hyperbyte.cloud/unlocking-scalable-iot-insights-with-hyperbytedb/</loc><lastmod>2026-09-22</lastmod></url>
