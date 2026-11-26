@@ -73,3 +73,15 @@ pre {
 .cta-band {
   border-color: var(--line);
 }
+
+.table-scroll th,
+.table-scroll td {
+  border-bottom: 0;
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+.table-scroll thead th {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  padding-bottom: 14px;
+}
