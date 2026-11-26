@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <meta property="og:locale" content="en_GB">
+    <title>InfluxDB 3, InfluxQL, and what you keep</title>
+    <meta name="description" content="InfluxDB 3 Core is a new engine: port 8181, token auth, and a default query window of about 72 hours. HyperbyteDB keeps InfluxQL, /write, /query, and port 8086.">
+    <link rel="canonical" href="https://hyperbyte.cloud/influxdb-3/">
+    <meta name="robots" content="index, follow">
+    <meta property="og:site_name" content="Hyperbyte Cloud">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="InfluxDB 3, InfluxQL, and what you keep">
+    <meta property="og:description" content="InfluxDB 3 Core is a new engine: port 8181, token auth, and a default query window of about 72 hours. HyperbyteDB keeps InfluxQL, /write, /query, and port 8086.">
+    <meta property="og:url" content="https://hyperbyte.cloud/influxdb-3/">
+    <meta property="og:image" content="https://hyperbyte.cloud/assets/social-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="HyperbyteDB: time-series without a ceiling">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="InfluxDB 3, InfluxQL, and what you keep">
+    <meta name="twitter:description" content="InfluxDB 3 Core is a new engine: port 8181, token auth, and a default query window of about 72 hours. HyperbyteDB keeps InfluxQL, /write, /query, and port 8086.">
+    <meta name="twitter:image" content="https://hyperbyte.cloud/assets/social-card.png">
+    <link rel="icon" href="/assets/logo.png" type="image/png">
+    <link rel="alternate" type="application/rss+xml" title="Hyperbyte Cloud" href="https://hyperbyte.cloud/rss.xml">
+    <link rel="alternate" type="text/plain" href="https://hyperbyte.cloud/llms.txt" title="HyperbyteDB product profile">
+    <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/assets/fonts.css">
+    <link rel="stylesheet" href="/assets/site.css?v=3">
+    <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://hyperbyte.cloud/#org", "name": "Hyperbyte Cloud", "url": "https://hyperbyte.cloud/", "email": "hello@hyperbyte.cloud", "logo": {"@type": "ImageObject", "url": "https://hyperbyte.cloud/assets/logo.png"}, "sameAs": ["https://github.com/hyperbyte-cloud/hyperbytedb"]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://hyperbyte.cloud/"}, {"@type": "ListItem", "position": 2, "name": "InfluxDB 3", "item": "https://hyperbyte.cloud/influxdb-3/"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Does InfluxDB 3 still support InfluxQL?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. InfluxDB 3 Core accepts InfluxQL, and InfluxData says the language is still being rebuilt for the new engine. SLIMIT and SOFFSET are not supported. HyperbyteDB speaks InfluxQL on /query. The differences are on the compatibility page."}}, {"@type": "Question", "name": "What is the 72 hour limit?", "acceptedAnswer": {"@type": "Answer", "text": "InfluxDB 3 Core's default query-file-limit is 432 Parquet files. With the default 10-minute blocks, that is about 72 hours in one query. The limit can be raised. HyperbyteDB does not use that cap."}}, {"@type": "Question", "name": "Can I keep port 8086?", "acceptedAnswer": {"@type": "Answer", "text": "InfluxDB 3 Core listens on 8181 and expects a token. HyperbyteDB listens on 8086 and takes the same /write and /query calls. The client checklist says which tools are only a URL change."}}, {"@type": "Question", "name": "How do I start?", "acceptedAnswer": {"@type": "Answer", "text": "Request early access for Cloud. The form is short. To self-host, pull ghcr.io/hyperbyte-cloud/hyperbytedb and listen on port 8086. No form."}}]}]}</script>
+</head>
+<body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="/">
+          <img src="/assets/logo.png" width="28" height="28" alt="">
+          Hyperbyte
+        </a>
+        <button class="menu-btn" type="button" data-menu aria-expanded="false" aria-controls="site-nav">Menu</button>
+        <nav class="nav" id="site-nav" data-nav aria-label="Primary"><a href="/">Product</a><a href="/cloud/">Cloud</a><a href="/solutions/">Solutions</a><a href="/oss/">OSS</a><a href="/pricing/">Pricing</a><a href="/tag/blog/">Blog</a><a href="https://docs.hyperbyte.cloud" rel="noopener">Docs</a><a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=influxdb-3" rel="noopener">Request early access</a></nav>
+      </div>
+    </header>
+    <main id="main">
+      <section class="hero">
+        <div class="wrap">
+          <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a><span aria-hidden="true">/</span></li><li><span aria-current="page">InfluxDB 3</span></li></ol></nav>
+          <p class="kicker">InfluxDB 3</p>
+          <h1>Keep the queries you already run.</h1>
+          <p class="lede">InfluxDB 3 is a new database with a v1 compatibility layer. Core listens on port 8181, authenticates with a token, and by default a single query covers about 72 hours. InfluxQL is supported there, and InfluxData still lists parts of it as in progress. HyperbyteDB keeps line protocol and InfluxQL on <span class="mono">/write</span> and <span class="mono">/query</span>, on port 8086.</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=influxdb-3" rel="noopener">Request early access</a>
+            <a class="btn btn-ghost" href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">Self-host on GitHub</a>
+            <a class="btn btn-ghost" href="/influxdb-v1-alternative/">See the v1 comparison</a>
+          </div>
+        </div>
+      </section>
+      <section id="changes">
+        <div class="wrap">
+          <p class="kicker">The move</p>
+          <h2>What the new engine changes.</h2>
+          <div class="split compare">
+            <article>
+              <p class="kicker">InfluxDB 3 Core</p>
+              <h3>A compatibility layer</h3>
+              <ul>
+                <li>HTTP on port 8181. v1 username is ignored; the password is a token</li>
+                <li>Default query window of about 72 hours. The limit can be raised</li>
+                <li>SQL is the native language. InfluxQL is missing <span class="mono">SLIMIT</span> and <span class="mono">SOFFSET</span></li>
+                <li>Retention policies are not how the data is stored. Flux is gone</li>
+              </ul>
+            </article>
+            <article class="after">
+              <p class="kicker">HyperbyteDB</p>
+              <h3>The v1 wire</h3>
+              <ul>
+                <li>Port 8086. Same <span class="mono">/write</span> and <span class="mono">/query</span></li>
+                <li>InfluxQL, including the queries on the <a href="/influxdb-v1-compatibility-drop-in/">compatibility page</a></li>
+                <li>Replication, retention, and continuous queries in the Apache 2.0 binary</li>
+                <li>Plan on 1.5M points/sec sustained, p95 under 250ms</li>
+              </ul>
+            </article>
+          </div>
+          <p class="prose">Those InfluxDB 3 details are from InfluxData’s own Core docs: the <a href="https://docs.influxdata.com/influxdb3/core/get-started/query/" rel="noopener">query guide</a>, the <a href="https://docs.influxdata.com/influxdb3/core/reference/config-options/" rel="noopener">query-file-limit setting</a>, the <a href="https://docs.influxdata.com/influxdb3/core/api/write-data/" rel="noopener">v1 write API</a>, and the <a href="https://docs.influxdata.com/influxdb3/enterprise/reference/influxql/feature-support/" rel="noopener">InfluxQL support list</a>. Which of your clients are only a URL change is on the <a href="/influxdb-v1-migration-checklist-clients-url-change/">checklist</a>.</p>
+        </div>
+      </section>
+      <section id="price">
+        <div class="wrap">
+          <p class="kicker">Price</p>
+          <h2>Free to run. Shards to grow.</h2>
+          <p class="prose">Self-hosting is free. Cloud is $299 a month per shard: 4 CPU and 16GB. Disk is $0.20 per GB-month. The <a href="/pricing/">pricing page</a> has the table.</p>
+        </div>
+      </section>
+      <section id="faq">
+        <div class="wrap">
+          <p class="kicker">Questions</p>
+          <h2>Before you pick an engine.</h2>
+          <div class="faq">
+            <details>
+              <summary>Does InfluxDB 3 still support InfluxQL?</summary>
+              <p>Yes. InfluxDB 3 Core accepts InfluxQL, and InfluxData says the language is still being rebuilt for the new engine. <span class="mono">SLIMIT</span> and <span class="mono">SOFFSET</span> are not supported. HyperbyteDB speaks InfluxQL on <span class="mono">/query</span>. The differences are on the <a href="/influxdb-v1-compatibility-drop-in/">compatibility page</a>.</p>
+            </details>
+            <details>
+              <summary>What is the 72 hour limit?</summary>
+              <p>InfluxDB 3 Core’s default query-file-limit is 432 Parquet files. With the default 10-minute blocks, that is about 72 hours in one query. The limit can be raised. HyperbyteDB does not use that cap.</p>
+            </details>
+            <details>
+              <summary>Can I keep port 8086?</summary>
+              <p>InfluxDB 3 Core listens on 8181 and expects a token. HyperbyteDB listens on 8086 and takes the same <span class="mono">/write</span> and <span class="mono">/query</span> calls. The <a href="/influxdb-v1-migration-checklist-clients-url-change/">client checklist</a> says which tools are only a URL change.</p>
+            </details>
+            <details>
+              <summary>How do I start?</summary>
+              <p><a href="https://form.typeform.com/to/BhFaBgc5?ref=influxdb-3" rel="noopener">Request early access</a> for Cloud. The form is short. To self-host, pull <span class="mono">ghcr.io/hyperbyte-cloud/hyperbytedb</span> and listen on port 8086. No form.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+      <div class="cta-band">
+        <div class="wrap">
+          <p class="kicker">Next step</p>
+          <h2>Run it yourself, or let us run it.</h2>
+          <p class="lede">HyperbyteDB is free to self-host. Cloud early access is a short form.</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=influxdb-3" rel="noopener">Request early access</a>
+            <a class="btn btn-ghost" href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">Self-host on GitHub</a>
+            <a class="btn btn-ghost" href="/connect-with-us/">Talk to an engineer</a>
+            <a class="btn btn-ghost" href="https://docs.hyperbyte.cloud" rel="noopener">Read the docs</a>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <span class="footer-brand"><img src="/assets/hyperbyte-cloud-mark.jpg" width="1024" height="388" alt="Hyperbyte Cloud" loading="lazy"> © 2026</span>
+        <nav aria-label="Footer">
+          <a href="/about-us/">About</a>
+          · <a href="/connect-with-us/">Contact</a>
+          · <a href="/pricing/">Pricing</a>
+          · <a href="/oss/">Open source</a>
+          · <a href="/influxdb-v1-alternative/">InfluxDB v1 alternative</a>
+          · <a href="/influxdb-3/">InfluxDB 3</a>
+          · <a href="/privacy/">Privacy</a>
+          · <a href="/terms/">Terms</a>
+          · <a href="/dpa/">DPA</a>
+          · <a href="https://docs.hyperbyte.cloud" rel="noopener">Docs</a>
+          · <a href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">GitHub</a>
+          · <a href="mailto:hello@hyperbyte.cloud">hello@hyperbyte.cloud</a>
+        </nav>
+      </div>
+    </footer>
+    <script src="/assets/site.js"></script>
+</body>
+</html>

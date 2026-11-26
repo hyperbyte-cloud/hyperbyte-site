@@ -9,6 +9,7 @@ Request early access to try the managed service.
 - [Request Cloud early access](https://form.typeform.com/to/BhFaBgc5?ref=llms): The signup.
 - [HyperbyteDB](https://hyperbyte.cloud/): Product homepage.
 - [InfluxDB v1 alternative](https://hyperbyte.cloud/influxdb-v1-alternative/): What stays, what changes, and what it costs.
+- [InfluxDB 3 and InfluxQL](https://hyperbyte.cloud/influxdb-3/): Core uses port 8181, token auth, and a default query window of about 72 hours. HyperbyteDB keeps InfluxQL on port 8086.
 - [Pricing](https://hyperbyte.cloud/pricing/): Free to self-host. Cloud is $299 per shard per month (4 CPU, 16GB) plus $0.20 per GB-month of disk.
 - [Hyperbyte Cloud](https://hyperbyte.cloud/cloud/): The same database, operated for you.
 - [Self-host on GitHub](https://github.com/hyperbyte-cloud/hyperbytedb): Apache 2.0. Replication, sharding, retention, and continuous queries are in the binary.

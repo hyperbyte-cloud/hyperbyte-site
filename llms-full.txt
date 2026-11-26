@@ -54,6 +54,7 @@ Regions, a published uptime SLA, formal compliance certification, and bring-your
 
 - Product: https://hyperbyte.cloud/
 - InfluxDB v1 alternative: https://hyperbyte.cloud/influxdb-v1-alternative/
+- InfluxDB 3 and InfluxQL: https://hyperbyte.cloud/influxdb-3/
 - Cloud: https://hyperbyte.cloud/cloud/
 - Pricing: https://hyperbyte.cloud/pricing/
 - Open source: https://hyperbyte.cloud/oss/
