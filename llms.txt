@@ -2,11 +2,11 @@
 
 > Open-source InfluxDB v1 alternative. Same line protocol and InfluxQL, built for high cardinality. Self-host free, or Hyperbyte Cloud from $299 a shard.
 
-Hyperbyte Cloud builds HyperbyteDB in Winchester, UK. To try the managed service, request early access. The form is short, and a person reads it.
+Request early access to try the managed service.
 
 ## Start
 
-- [Request Cloud early access](https://form.typeform.com/to/BhFaBgc5?ref=llms): The signup. A person reads the form.
+- [Request Cloud early access](https://form.typeform.com/to/BhFaBgc5?ref=llms): The signup.
 - [HyperbyteDB](https://hyperbyte.cloud/): Product homepage.
 - [InfluxDB v1 alternative](https://hyperbyte.cloud/influxdb-v1-alternative/): What stays, what changes, and what it costs.
 - [Pricing](https://hyperbyte.cloud/pricing/): Free to self-host. Cloud is $299 per shard per month (4 CPU, 16GB) plus $0.20 per GB-month of disk.
@@ -34,7 +34,7 @@ Hyperbyte Cloud builds HyperbyteDB in Winchester, UK. To try the managed service
 
 ## Optional
 
-- [About Hyperbyte Cloud](https://hyperbyte.cloud/about-us/): Winchester, UK. Fifteen years of observability on global fleets.
+- [About Hyperbyte Cloud](https://hyperbyte.cloud/about-us/): Fifteen years of observability on global fleets.
 - [Solutions](https://hyperbyte.cloud/solutions/): Device fleets, observability, market data, energy.
 - [Blog](https://hyperbyte.cloud/tag/blog/): Measurements and migration notes.
 - [RSS](https://hyperbyte.cloud/rss.xml): The same posts as a feed.

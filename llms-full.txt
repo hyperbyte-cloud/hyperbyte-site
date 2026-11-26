@@ -1,13 +1,12 @@
 # HyperbyteDB
 
-HyperbyteDB is an open-source time-series database from Hyperbyte Cloud (Winchester, United Kingdom). It is an InfluxDB v1 alternative: it speaks InfluxDB v1 line protocol and InfluxQL on the same /write and /query endpoints. Telegraf, Grafana, and existing clients stay. Switching is a URL change.
+HyperbyteDB is an open-source time-series database from Hyperbyte Cloud. It is an InfluxDB v1 alternative: it speaks InfluxDB v1 line protocol and InfluxQL on the same /write and /query endpoints. Telegraf, Grafana, and existing clients stay. Switching is a URL change.
 
 The database is written in Rust. Writes land in a RocksDB write-ahead log before acknowledgement, then flush to columnar storage. It shards so high tag cardinality is a capacity question. A new tag is more capacity, not a slower query.
 
 ## How to start
 
 Cloud early access, which is the signup: https://form.typeform.com/to/BhFaBgc5?ref=llms
-The form is short, and a person reads it.
 
 Self-host, no form: https://github.com/hyperbyte-cloud/hyperbytedb
 Container: ghcr.io/hyperbyte-cloud/hyperbytedb
