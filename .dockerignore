@@ -1,0 +1,7 @@
+.git
+.github
+deploy
+tools
+README.md
+Dockerfile
+.dockerignore
