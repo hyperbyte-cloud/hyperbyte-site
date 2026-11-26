@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <meta property="og:locale" content="en_GB">
+    <title>HyperbyteDB — InfluxDB v1-compatible time-series database</title>
+    <meta name="description" content="Drop-in replacement for InfluxDB v1: same wire protocol, same InfluxQL, a Rust core built for high cardinality. Change one URL. Managed or self-hosted.">
+    <link rel="canonical" href="https://hyperbyte.cloud/">
+    <meta name="robots" content="noindex, nofollow">
+    <meta property="og:site_name" content="Hyperbyte Cloud">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="HyperbyteDB — InfluxDB v1-compatible time-series database">
+    <meta property="og:description" content="Drop-in replacement for InfluxDB v1: same wire protocol, same InfluxQL, a Rust core built for high cardinality. Change one URL. Managed or self-hosted.">
+    <meta property="og:url" content="https://hyperbyte.cloud/">
+    <meta property="og:image" content="https://hyperbyte.cloud/assets/social-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="HyperbyteDB: time-series without a ceiling">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="HyperbyteDB — InfluxDB v1-compatible time-series database">
+    <meta name="twitter:description" content="Drop-in replacement for InfluxDB v1: same wire protocol, same InfluxQL, a Rust core built for high cardinality. Change one URL. Managed or self-hosted.">
+    <meta name="twitter:image" content="https://hyperbyte.cloud/assets/social-card.png">
+    <link rel="icon" href="/assets/logo.png" type="image/png">
+    <link rel="alternate" type="application/rss+xml" title="Hyperbyte Cloud" href="https://hyperbyte.cloud/rss.xml">
+    <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/assets/fonts.css">
+    <link rel="stylesheet" href="/assets/site.css">
+    <link rel="stylesheet" href="/prototype/look.css">
+    <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://hyperbyte.cloud/#org", "name": "Hyperbyte Cloud", "url": "https://hyperbyte.cloud/", "email": "hello@hyperbyte.cloud", "logo": {"@type": "ImageObject", "url": "https://hyperbyte.cloud/assets/logo.png"}, "sameAs": ["https://github.com/hyperbyte-cloud/hyperbytedb"]}, {"@type": "WebSite", "@id": "https://hyperbyte.cloud/#website", "url": "https://hyperbyte.cloud/", "name": "Hyperbyte Cloud", "publisher": {"@id": "https://hyperbyte.cloud/#org"}}, {"@type": "SoftwareApplication", "name": "HyperbyteDB", "applicationCategory": "DeveloperApplication", "operatingSystem": "Linux", "description": "InfluxDB v1-compatible time-series database built for high cardinality. Open source, self-hosted or managed.", "url": "https://hyperbyte.cloud/", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}, {"@type": "HowTo", "name": "Move an InfluxDB v1 stack to HyperbyteDB", "description": "Run HyperbyteDB, point existing clients at it, and keep the tags you actually need.", "step": [{"@type": "HowToStep", "position": 1, "name": "Run the binary", "text": "Pull ghcr.io/hyperbyte-cloud/hyperbytedb and listen on port 8086, or hand the node to Hyperbyte Cloud.", "url": "https://hyperbyte.cloud/#how"}, {"@type": "HowToStep", "position": 2, "name": "Point the clients", "text": "Keep Telegraf, Grafana, and InfluxQL. Change the URL.", "url": "https://hyperbyte.cloud/influxdb-v1-migration-checklist-clients-url-change/"}, {"@type": "HowToStep", "position": 3, "name": "Tag what you need", "text": "Cardinality becomes a capacity question instead of a ceiling.", "url": "https://hyperbyte.cloud/stop-watching-metrics-explode-high-cardinality-without-rewrite/"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is HyperbyteDB a drop-in for InfluxDB v1?", "acceptedAnswer": {"@type": "Answer", "text": "It speaks line protocol and InfluxQL on the same /write and /query endpoints."}}, {"@type": "Question", "name": "Is self-hosting free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. HyperbyteDB is Apache 2.0, with no feature gates: replication, sharding, retention, and continuous queries are all in the binary on GitHub. You pay only for the machines you run it on."}}, {"@type": "Question", "name": "What ingest number should a capacity plan use?", "acceptedAnswer": {"@type": "Answer", "text": "1.5 million points a second sustained, p95 under 250ms. That is the number for a capacity plan. Scale-out is linear in the number of shards."}}, {"@type": "Question", "name": "How does it scale?", "acceptedAnswer": {"@type": "Answer", "text": "By shards, linearly. A Cloud shard is 4 CPU and 16GB of RAM, at $299 a month. You start at one shard and add any number after that. Disk is $0.20 per GB-month."}}, {"@type": "Question", "name": "What is still ahead for Cloud?", "acceptedAnswer": {"@type": "Answer", "text": "Regions, a published uptime SLA, formal compliance certification, and bring-your-own-cloud."}}]}]}</script>
+    
+</head><body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="/prototype/">
+          <img src="/assets/logo.png" width="28" height="28" alt="">
+          Hyperbyte
+        </a>
+        <button class="menu-btn" type="button" data-menu aria-expanded="false" aria-controls="site-nav">Menu</button>
+        <nav class="nav" id="site-nav" data-nav aria-label="Primary"><a href="/prototype/" aria-current="page">Product</a><a href="/cloud/">Cloud</a><a href="/solutions/">Solutions</a><a href="/oss/">OSS</a><a href="/pricing/">Pricing</a><a href="/tag/blog/">Blog</a><a href="https://docs.hyperbyte.cloud" rel="noopener">Docs</a><a class="btn btn-primary" href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">Request early access</a></nav>
+      </div>
+    </header>
+    <main id="main">
+      <section class="hero">
+        <div class="wrap">
+          <p class="kicker">Open source · InfluxDB v1 compatible</p>
+          <h1>A sharded, infinite-cardinality database built for <em>time-series data.</em></h1>
+          <p class="lede">Cardinality is where time-series databases stop. Add a container ID, a device serial, a player session, and InfluxDB v1 goes from milliseconds to seconds. HyperbyteDB shards across nodes so cardinality is a capacity question, and speaks InfluxDB v1 line protocol and InfluxQL, so switching costs one URL.</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">Self-host on GitHub</a>
+            <a href="/cloud/">See managed cloud</a>
+            <a href="https://docs.hyperbyte.cloud" rel="noopener">Read the docs</a>
+          </div>
+        </div>
+      </section>
+      <div class="wrap">
+        <dl class="metrics" id="numbers">
+          <div class="metric"><dt>Sustained ingest</dt><dd>1.5M<span> pts/s</span></dd><p>p95 under 250ms. The figure for a capacity plan. <a href="/before-you-trust-our-numbers-run-this/">Run the benchmark yourself</a>.</p></div>
+          <div class="metric"><dt>Cardinality</dt><dd>Open</dd><p>A new tag is more capacity, not a slower query. <a href="/stop-watching-metrics-explode-high-cardinality-without-rewrite/">Keep the tags</a>.</p></div>
+          <div class="metric"><dt>Scale-out</dt><dd>Linear</dd><p>Throughput tracks the number of shards. Twice the shards, twice the capacity. <a href="/pricing/">Each shard is 4 CPU and 16GB</a>.</p></div>
+        </dl>
+      </div>
+      <section id="problem">
+        <div class="wrap split">
+          <div>
+            <p class="kicker">The problem</p>
+            <h2>The problem is tags, not volume.</h2>
+            <div class="prose">
+              <p>Time-series databases rarely fall over because of how many points you write. They fall over because of how many distinct series those points create. A database comfortable at a hundred thousand series starts taking seconds to answer queries that took milliseconds.</p>
+              <p>InfluxDB v1 was built for lower-cardinality workloads, and it is very good at them. Nothing about a real fleet stays low-cardinality. The exits are dropping the tags you needed, downsampling data you will want next quarter, or a tier where replication stops being optional.</p>
+              <p><a href="/stop-watching-metrics-explode-high-cardinality-without-rewrite/">High cardinality without the rewrite</a> · <a href="#database">The database, on this page</a></p>
+            </div>
+          </div>
+          <aside class="panel">
+            <h3>Where the other 98% goes</h3>
+            <p>The storage engine on its own inserts about 99 million rows a second. Put a network, a parser, a series index, and a durable write-ahead log in front of it and you get 1.5 million. Both numbers are true. Only one of them belongs in a capacity plan.</p>
+            <p class="more"><a href="/from-99-million-to-1-9-million-what-an-ingest-benchmark-doesnt-tell-you/">Read the benchmark notes</a></p>
+          </aside>
+        </div>
+      </section>
+      <section id="database">
+        <div class="wrap split">
+          <div>
+            <p class="kicker">HyperbyteDB</p>
+            <h2>Change one URL.</h2>
+            <div class="prose">
+              <p>Monitoring, IoT, observability, and analytics stacks already speak InfluxDB v1 line protocol and InfluxQL. HyperbyteDB is a full drop-in: same <span class="mono">/write</span> and <span class="mono">/query</span>, same clients, written in Rust with columnar MergeTree storage and a RocksDB write-ahead log.</p>
+              <p><a href="/influxdb-v1-compatibility-drop-in/">What the compatibility actually covers</a> · <a href="/influxdb-v1-migration-checklist-clients-url-change/">Client-by-client migration checklist</a></p>
+            </div>
+            <ul class="checklist">
+              <li><span class="mark" aria-hidden="true">+</span><span>Same endpoints, same InfluxQL: aggregates, derivatives, moving averages, <span class="mono">GROUP BY time()</span>, subqueries, regex measurements.</span></li>
+              <li><span class="mark" aria-hidden="true">+</span><span>Same agents. <a href="/telegraf-grafana-alerts-stack-database-that-doesnt-buckle/">Point Telegraf and Grafana at HyperbyteDB</a> and keep the dashboards.</span></li>
+              <li><span class="mark" aria-hidden="true">+</span><span>Continuous queries and master-master replication ship in the open-source binary. <a href="/why-influxdb-enterprise-pricing-hits-a-wall/">Why that matters on price</a>.</span></li>
+              <li><span class="mark" aria-hidden="true">+</span><span>Writes land in the write-ahead log before acknowledgement, then flush to columnar storage.</span></li>
+            </ul>
+          </div>
+          <div>
+            <pre><span class="dim"># self-host</span>
+docker pull ghcr.io/hyperbyte-cloud/hyperbytedb:latest
+
+docker run -d \
+  --name hyperbytedb \
+  -p 8086:8086 \
+  ghcr.io/hyperbyte-cloud/hyperbytedb:latest
+
+<span class="dim"># the migration</span>
+<span class="dim">#   http://influxdb:8086</span>
+    http://hyperbytedb:8086</pre>
+          </div>
+        </div>
+      </section>
+      <section id="platform">
+        <div class="wrap">
+          <p class="kicker">Two ways to run it</p>
+          <h2>The database, or the platform that runs it.</h2>
+          <p class="prose">Self-hosting HyperbyteDB is free, with no feature gates. <a href="/cloud/">Hyperbyte Cloud</a> is the same core, operated for you. Cloud scales by shard: 4 CPU and 16GB each, at a <a href="/pricing/">fixed compute price, plus disk by the GB</a>.</p>
+          <div class="products">
+            <article class="product">
+              <p class="tag">Open source</p>
+              <h3><a href="#database">HyperbyteDB</a></h3>
+              <p>InfluxDB v1 line protocol and HTTP API, TimeseriesQL, per-measurement MergeTree storage, Raft schema consensus, and active-active clustering where every node accepts writes.</p>
+              <ul>
+                <li><a href="/oss/">Open source at Hyperbyte</a></li>
+                <li><a href="/influxdb-v1-kubernetes-operator-swap-keep-urls/">Swap the Kubernetes operator, keep the URLs</a></li>
+                <li><a href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">Source and releases on GitHub</a></li>
+              </ul>
+            </article>
+            <article class="product">
+              <p class="tag">Managed</p>
+              <h3><a href="/cloud/">Hyperbyte Cloud</a></h3>
+              <p>Point Telegraf at a URL. The platform handles tuning, replication, upgrades, backups, and capacity. Early access is open to a small number of design partners.</p>
+              <ul>
+                <li><a href="/pricing/">Self-hosted is free. Cloud is $299 per shard, plus disk.</a></li>
+                <li><a href="/connect-with-us/">Talk to an engineer</a></li>
+                <li>Hostnames on <span class="mono">db.hyperbyte.cloud</span></li>
+              </ul>
+            </article>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <caption>Self-hosted or managed. <a href="/pricing/">Full pricing notes</a>.</caption>
+              <thead><tr><th scope="col"> </th><th scope="col">Self-hosted</th><th scope="col">Cloud</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Licence</th><td><a href="/oss/">Open source, on GitHub</a></td><td><a href="/cloud/">Early access</a></td></tr>
+                <tr><th scope="row">InfluxDB v1 compatibility</th><td>Full</td><td>Full</td></tr>
+                <tr><th scope="row">Replication and HA</th><td>Yours to run</td><td>Managed</td></tr>
+                <tr><th scope="row">Upgrades, backups, restore tests</th><td>Yours to run</td><td>Managed</td></tr>
+                <tr><th scope="row">Support</th><td>Community</td><td><a href="/connect-with-us/">Direct</a></td></tr>
+                <tr><th scope="row">Price</th><td>Free</td><td><a href="/pricing/">$299 per shard, plus disk</a></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <section id="solutions">
+        <div class="wrap">
+          <p class="kicker">Workloads</p>
+          <h2>Built for telemetry that is spread out.</h2>
+          <p class="prose"><a href="/solutions/">Solutions</a> for device fleets, distributed systems, and high tag cardinality. Same InfluxDB v1 endpoints, so the stack you already run keeps working.</p>
+          <p class="post-meta"><a href="/unlocking-scalable-iot-insights-with-hyperbytedb/">IoT fleets</a><a href="/observability-and-monitoring-with-hyperbytedb/">Observability</a><a href="/powering-real-time-financial-analytics-with-hyperbytedb/">Market data</a><a href="/optimizing-energy-systems-with-hyperbytedb/">Energy systems</a></p>
+        </div>
+      </section>
+      <section id="how">
+        <div class="wrap">
+          <p class="kicker">How it works</p>
+          <h2>Three moves. No rewrite.</h2>
+          <ol class="steps">
+            <li><span>01</span><h3>Run the binary</h3><p>Pull <a href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">ghcr.io/hyperbyte-cloud/hyperbytedb</a> and listen on port 8086. Or <a href="/cloud/">hand the node to Cloud</a>.</p></li>
+            <li><span>02</span><h3>Point the clients</h3><p>Telegraf, Grafana, and InfluxQL stay. Change the URL. The <a href="/influxdb-v1-migration-checklist-clients-url-change/">checklist</a> says which clients are only that.</p></li>
+            <li><span>03</span><h3>Tag what you need</h3><p>Cardinality becomes capacity, not a ceiling. <a href="/stop-watching-metrics-explode-high-cardinality-without-rewrite/">Read why the series index stops being the wall</a>.</p></li>
+          </ol>
+        </div>
+      </section>
+      <section id="shift">
+        <div class="wrap">
+          <p class="kicker">The shift</p>
+          <h2>Same wire. Different ceiling.</h2>
+          <div class="split compare">
+            <article>
+              <p class="kicker">Before</p>
+              <h3>InfluxDB v1 under tag pressure</h3>
+              <ul>
+                <li>Queries slip from milliseconds to seconds as series multiply</li>
+                <li>The exits are fewer tags, downsampling, or an enterprise tier</li>
+                <li>Replication and continuous queries sit behind a licence</li>
+              </ul>
+            </article>
+            <article class="after">
+              <p class="kicker">After</p>
+              <h3>HyperbyteDB on the same stack</h3>
+              <ul>
+                <li>1.5M points/sec sustained, p95 under 250ms, and linear as you add shards</li>
+                <li>Line protocol, InfluxQL, Telegraf, and Grafana stay</li>
+                <li>Master-master replication ships in the open-source binary</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section id="faq">
+        <div class="wrap">
+          <p class="kicker">Questions</p>
+          <h2>Asked before the cutover.</h2>
+          <div class="faq">
+            <details>
+              <summary>Is HyperbyteDB a drop-in for InfluxDB v1?</summary>
+              <p>It speaks line protocol and InfluxQL on the same <span class="mono">/write</span> and <span class="mono">/query</span> endpoints. Coverage, and the differences, are written up in <a href="/influxdb-v1-compatibility-drop-in/">what works and what does not</a>.</p>
+            </details>
+            <details>
+              <summary>Is self-hosting free?</summary>
+              <p>Yes. HyperbyteDB is Apache 2.0, with no feature gates: replication, sharding, retention, and continuous queries are all in the binary on <a href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">GitHub</a>. You pay only for the machines you run it on.</p>
+            </details>
+            <details>
+              <summary>What ingest number should a capacity plan use?</summary>
+              <p>1.5 million points a second sustained, p95 under 250ms. That is the number for a capacity plan. Scale-out is linear in the number of shards: add a shard, add that capacity again. <a href="/from-99-million-to-1-9-million-what-an-ingest-benchmark-doesnt-tell-you/">Why the engine ceiling is a different number</a>.</p>
+            </details>
+            <details>
+              <summary>How does it scale?</summary>
+              <p>By shards, and the scaling is linear. A Cloud shard is 4 CPU and 16GB of RAM. You start at one shard and add any number after that. Each shard is $299 a month. Disk is $0.20 per GB, on the storage you provision.</p>
+            </details>
+            <details>
+              <summary>What is still ahead for Cloud?</summary>
+              <p>Regions, a published uptime SLA, formal compliance certification, and bring-your-own-cloud. Early access exists so design partners get a say in which lands first. <a href="/connect-with-us/">Write to an engineer</a>.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+      <section id="notes">
+        <div class="wrap">
+          <p class="kicker">From the notes</p>
+          <h2>The measurements, and the migration.</h2>
+          <div class="related"><a href="/from-99-million-to-1-9-million-what-an-ingest-benchmark-doesnt-tell-you/">From 99M to 1.9M Rows/sec: What Benchmarks Don&#x27;t Tell You</a><a href="/scaling-chdb-inserts-from-5-million-to-99-million-rows-second/">Scaling chDB Inserts from 5M to 99M Rows/sec</a><a href="/why-influxdb-enterprise-pricing-hits-a-wall/">Why InfluxDB Enterprise Pricing Hits a Wall</a><a href="/telegraf-grafana-alerts-stack-database-that-doesnt-buckle/">Your Telegraf + Grafana + Alerts Stack, Now on a Database That Doesn&#x27;t Buckle</a></div>
+          <p class="more"><a href="/tag/blog/">All 11 posts</a></p>
+        </div>
+      </section>
+      
+    <div class="cta-band">
+      <div class="wrap">
+        <p class="kicker">Next step</p>
+        <h2>Run it yourself, or let us run it.</h2>
+        <p class="lede">HyperbyteDB is free to self-host. Cloud early access is a short form, and a person reads it.</p>
+        <div class="actions">
+          <a href="https://form.typeform.com/to/BhFaBgc5?ref=hyperbyte.cloud" rel="noopener">Request early access</a>
+          <a href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">Self-host on GitHub</a>
+          <a href="/connect-with-us/">Talk to an engineer</a>
+          <a href="https://docs.hyperbyte.cloud" rel="noopener">Read the docs</a>
+        </div>
+        
+      </div>
+    </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <span class="footer-brand"><img src="/assets/hyperbyte-cloud-mark.jpg" width="1024" height="388" alt="Hyperbyte Cloud" loading="lazy"> © 2026</span>
+        <nav aria-label="Footer">
+          <a href="/about-us/">About</a>
+          · <a href="/connect-with-us/">Contact</a>
+          · <a href="/pricing/">Pricing</a>
+          · <a href="/oss/">Open source</a>
+          · <a href="/privacy/">Privacy</a>
+          · <a href="/terms/">Terms</a>
+          · <a href="/dpa/">DPA</a>
+          · <a href="https://docs.hyperbyte.cloud" rel="noopener">Docs</a>
+          · <a href="https://github.com/hyperbyte-cloud/hyperbytedb" rel="noopener">GitHub</a>
+          · <a href="mailto:hello@hyperbyte.cloud">hello@hyperbyte.cloud</a>
+        </nav>
+      </div>
+    </footer>
+    <script src="/assets/site.js"></script></body></html>
