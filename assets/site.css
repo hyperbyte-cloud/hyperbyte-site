@@ -81,7 +81,7 @@ a:hover { color: var(--accent); }
   z-index: 10;
   height: var(--header);
   background: var(--bg);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--line);
 }
 
 .site-header .wrap {
@@ -141,7 +141,7 @@ a:hover { color: var(--accent); }
   min-height: 44px;
   background: transparent;
   color: var(--fg);
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   cursor: pointer;
 }
 
@@ -173,17 +173,19 @@ a:hover { color: var(--accent); }
 .btn-ghost {
   background: transparent;
   color: var(--fg);
-  border-color: var(--fg);
+  border-color: transparent;
+  padding-left: 2px;
+  padding-right: 2px;
 }
 
 .btn-ghost:hover {
-  background: var(--fg);
-  color: var(--bg);
+  background: transparent;
+  color: var(--accent);
 }
 
 .hero {
   position: relative;
-  padding: 88px 0 56px;
+  padding: 112px 0 72px;
 }
 
 .hero h1 em { font-style: normal; }
@@ -217,15 +219,16 @@ h1 {
 .actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  align-items: center;
+  gap: 8px 28px;
   margin-top: 32px;
 }
 
 .metrics {
   display: grid;
   grid-template-columns: 1fr;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
 }
 
 .metric {
@@ -262,7 +265,7 @@ h1 {
   font-size: 14px;
 }
 
-section { padding: 80px 0; }
+section { padding: 112px 0; }
 
 h2 {
   margin: 0 0 16px;
@@ -290,8 +293,8 @@ h2 {
 
 .panel {
   background: transparent;
-  border: 1px solid var(--line);
-  padding: 24px;
+  border: 0;
+  padding: 0;
 }
 
 .panel h3 {
@@ -311,7 +314,7 @@ h2 {
 
 .checklist li {
   display: flex;
-  gap: 12px;
+  gap: 0;
   align-items: flex-start;
   padding: 12px 0;
   border-top: 1px solid var(--line);
@@ -319,14 +322,7 @@ h2 {
 }
 
 .mark {
-  flex: 0 0 auto;
-  width: 18px;
-  height: 18px;
-  margin-top: 3px;
-  border: 1px solid var(--fg);
-  color: var(--fg);
-  display: grid;
-  place-items: center;
+  display: none;
 }
 
 code, .mono {
@@ -339,7 +335,7 @@ pre {
   padding: 20px;
   overflow-x: auto;
   background: #0a0a0a;
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   color: var(--fg);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 13px;
@@ -357,8 +353,8 @@ pre .dim { color: var(--muted); }
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 28px 24px 24px;
-  border-top: 1px solid var(--fg);
+  padding: 0;
+  border-top: 0;
   background: transparent;
   min-height: 100%;
 }
@@ -413,8 +409,8 @@ caption {
 
 th, td {
   text-align: left;
-  padding: 14px 16px;
-  border-bottom: 1px solid var(--line);
+  padding: 18px 16px;
+  border-bottom: 0;
   vertical-align: top;
 }
 
@@ -424,13 +420,33 @@ th {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted);
-  border-bottom: 1px solid var(--fg);
+}
+
+thead th {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  padding-bottom: 14px;
 }
 
 .cta-band {
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
   padding: 72px 0;
+}
+
+.cta-band .btn,
+.cta-band .btn-primary,
+.cta-band .btn-primary:hover,
+.cta-band .btn:hover {
+  background: transparent;
+  border-color: transparent;
+  color: var(--fg);
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.cta-band .btn:hover,
+.cta-band .btn-primary:hover {
+  color: var(--accent);
 }
 
 .cta-band h2 { max-width: 16ch; }
@@ -502,7 +518,7 @@ a.post {
   display: grid;
   gap: 8px;
   padding: 28px 0;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--line);
   text-decoration: none;
   color: inherit;
   cursor: pointer;
@@ -537,7 +553,7 @@ a.post:hover h2 { color: var(--fg); }
 
 .post.featured {
   padding: 36px 0 40px;
-  border-top: 1px solid var(--fg);
+  border-top: 1px solid var(--line);
 }
 
 .post.featured h2 {
@@ -550,8 +566,8 @@ a.post:hover h2 { color: var(--fg); }
   .metric { margin: 28px 16px 28px 0; }
   .split { grid-template-columns: 1.1fr 0.9fr; align-items: start; }
   .products { grid-template-columns: 1fr 1fr; gap: 32px; }
-  .hero { padding: 104px 0 64px; }
-  section { padding: 96px 0; }
+  .hero { padding: 112px 0 72px; }
+  section { padding: 112px 0; }
 }
 
 @media (max-width: 860px) {
@@ -565,7 +581,7 @@ a.post:hover h2 { color: var(--fg); }
     flex-direction: column;
     align-items: stretch;
     background: var(--bg);
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--line);
     padding: 8px 16px 16px;
     margin: 0;
   }
@@ -654,7 +670,7 @@ article.page-head .prose > :is(p, ul, ol, blockquote, h2, h3, h4) { max-width: 7
 .prose blockquote {
   margin-left: 0;
   padding: 4px 0 4px 16px;
-  border-left: 1px solid var(--fg);
+  border-left: 1px solid var(--line);
   color: var(--ink-2);
 }
 .prose code {
@@ -669,7 +685,7 @@ article.page-head .prose > :is(p, ul, ol, blockquote, h2, h3, h4) { max-width: 7
 .prose { overflow-x: auto; }
 .prose figure { margin: 24px 0; }
 .prose figcaption { color: var(--muted); font-size: 14px; margin-top: 8px; }
-.prose hr { border: 0; border-top: 1px solid var(--border); margin: 32px 0; }
+.prose hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
 
 .prose .kg-card { margin: 0; }
 .prose .kg-header-card picture,
@@ -765,16 +781,15 @@ article.page-head .prose > :is(p, ul, ol, blockquote, h2, h3, h4) { max-width: 7
 
 .compare {
   margin-top: 28px;
-  gap: 16px;
+  gap: 48px;
 }
 
-.compare article {
-  padding: 24px;
-  border: 1px solid var(--line);
+.compare article,
+.compare .after {
+  padding: 0;
+  border: 0;
   background: transparent;
 }
-
-.compare .after { border-color: var(--fg); }
 
 .compare h3 { margin: 0 0 12px; letter-spacing: -0.03em; }
 .compare ul { margin: 0; padding: 0; list-style: none; }
@@ -814,12 +829,13 @@ article.page-head .prose > :is(p, ul, ol, blockquote, h2, h3, h4) { max-width: 7
 
 .pager a {
   display: block;
-  padding: 16px;
-  border: 1px solid var(--line);
+  padding: 16px 0;
+  border: 0;
+  border-top: 1px solid var(--line);
   text-decoration: none;
   color: inherit;
 }
-.pager a:hover { border-color: var(--accent); color: inherit; }
+.pager a:hover { color: var(--accent); }
 .pager small {
   display: block;
   color: var(--muted);
@@ -842,7 +858,7 @@ article.page-head .prose > :is(p, ul, ol, blockquote, h2, h3, h4) { max-width: 7
 .jump {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 8px 24px;
   margin-top: 28px;
 }
 
@@ -850,20 +866,18 @@ article.page-head .prose > :is(p, ul, ol, blockquote, h2, h3, h4) { max-width: 7
   min-height: 44px;
   display: inline-flex;
   align-items: center;
-  padding: 0 14px;
-  border: 1px solid var(--line);
+  padding: 0;
+  border: 0;
   text-decoration: none;
   font-size: 14px;
-  font-weight: 500;
-  color: var(--ink-2);
+  font-weight: 600;
+  color: var(--fg);
   cursor: pointer;
-  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
 }
 
 .jump a:hover {
-  border-color: var(--fg);
-  color: var(--fg);
-  background: var(--hover);
+  color: var(--accent);
+  background: transparent;
 }
 
 .glyph {
@@ -892,7 +906,7 @@ article.page-head .prose > :is(p, ul, ol, blockquote, h2, h3, h4) { max-width: 7
   transition: background 0.2s ease;
 }
 
-.product:hover { background: var(--hover); }
+.product:hover { background: transparent; }
 
 .product .more {
   margin-top: auto;
